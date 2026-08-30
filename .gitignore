@@ -3,3 +3,5 @@
 *.docx
 estructura.jpg
 *.sw[a-p]
+node_modules
+feh*.jpg
