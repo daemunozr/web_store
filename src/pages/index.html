@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
 		<meta charset="utf-8">
-		<title>Title</title>
+		<title>Tienda Electronica &mdash; Inicio</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../styles/style.css">
 	</head>
 	<body>
-		<h1>Header 1</h1>
-		<h2>Header 2</h2>
-		<p>
-		Paragraph about things.
-		</p>
+		<!-- Cada seccion se carga desde su propio archivo mediante scripts/includes.js -->
+		<div data-include="header.html"></div>
+		<div data-include="nav.html"></div>
+
+		<div class="container-fluid my-3">
+			<div class="row g-3">
+				<aside class="col-12 col-lg-3 col-xl-2" data-include="aside.html"></aside>
+				<main class="col-12 col-lg-9 col-xl-10" data-include="body.html"></main>
+			</div>
+		</div>
+
+		<div data-include="footer.html"></div>
+
 		<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../scripts/includes.js"></script>
 	</body>
 </html>

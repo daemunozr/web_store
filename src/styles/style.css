@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Hoja de estilos personalizada de la tienda.
+   Se carga DESPUES de Bootstrap para poder ajustar y sobrescribir.
+   ========================================================================== */
+
+:root {
+	--brand: #0d6efd;
+	--brand-dark: #0a58ca;
+	--placeholder-bg: #e9ecef;
+	--placeholder-fg: #6c757d;
+}
+
+/* --------------------------------------------------------------------------
+   Caja de imagen provisional (mientras no hay imagenes reales en resources/)
+   -------------------------------------------------------------------------- */
+.placeholder-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 160px;
+	color: var(--placeholder-fg);
+	font-size: 0.875rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	background-color: var(--placeholder-bg);
+	background-image: repeating-linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 0.035) 0,
+		rgba(0, 0, 0, 0.035) 10px,
+		transparent 10px,
+		transparent 20px
+	);
+	border-radius: 0.375rem;
+}
+
+.placeholder-box::after {
+	content: "Sin imagen";
+}
+
+/* Variante pequenia para el logo del navbar. */
+.placeholder-box--logo {
+	min-height: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 0.25rem;
+}
+
+.placeholder-box--logo::after {
+	content: "";
+}
+
+/* Variante alta para el hero. */
+.placeholder-box--hero {
+	min-height: 260px;
+}
+
+/* --------------------------------------------------------------------------
+   Marca (navbar + footer)
+   -------------------------------------------------------------------------- */
+.navbar-brand {
+	font-weight: 700;
+}
+
+.site-header a {
+	color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.hero {
+	margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Tarjetas de producto
+   -------------------------------------------------------------------------- */
+.product-card {
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+}
+
+.product-card .price {
+	font-weight: 700;
+	color: var(--brand-dark);
+}
+
+/* --------------------------------------------------------------------------
+   Barra lateral: se mantiene visible al hacer scroll en pantallas grandes
+   -------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+	.sidebar {
+		position: sticky;
+		top: 1rem;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Ajuste responsivo: ocultar el eslogan del header en moviles muy pequenios
+   -------------------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+	.site-header .tagline {
+		display: none;
+	}
+}

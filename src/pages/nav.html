@@ -1,13 +1,52 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Title</title>
-	</head>
-	<body>
-		<h1>Header 1</h1>
-		<h2>Header 2</h2>
-		<p>
-		Paragraph about things.
-		</p>
-	</body>
-</html>
+<!-- Menu de navegacion principal -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+	<div class="container">
+		<a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+			<span class="placeholder-box placeholder-box--logo"></span>
+			Tienda Electronica
+		</a>
+
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#menuPrincipal"
+			aria-controls="menuPrincipal"
+			aria-expanded="false"
+			aria-label="Abrir menu"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="menuPrincipal">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="productos.html">Productos</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="nosotros.html">Nosotros</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="blogs.html">Blogs</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="contacto.html">Contacto</a>
+				</li>
+			</ul>
+
+			<a href="carrito.html" class="btn btn-outline-primary position-relative">
+				&#128722; Carrito
+				<span
+					id="cart-count"
+					class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+				>
+					0
+					<span class="visually-hidden">productos en el carrito</span>
+				</span>
+			</a>
+		</div>
+	</div>
+</nav>
