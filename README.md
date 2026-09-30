@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 1.7**
+**Revisión: 1.8**
 
 **Autor:** Daniel Muñoz
 
@@ -67,6 +67,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 29-09-2026 | 1.5          | Daniel Muñoz | Reducción de redundancia y compactación del documento |
 | 29-09-2026 | 1.6          | Daniel Muñoz | Sugerencias de validación, HTML válido, barra lateral y herramientas |
 | 29-09-2026 | 1.7          | Daniel Muñoz | Modelo de datos lógico, diagramas y trazabilidad hacia delante |
+| 29-09-2026 | 1.8          | Daniel Muñoz | Modelo de datos lógico normalizado hasta 3NF |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -150,8 +151,8 @@ datos y pasarela de pago.
   cada componente con los admisibles de la siguiente categoría.
 - **Carrito de compras**: estructura de datos en JavaScript con los productos
   seleccionados por el cliente antes de finalizar una compra.
-- **Orden**: registro simulado de una compra (cliente, fecha, productos y total)
-  en un arreglo JavaScript, disponible solo en modo lectura en esta entrega.
+- **Orden**: registro simulado de una compra (cliente, fecha y productos) en un
+  arreglo JavaScript, solo de lectura en esta entrega; el total se calcula.
 - **LocalStorage**: almacenamiento del navegador (Web Storage API) usado para
   persistir el contenido del carrito entre sesiones.
 - **Stock crítico**: cantidad mínima de unidades de un producto a partir de la
@@ -340,7 +341,7 @@ El sistema contempla tres tipos de perfiles de usuario:
 ## 2.6. Requisitos Futuros
 
 - Incorporación de un backend real con base de datos para persistir productos,
-  usuarios y órdenes.
+  usuarios y órdenes, conforme al modelo de 3.5.
 - Integración de una pasarela de pago para completar el flujo de compra.
 - Gestión completa de órdenes (estado del pedido, historial de compras del
   cliente).
@@ -395,7 +396,8 @@ escritorio, gracias al diseño responsivo.
 - **Web Storage API (`localStorage`)**: utilizada para persistir el contenido
   del carrito de compras en el navegador del cliente, bajo una única clave
   `carrito` cuyo valor es un arreglo serializado en JSON con una entrada por
-  ítem (producto individual o armado) y su cantidad.
+  línea, cada una con su producto, su cantidad y, si pertenece a un armado, el
+  agrupador de ese armado (ver 3.5).
 
 ### 3.1.4 Interfaces de comunicación
 
@@ -710,82 +712,171 @@ servidor HTTP (ver 3.1.4).
 ## 3.5 Modelo de datos lógico
 
 Esta sección especifica los requisitos lógicos de la información que el sistema
-almacena —tipo de dato y obligatoriedad de cada campo—, como pide la sección 3.2
-de la plantilla del Anexo 4, y anticipa el modelo de la base de datos que el
-Anexo 1 proyecta para las entregas siguientes. Las fichas de 3.2 siguen siendo
-la fuente normativa de las reglas de validación y de los límites de cada campo:
-las tablas indican el tipo y la obligatoriedad, y remiten al requisito
-correspondiente en lugar de repetir esos límites. En esta entrega ninguna
-entidad reside en una base de datos, sino en arreglos JavaScript, y el carrito
-se serializa además en la clave `carrito` de `localStorage` (ver 3.1.3).
+almacena —relaciones, atributos, tipo de dato, claves y obligatoriedad—, como
+pide la sección 3.2 de la plantilla del Anexo 4, y anticipa el modelo de la base
+de datos que el Anexo 1 proyecta para las entregas siguientes. El modelo se
+presenta normalizado hasta la tercera forma normal (3NF) y el análisis que lo
+justifica cierra la sección. Las fichas de 3.2 siguen siendo la fuente normativa
+de las reglas de validación y de los límites de cada campo: las tablas indican
+el tipo, la clave y la obligatoriedad, y remiten al requisito correspondiente en
+lugar de repetir esos límites. En esta entrega ninguna relación reside en una
+base de datos, sino en arreglos JavaScript, y el carrito se serializa además en
+la clave `carrito` de `localStorage` (ver 3.1.3).
+
+```mermaid
+erDiagram
+  CATEGORIA ||--o{ PRODUCTO : clasifica
+  PRODUCTO ||--o{ COMPATIBILIDAD : admite
+  REGION ||--o{ COMUNA : contiene
+  COMUNA ||--o{ USUARIO : reside
+  ROL ||--o{ USUARIO : perfila
+  USUARIO ||--o{ ORDEN : realiza
+  ORDEN ||--|{ ITEM_ORDEN : detalla
+  PRODUCTO ||--o{ ITEM_ORDEN : figura
+  PRODUCTO ||--o{ ITEM_CARRITO : figura
+  ARMADO ||--o{ ITEM_CARRITO : agrupa
+```
+
+**Catálogo**
+
+**Categoría** (RF-07, RF-10)
+
+| Campo  | Tipo       | Clave | Requerido | Notas                                                                                           |
+|--------|------------|-------|-----------|-------------------------------------------------------------------------------------------------|
+| código | Texto      | PK    | Sí        | Identificador de la categoría                                                                   |
+| nombre | Texto      | —     | Sí        | Etiqueta del select de RF-10                                                                    |
+| orden  | Entero ≥ 1 | —     | No        | Posición en el recorrido del asistente (RF-07); vacío si la categoría no participa en el armado |
 
 **Producto** (RF-03, RF-04, RF-10)
 
-| Campo                    | Tipo             | Requerido | Notas                                  |
-|--------------------------|------------------|-----------|----------------------------------------|
-| código de producto (SKU) | Texto            | Sí        | Clave de la entidad; reglas en RF-10   |
-| nombre                   | Texto            | Sí        | —                                      |
-| descripción              | Texto            | No        | Se muestra en el detalle (RF-04)       |
-| precio                   | Decimal ≥ 0      | Sí        | Un valor 0 es un producto gratuito     |
-| stock                    | Entero ≥ 0       | Sí        | Unidades en inventario                 |
-| stock crítico            | Entero ≥ 0       | No        | Umbral de la alerta de bajo inventario |
-| categoría                | Conjunto cerrado | Sí        | Se escoge mediante select              |
-| imagen                   | URL              | No        | —                                      |
-| video                    | URL              | No        | Video embebido del detalle (RF-04)     |
+| Campo                    | Tipo        | Clave | Requerido | Notas                                             |
+|--------------------------|-------------|-------|-----------|---------------------------------------------------|
+| código de producto (SKU) | Texto       | PK    | Sí        | Reglas del campo en RF-10                         |
+| nombre                   | Texto       | —     | Sí        | —                                                 |
+| descripción              | Texto       | —     | No        | Se muestra en el detalle (RF-04)                  |
+| precio                   | Decimal ≥ 0 | —     | Sí        | Un valor 0 es un producto gratuito                |
+| stock                    | Entero ≥ 0  | —     | Sí        | Unidades en inventario                            |
+| stock crítico            | Entero ≥ 0  | —     | No        | Umbral de la alerta de bajo inventario            |
+| categoría                | Texto       | FK    | Sí        | Referencia a Categoría; se escoge mediante select |
+| imagen                   | URL         | —     | No        | —                                                 |
+| video                    | URL         | —     | No        | Video embebido del detalle (RF-04)                |
+
+**Compatibilidad** (RF-07)
+
+| Campo              | Tipo  | Clave  | Requerido | Notas                                                             |
+|--------------------|-------|--------|-----------|-------------------------------------------------------------------|
+| producto           | Texto | PK, FK | Sí        | Referencia a Producto: el componente escogido                     |
+| producto admisible | Texto | PK, FK | Sí        | Referencia a Producto: opción admisible de la categoría siguiente |
+
+**Usuarios**
+
+**Región** (RF-01)
+
+| Campo  | Tipo  | Clave | Requerido | Notas                               |
+|--------|-------|-------|-----------|-------------------------------------|
+| código | Texto | PK    | Sí        | Proviene del arreglo JS del Anexo 1 |
+| nombre | Texto | —     | Sí        | —                                   |
+
+**Comuna** (RF-01)
+
+| Campo  | Tipo  | Clave | Requerido | Notas                                              |
+|--------|-------|-------|-----------|----------------------------------------------------|
+| código | Texto | PK    | Sí        | Proviene del arreglo JS del Anexo 1                |
+| nombre | Texto | —     | Sí        | —                                                  |
+| región | Texto | FK    | Sí        | Referencia a Región; la comuna determina su región |
+
+**Rol** (RF-02, RF-11, RF-12)
+
+| Campo  | Tipo  | Clave | Requerido | Notas                                            |
+|--------|-------|-------|-----------|--------------------------------------------------|
+| código | Texto | PK    | Sí        | La relación contiene exactamente tres filas      |
+| nombre | Texto | —     | Sí        | Administrador, Cliente o Administrador logístico |
 
 **Usuario** (RF-01, RF-02, RF-11)
 
-| Campo               | Tipo                                             | Requerido | Notas                                                    |
-|---------------------|--------------------------------------------------|-----------|----------------------------------------------------------|
-| RUN                 | Texto                                            | Sí        | Clave de la entidad; se valida el dígito verificador     |
-| nombre              | Texto                                            | Sí        | —                                                        |
-| apellidos           | Texto                                            | Sí        | —                                                        |
-| correo              | Texto                                            | Sí        | Dominios permitidos (ver 1.3); credencial de RF-02       |
-| contraseña          | Texto                                            | Sí        | Se presenta enmascarada (ver 3.3.2); credencial de RF-02 |
-| fecha de nacimiento | Fecha                                            | No        | —                                                        |
-| región              | Conjunto cerrado                                 | Sí        | Se escoge desde el arreglo de regiones; ver Nota         |
-| comuna              | Conjunto cerrado                                 | Sí        | Depende de la región escogida; ver Nota                  |
-| dirección           | Texto                                            | Sí        | Dirección de despacho                                    |
-| tipo de usuario     | Administrador, Cliente o Administrador logístico | Sí        | Determina el acceso (ver 3.3.2); editable solo en RF-11  |
+| Campo               | Tipo  | Clave | Requerido | Notas                                                                         |
+|---------------------|-------|-------|-----------|-------------------------------------------------------------------------------|
+| RUN                 | Texto | PK    | Sí        | Se valida el dígito verificador (RF-01)                                       |
+| nombre              | Texto | —     | Sí        | —                                                                             |
+| apellidos           | Texto | —     | Sí        | —                                                                             |
+| correo              | Texto | —     | Sí        | Dominios permitidos (ver 1.3); credencial de RF-02                            |
+| contraseña          | Texto | —     | Sí        | Se presenta enmascarada (ver 3.3.2); credencial de RF-02                      |
+| fecha de nacimiento | Fecha | —     | No        | —                                                                             |
+| comuna              | Texto | FK    | Sí        | Referencia a Comuna; la región se obtiene de ella (ver Nota)                  |
+| dirección           | Texto | —     | Sí        | Dirección de despacho                                                         |
+| tipo de usuario     | Texto | FK    | Sí        | Referencia a Rol; determina el acceso (ver 3.3.2) y solo es editable en RF-11 |
+
+**Órdenes**
 
 **Orden** (RF-12)
 
-| Campo           | Tipo                       | Requerido | Notas                                    |
-|-----------------|----------------------------|-----------|------------------------------------------|
-| número de orden | Texto                      | Sí        | Clave de la entidad; ver Nota            |
-| cliente         | Referencia a Usuario (RUN) | Sí        | —                                        |
-| fecha           | Fecha                      | Sí        | Fecha de la compra simulada              |
-| productos       | Lista de ítems             | Sí        | Cada ítem con su producto y su cantidad  |
-| total           | Decimal                    | Sí        | Suma del precio unitario por la cantidad |
+| Campo           | Tipo  | Clave | Requerido | Notas                           |
+|-----------------|-------|-------|-----------|---------------------------------|
+| número de orden | Texto | PK    | Sí        | Ver Nota                        |
+| cliente         | Texto | FK    | Sí        | Referencia a Usuario por su RUN |
+| fecha           | Fecha | —     | Sí        | Fecha de la compra simulada     |
 
-**Ítem de carrito** (RF-05, RF-06)
+**Ítem de orden** (RF-12)
 
-| Campo             | Tipo                             | Requerido | Notas                                        |
-|-------------------|----------------------------------|-----------|----------------------------------------------|
-| producto o armado | Referencia a Producto o a Armado | Sí        | Un armado se trata como un solo ítem         |
-| cantidad          | Entero ≥ 1                       | Sí        | Regla de mínimo en HU-06                     |
-| subtotal          | Decimal                          | Derivado  | Precio unitario por cantidad; no se almacena |
+| Campo           | Tipo        | Clave  | Requerido | Notas                                                                             |
+|-----------------|-------------|--------|-----------|-----------------------------------------------------------------------------------|
+| orden           | Texto       | PK, FK | Sí        | Referencia a Orden                                                                |
+| producto        | Texto       | PK, FK | Sí        | Referencia a Producto                                                             |
+| cantidad        | Entero ≥ 1  | —      | Sí        | Unidades de ese producto en la orden                                              |
+| precio unitario | Decimal ≥ 0 | —      | Sí        | Precio al momento de la compra; no se toma de Producto, que puede cambiar después |
+
+**Carrito y armado**
 
 **Armado** (RF-07)
 
-| Campo       | Tipo                            | Requerido | Notas                                   |
-|-------------|---------------------------------|-----------|-----------------------------------------|
-| componentes | Lista de referencias a Producto | Sí        | Una por categoría recorrida (ver RF-07) |
-| precio      | Decimal                         | Derivado  | Suma del precio de sus componentes      |
+| Campo         | Tipo  | Clave | Requerido | Notas                                        |
+|---------------|-------|-------|-----------|----------------------------------------------|
+| identificador | Texto | PK    | Sí        | Agrupa las líneas de carrito que lo componen |
 
-La tabla de compatibilidad no es una entidad del negocio, sino una estructura
-estática de los arreglos JavaScript que asocia cada componente con la lista de
-componentes admisibles de la siguiente categoría (ver 1.3). Las órdenes son de
-solo lectura en esta entrega (RF-12): su creación desde el carrito es un
-requisito futuro (ver 2.6).
+**Ítem de carrito** (RF-05, RF-06)
+
+| Campo        | Tipo       | Clave | Requerido | Notas                                                                   |
+|--------------|------------|-------|-----------|-------------------------------------------------------------------------|
+| n.º de línea | Entero ≥ 1 | PK    | Sí        | Posición de la línea en el carrito                                      |
+| producto     | Texto      | FK    | Sí        | Referencia a Producto                                                   |
+| cantidad     | Entero ≥ 1 | —     | Sí        | Cantidad mínima 1 (HU-06)                                               |
+| armado       | Texto      | FK    | No        | Referencia a Armado; las líneas de un mismo armado comparten este valor |
+
+Las órdenes son de solo lectura en esta entrega (RF-12): su creación a partir
+del carrito es un requisito futuro (ver 2.6). Ningún componente de un armado
+guarda su categoría, porque es derivable del producto al que se refiere.
+
+**Normalización**
+
+- **1NF**: todo atributo es atómico y no hay grupos repetidos: los productos de
+  una orden y los componentes de un armado son relaciones propias (Ítem de orden
+  e Ítem de carrito) y no listas dentro de Orden ni de Armado.
+- **2NF**: las únicas claves compuestas son las de Ítem de orden (orden más
+  producto) y Compatibilidad (producto más producto admisible), y en ambas todo
+  atributo no clave depende de la clave completa: la cantidad y el precio
+  unitario dependen de la línea, no solo de la orden ni solo del producto.
+- **3NF**: no quedan dependencias transitivas. La comuna determina su región,
+  por lo que la región reside en Comuna y no en Usuario; el orden de recorrido
+  depende de la categoría y no del producto, por lo que reside en Categoría; y
+  el nombre del rol depende del rol y no del usuario que lo tiene.
+- **Valores derivados**: no se almacenan y por eso no figuran como atributos: el
+  total de una orden, el subtotal de una línea y el precio de un armado se
+  calculan al mostrarlos, de modo que no pueden contradecir las filas que
+  resumen.
 
 > Nota: el número de orden no figura en la lista de campos del Anexo 1; se
 > agrega por decisión del proyecto, porque RF-12 exige un detalle de orden
 > navegable y sin una clave no es posible identificar cuál se abre.
 
 > Nota: el Anexo 1 no declara si región y comuna son requeridas. En esta
-> revisión se declaran requeridas por decisión del proyecto, por coherencia con
-> la dirección de despacho, que sí lo es; RF-01 y HU-01 recogen la regla.
+> revisión ambas se declaran requeridas en el formulario de RF-01 por decisión
+> del proyecto, por coherencia con la dirección de despacho; de las dos solo se
+> almacena la comuna, porque ella determina la región. Las regiones y comunas
+> provienen del arreglo JS complementario del Anexo 1, que ya tiene esta forma.
+
+> Nota: un armado en curso no se persiste. Existe únicamente como las líneas de
+> carrito que comparten su agrupador, cada una referida a un solo producto, y su
+> precio es la suma de esas líneas (ver HU-07).
 
 # 4. Historias de Usuario y Criterios de Aceptación
 
