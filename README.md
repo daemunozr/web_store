@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 1.4**
+**Revisión: 1.5**
 
 **Autor:** Daniel Muñoz
 
@@ -18,80 +18,41 @@ Especificación de Requisitos según estándar de IEEE 830.
 
 # Contenido
 
-[Ficha del documento](#ficha-del-documento)
-
-[1. Introducción](#1-introducción)
-
-[1.1. Propósito](#11-propósito)
-
-[1.2. Ámbito del Sistema](#12-ámbito-del-sistema)
-
-[1.3. Definiciones, Acrónimos y
-Abreviaturas](#13-definiciones-acrónimos-y-abreviaturas)
-
-[1.4. Referencias](#14-referencias)
-
-[1.5. Visión General del Documento](#15-visión-general-del-documento)
-
-[2. Descripción General](#2-descripción-general)
-
-[2.1. Perspectiva del Producto](#21-perspectiva-del-producto)
-
-[2.2. Funciones del Producto](#22-funciones-del-producto)
-
-[2.3. Características de los Usuarios](#23-características-de-los-usuarios)
-
-[2.4. Restricciones](#24-restricciones)
-
-[2.5. Suposiciones y Dependencias](#25-suposiciones-y-dependencias)
-
-[2.6. Requisitos Futuros](#26-requisitos-futuros)
-
-[3. Requisitos Específicos](#3-requisitos-específicos)
-
-[3.1 Requisitos comunes de las
-interfaces](#31-requisitos-comunes-de-las-interfaces)
-
-[3.1.1 Interfaces de usuario](#311-interfaces-de-usuario)
-
-[3.1.2 Interfaces de hardware](#312-interfaces-de-hardware)
-
-[3.1.3 Interfaces de software](#313-interfaces-de-software)
-
-[3.1.4 Interfaces de comunicación](#314-interfaces-de-comunicación)
-
-[3.2 Requisitos funcionales](#32-requisitos-funcionales)
-
-[3.3 Requisitos no funcionales](#33-requisitos-no-funcionales)
-
-[3.3.1 Requisitos de rendimiento](#331-requisitos-de-rendimiento)
-
-[3.3.2 Seguridad](#332-seguridad)
-
-[3.3.3 Fiabilidad](#333-fiabilidad)
-
-[3.3.4 Disponibilidad](#334-disponibilidad)
-
-[3.3.5 Mantenibilidad](#335-mantenibilidad)
-
-[3.3.6 Portabilidad](#336-portabilidad)
-
-[3.4 Otros Requisitos](#34-otros-requisitos)
-
-[4. Historias de Usuario y Criterios de
-Aceptación](#4-historias-de-usuario-y-criterios-de-aceptación)
-
-[4.1 Historias de acceso y
-autenticación](#41-historias-de-acceso-y-autenticación)
-
-[4.2 Historias de la tienda](#42-historias-de-la-tienda)
-
-[4.3 Historias de administración](#43-historias-de-administración)
-
-[4.4 Criterios de aceptación de los requisitos no
-funcionales](#44-criterios-de-aceptación-de-los-requisitos-no-funcionales)
-
-[5. Trazabilidad de requisitos](#5-trazabilidad-de-requisitos)
+- [Ficha del documento](#ficha-del-documento)
+- [1. Introducción](#1-introducción)
+  - [1.1. Propósito](#11-propósito)
+  - [1.2. Ámbito del Sistema](#12-ámbito-del-sistema)
+  - [1.3. Definiciones, Acrónimos y Abreviaturas](#13-definiciones-acrónimos-y-abreviaturas)
+  - [1.4. Referencias](#14-referencias)
+  - [1.5. Visión General del Documento](#15-visión-general-del-documento)
+- [2. Descripción General](#2-descripción-general)
+  - [2.1. Perspectiva del Producto](#21-perspectiva-del-producto)
+  - [2.2. Funciones del Producto](#22-funciones-del-producto)
+  - [2.3. Características de los Usuarios](#23-características-de-los-usuarios)
+  - [2.4. Restricciones](#24-restricciones)
+  - [2.5. Suposiciones y Dependencias](#25-suposiciones-y-dependencias)
+  - [2.6. Requisitos Futuros](#26-requisitos-futuros)
+- [3. Requisitos Específicos](#3-requisitos-específicos)
+  - [3.1 Requisitos comunes de las interfaces](#31-requisitos-comunes-de-las-interfaces)
+    - [3.1.1 Interfaces de usuario](#311-interfaces-de-usuario)
+    - [3.1.2 Interfaces de hardware](#312-interfaces-de-hardware)
+    - [3.1.3 Interfaces de software](#313-interfaces-de-software)
+    - [3.1.4 Interfaces de comunicación](#314-interfaces-de-comunicación)
+  - [3.2 Requisitos funcionales](#32-requisitos-funcionales)
+  - [3.3 Requisitos no funcionales](#33-requisitos-no-funcionales)
+    - [3.3.1 Requisitos de rendimiento](#331-requisitos-de-rendimiento)
+    - [3.3.2 Seguridad](#332-seguridad)
+    - [3.3.3 Fiabilidad](#333-fiabilidad)
+    - [3.3.4 Disponibilidad](#334-disponibilidad)
+    - [3.3.5 Mantenibilidad](#335-mantenibilidad)
+    - [3.3.6 Portabilidad](#336-portabilidad)
+  - [3.4 Otros Requisitos](#34-otros-requisitos)
+- [4. Historias de Usuario y Criterios de Aceptación](#4-historias-de-usuario-y-criterios-de-aceptación)
+  - [4.1 Historias de acceso y autenticación](#41-historias-de-acceso-y-autenticación)
+  - [4.2 Historias de la tienda](#42-historias-de-la-tienda)
+  - [4.3 Historias de administración](#43-historias-de-administración)
+  - [4.4 Criterios de aceptación de los requisitos no funcionales](#44-criterios-de-aceptación-de-los-requisitos-no-funcionales)
+- [5. Trazabilidad de requisitos](#5-trazabilidad-de-requisitos)
 
 # Ficha del documento
 
@@ -102,6 +63,7 @@ funcionales](#44-criterios-de-aceptación-de-los-requisitos-no-funcionales)
 | 29-09-2026 | 1.2          | Daniel Muñoz | Historias de usuario, criterios de aceptación y trazabilidad |
 | 29-09-2026 | 1.3          | Daniel Muñoz | Historias de usuario y criterios de aceptación en sección propia |
 | 29-09-2026 | 1.4          | Daniel Muñoz | Conformidad con Anexos 1 y 4 y con la pauta de Evaluación Parcial N° 1 |
+| 29-09-2026 | 1.5          | Daniel Muñoz | Reducción de redundancia y compactación del documento |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -140,28 +102,20 @@ componentes hasta completar el equipo entero o bien solo módulos específicos.
 
 En esta primera entrega, el sistema:
 
-- **Sí hará:** permitir la navegación pública por catálogo de productos, blogs,
-  información de la empresa y contacto; permitir el registro, el inicio y el
-  cierre de sesión de usuarios; permitir armar una PC gamer seleccionando
-  componentes de forma guiada por categoría, ya sea el equipo completo o solo
-  módulos específicos (ej. únicamente almacenamiento o únicamente
-  refrigeración); permitir agregar productos y armados al carrito de compras y
-  gestionarlo (eliminar ítems, modificar cantidades y ver el total); y ofrecer
-  un panel administrativo protegido con mantenedores (listar/crear/editar) de
-  Productos y Usuarios, más la consulta en modo solo lectura del listado y
-  detalle de órdenes simuladas.
+- **Sí hará:** ofrecer una tienda pública con catálogo de productos y su
+  detalle, blogs, información de la empresa y contacto; el registro, inicio y
+  cierre de sesión de usuarios; el asistente de armado de PC gamer, completo o
+  por módulos; y un carrito de compras gestionable. Sobre esa tienda ofrece un
+  panel administrativo protegido con mantenedores de Productos y Usuarios y la
+  consulta en solo lectura de órdenes simuladas. El detalle de cada función está
+  en 2.2.
 - **No hará (en esta entrega):** procesar pagos reales, conectarse a una base de
   datos o backend real, ni gestionar el ciclo completo de una orden de compra
   (despacho, facturación, etc.). Tampoco validará la compatibilidad técnica real
-  entre componentes: el asistente de armado filtra las opciones de cada
-  categoría a partir de una tabla de compatibilidad estática predefinida en los
-  arreglos JavaScript (ver 1.3), sin calcular la adecuación real de socket de
-  CPU, tipo de RAM, formato de gabinete ni potencia de la fuente de poder; el
-  motor de validación real queda como requisito futuro (ver 2.6). Los datos de
-  productos, usuarios y órdenes se simulan mediante arreglos de JavaScript, y el
-  carrito se persiste únicamente en `localStorage` del navegador. Además, el
-  sitio no funciona abierto como archivo local (`file://`): debe servirse por
-  HTTP, ya que las secciones de cada página se cargan con `fetch()` (ver 3.1.4).
+  entre componentes: el asistente filtra cada categoría según la tabla de
+  compatibilidad estática (ver 1.3) y el motor de validación real queda como
+  requisito futuro (ver 2.6). Las restricciones técnicas de la implementación se
+  detallan en 2.4.
 
 Los beneficios esperados son: contar con una base funcional y bien estructurada
 (HTML semántico, CSS propio y responsivo, validaciones JS) que sirva de
@@ -172,52 +126,36 @@ datos y pasarela de pago.
 
 - **ERS**: Especificación de Requisitos de Software.
 - **Historia de usuario**: enunciado breve, en lenguaje del cliente, con el
-  formato "Como <rol>, quiero <acción> para <beneficio>", que expresa la
-  motivación de un requisito funcional.
-- **Criterio de aceptación**: condición verificable y objetiva que debe
-  cumplirse para dar por satisfecho un requisito. Cuando describe un flujo se
-  redacta en formato Dado / Cuando / Entonces.
-- **Prioridad**: clasificación de un requisito por importancia, usada en la
-  sección 5. *Esencial*: sin él no se cumple la Entrega I, porque el Anexo 1 lo
-  exige como vista o campo obligatorio, o porque lo evalúa un indicador de la
-  pauta de evaluación. *Condicional*: exigido por alguna de las fuentes, pero no
-  determinante para la entrega ni evaluado de forma directa. *Opcional*:
-  propuesta propia del proyecto que puede diferirse sin afectar la entrega.
-- **RUN**: Rol Único Nacional, identificador de personas en Chile. En este
-  sistema se ingresa sin puntos ni guion (ej. `19011022K`) y se valida su dígito
-  verificador.
-- **Dominios permitidos**: únicos dominios de correo electrónico aceptados por
-  cualquier campo de correo del sistema: `@duoc.cl`, `@profesor.duoc.cl` y
-  `@gmail.com`.
-- **Código de producto (SKU)**: identificador de texto único de cada producto en
-  el catálogo.
-- **Armado (build)**: conjunto de componentes seleccionados por el cliente
-  mediante el asistente de armado para configurar una PC gamer, completa o por
-  módulos.
-- **Módulo**: subconjunto de categorías de componentes (ej. solo almacenamiento,
-  solo refrigeración) que el cliente puede armar de forma independiente sin
-  construir el equipo completo.
-- **Componente**: cada pieza de hardware seleccionable dentro de un armado
-  (CPU, placa madre, RAM, almacenamiento, fuente de poder, gabinete,
-  refrigeración, tarjeta gráfica, periféricos).
-- **Tabla de compatibilidad**: estructura estática definida en los arreglos
-  JavaScript que asocia cada componente con los componentes admisibles de la
-  siguiente categoría (ej. socket de CPU → placas madre compatibles). Es el
-  único criterio de filtrado del asistente de armado en esta entrega.
-- **Carrito de compras**: estructura de datos en JavaScript que almacena los
-  productos seleccionados por el cliente antes de finalizar una compra.
-- **Orden**: registro simulado de una compra (cliente, fecha, productos y
-  total), almacenado en un arreglo JavaScript y disponible únicamente en modo
-  solo lectura en esta entrega.
-- **LocalStorage**: mecanismo de almacenamiento del navegador (Web Storage API)
-  usado para persistir el contenido del carrito entre sesiones.
+  formato "Como <rol>, quiero <acción> para <beneficio>".
+- **Criterio de aceptación**: condición verificable de un requisito; si describe
+  un flujo, en formato Dado / Cuando / Entonces.
+- **Prioridad**: importancia de un requisito en la sección 5: *Esencial*,
+  *Condicional* u *Opcional*, según qué fuente lo exija.
+- **RUN**: Rol Único Nacional, identificador de personas en Chile; se ingresa
+  sin puntos ni guion (ej. `19011022K`) y se valida su dígito verificador.
+- **Dominios permitidos**: únicos dominios de correo aceptados por cualquier
+  campo de correo del sistema: `@duoc.cl`, `@profesor.duoc.cl` y `@gmail.com`.
+- **Código de producto (SKU)**: identificador de texto único de cada producto
+  del catálogo.
+- **Armado (build)**: conjunto de componentes seleccionados con el asistente de
+  armado para configurar una PC gamer, completa o por módulos.
+- **Módulo**: subconjunto de categorías de componentes (ej. solo almacenamiento)
+  que el cliente puede armar sin construir el equipo completo.
+- **Componente**: cada pieza de hardware seleccionable dentro de un armado,
+  según las categorías que enumera RF-07.
+- **Tabla de compatibilidad**: estructura estática en los arreglos JS que asocia
+  cada componente con los admisibles de la siguiente categoría.
+- **Carrito de compras**: estructura de datos en JavaScript con los productos
+  seleccionados por el cliente antes de finalizar una compra.
+- **Orden**: registro simulado de una compra (cliente, fecha, productos y total)
+  en un arreglo JavaScript, disponible solo en modo lectura en esta entrega.
+- **LocalStorage**: almacenamiento del navegador (Web Storage API) usado para
+  persistir el contenido del carrito entre sesiones.
 - **Stock crítico**: cantidad mínima de unidades de un producto a partir de la
-  cual el sistema debe mostrar una alerta de bajo inventario.
-- **CRUD**: Crear, Leer (listar), Actualizar y Eliminar — operaciones básicas de
-  un mantenedor.
+  cual el sistema muestra una alerta de bajo inventario.
+- **CRUD**: Crear, Leer (listar), Actualizar y Eliminar.
 - **Mantenedor**: vista administrativa que implementa las operaciones CRUD de
-  una entidad (Producto o Usuario), con excepción de Eliminar, que queda fuera
-  del alcance de esta entrega (ver 2.6).
+  una entidad (Producto o Usuario), salvo Eliminar (ver 2.6).
 
 ## 1.4. Referencias
 
@@ -270,9 +208,8 @@ categoría, en la construcción de una PC gamer completa o por módulos.
 La estructura del `index.html` referencia archivos separados por sección
 (encabezado, navegación, aside, cuerpo, pie de página). El script
 `src/scripts/includes.js` resuelve los atributos `[data-include]` al producirse
-el evento `DOMContentLoaded` y solicita cada archivo mediante `fetch()`, por lo
-que el proyecto debe servirse a través de un servidor HTTP y no funciona abierto
-directamente desde el sistema de archivos (ver 3.1.4).
+el evento `DOMContentLoaded` y solicita cada archivo mediante `fetch()`, lo que
+obliga a servir el proyecto por HTTP (ver 3.1.4).
 
 ## 2.2. Funciones del Producto
 
@@ -333,8 +270,8 @@ El sistema contempla tres tipos de perfiles de usuario:
   GitHub, con commits claros y descriptivos.
 - Las vistas administrativas deben estar protegidas mediante un mecanismo de
   autenticación (aunque sea simulado del lado del cliente en esta entrega).
-- El sitio debe ejecutarse detrás de un servidor HTTP, dado que la composición
-  de las páginas mediante `fetch()` no opera bajo el esquema `file://`.
+- El sitio debe ejecutarse detrás de un servidor HTTP y no abrirse como archivo
+  local (ver 3.1.4).
 
 ## 2.5. Suposiciones y Dependencias
 
@@ -676,9 +613,8 @@ campo. El comportamiento de las validaciones se especifica en 3.3.2.
 El sistema debe funcionar correctamente en cualquier navegador web moderno
 (Chrome, Firefox, Edge) sin depender de un sistema operativo, compilador o
 plataforma de desarrollo específica, dado que utiliza únicamente HTML, CSS,
-JavaScript y Bootstrap. La única condición de ejecución es que el proyecto se
-sirva mediante un servidor HTTP y no se abra directamente desde el sistema de
-archivos (ver 3.1.4).
+JavaScript y Bootstrap. La única condición de ejecución es servirlo mediante un
+servidor HTTP (ver 3.1.4).
 
 ## 3.4 Otros Requisitos
 
@@ -688,9 +624,8 @@ archivos (ver 3.1.4).
   preguntas de la Entrega I.
 - El repositorio debe documentar cómo ejecutar el proyecto localmente
   (`python3 -m http.server 8000` y luego
-  `http://localhost:8000/src/pages/index.html`), dado que la composición de
-  páginas mediante `fetch()` convierte el uso de un servidor HTTP en un
-  prerrequisito y no en una comodidad.
+  `http://localhost:8000/src/pages/index.html`), que es un prerrequisito de
+  ejecución y no una comodidad (ver 3.1.4).
 - El proyecto es desarrollado de forma individual por un único estudiante,
   modalidad autorizada por el docente de la asignatura; en consecuencia, el
   historial del repositorio refleja el avance de un solo autor y no una
@@ -704,12 +639,13 @@ archivos (ver 3.1.4).
 Esta sección reúne, en un único lugar, la motivación y las condiciones de
 verificación de todos los requisitos del sistema. Cada historia de usuario se
 identifica con un código HU-xx que corresponde uno a uno con el requisito
-funcional RF-xx de la sección 3.2, cuya descripción detallada no se repite aquí.
-Los criterios de aceptación son las condiciones verificables que deben cumplirse
-para dar por satisfecho el requisito, y son la base con la que se completa la
-columna "Criterio de Aceptación" de la Planilla de Requerimientos (Anexos 2 y
-3). La sección 4.4 recoge los criterios de los requisitos no funcionales, que no
-se expresan como historias de usuario porque no describen la acción de un actor.
+funcional RF-xx de la sección 3.2, cuya descripción y actores no se repiten
+aquí. Los criterios de aceptación son las condiciones verificables que deben
+cumplirse para dar por satisfecho el requisito, y son la base con la que se
+completa la columna "Criterio de Aceptación" de la Planilla de Requerimientos
+(Anexos 2 y 3). La sección 4.4 recoge los criterios de los requisitos no
+funcionales, que no se expresan como historias de usuario porque no describen la
+acción de un actor.
 
 ## 4.1 Historias de acceso y autenticación
 
@@ -719,186 +655,143 @@ usuario.
 
 > **HU-01 (RF-01) — Registrar usuario**
 >
-> Actores: Cliente
->
 > Como **cliente**, quiero registrarme en la tienda para guardar mis datos
 > personales y de despacho, y no tener que escribirlos en cada compra.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el formulario de registro, cuando se envía con algún campo requerido
->    vacío (RUN, nombre, apellidos, correo, contraseña o dirección), entonces el
->    sistema impide el envío y muestra un mensaje de error junto a cada campo
->    faltante.
-> 2. Dado un RUN con puntos, con guion o con dígito verificador incorrecto (ej.
->    `19.011.022-3`), cuando el campo se valida, entonces se muestra el error
->    "RUN inválido" y el formulario no se envía.
-> 3. Dado un RUN válido sin puntos ni guion de entre 7 y 9 caracteres (ej.
->    `19011022K`), cuando el campo se valida, entonces se marca como correcto.
-> 4. Dado un correo cuyo dominio no está en los dominios permitidos (ej.
->    `juan@hotmail.com`), cuando el campo se valida, entonces se muestra un
->    error que indica los dominios aceptados y el formulario no se envía.
-> 5. Dada una contraseña de menos de 4 o más de 10 caracteres, cuando el campo
->    se valida, entonces se muestra el error correspondiente; el campo se
->    muestra enmascarado en todo momento.
-> 6. Dado el select de región, cuando se cambia la región seleccionada, entonces
->    el select de comuna se recarga únicamente con las comunas de esa región.
-> 7. Dados valores que superan los máximos definidos (nombre > 50, apellidos >
->    100, correo > 100 o dirección > 300 caracteres), cuando se intenta
->    ingresarlos, entonces el campo impide superar el límite o muestra el error
->    correspondiente.
-> 8. Dada la fecha de nacimiento sin completar, cuando se envía el formulario,
->    entonces el registro se acepta, ya que el campo es opcional.
-> 9. Dado un formulario completo y válido, cuando se envía, entonces el usuario
->    se agrega al arreglo de usuarios y se muestra un mensaje de confirmación.
-> 10. El select de tipo de usuario no se muestra en esta vista pública (solo
->     existe en RF-11).
+> 1. Cuando se envía con un campo requerido vacío (RUN, nombre, apellidos,
+>    correo, contraseña o dirección), el sistema impide el envío y marca cada
+>    campo faltante con su mensaje de error.
+> 2. El RUN se acepta sin puntos ni guion, con entre 7 y 9 caracteres y dígito
+>    verificador correcto (`19011022K`); uno con puntos, guion o dígito
+>    incorrecto (`19.011.022-3`) se rechaza con el error "RUN inválido" y el
+>    formulario no se envía.
+> 3. Un correo cuyo dominio no está entre los permitidos (`juan@hotmail.com`) se
+>    rechaza con un error que indica los dominios aceptados.
+> 4. Una contraseña de menos de 4 o más de 10 caracteres se rechaza con su
+>    error; el campo se muestra enmascarado en todo momento.
+> 5. Cuando se cambia la región seleccionada, el select de comuna se recarga
+>    únicamente con las comunas de esa región.
+> 6. Los valores que superan los máximos definidos (nombre > 50, apellidos >
+>    100, correo > 100, dirección > 300 caracteres) no pueden ingresarse o
+>    muestran el error correspondiente.
+> 7. Cuando se envía un formulario completo y válido, el usuario se agrega al
+>    arreglo de usuarios y se muestra un mensaje de confirmación.
 
 > **HU-02 (RF-02) — Iniciar sesión**
->
-> Actores: Cliente, Administrador logístico, Administrador
 >
 > Como **usuario registrado**, quiero iniciar sesión con mi correo y contraseña
 > para acceder a las funcionalidades que corresponden a mi rol.
 >
 > Criterios de aceptación:
 >
-> 1. Dado un correo y una contraseña que coinciden con un usuario del arreglo,
->    cuando se envía el formulario, entonces la sesión se inicia y se redirige
->    según el rol.
-> 2. Dado un usuario con rol Cliente, cuando inicia sesión, entonces se redirige
->    a la tienda pública; con rol Administrador, al home administrativo (RF-16);
->    con rol Administrador logístico, a la vista de productos y órdenes en solo
->    lectura (RF-12).
-> 3. Dado un correo con un dominio no permitido, cuando se valida, entonces se
->    muestra el error y no se envía el formulario.
-> 4. Dada una contraseña con menos de 4 o más de 10 caracteres, cuando se
->    valida, entonces se muestra el error y no se envía el formulario.
-> 5. Dadas credenciales que no coinciden con ningún usuario, cuando se envía,
->    entonces se muestra un mensaje genérico ("correo o contraseña incorrectos")
->    sin revelar cuál de los dos falló.
-> 6. El campo contraseña se muestra siempre enmascarado (ver 3.3.2).
+> 1. Cuando el correo y la contraseña coinciden con un usuario del arreglo, la
+>    sesión se inicia y se redirige según el rol.
+> 2. Iniciada la sesión, el rol Cliente llega a la tienda pública; el rol
+>    Administrador, al home administrativo (RF-16); el rol Administrador
+>    logístico, a productos y órdenes en solo lectura (RF-12).
+> 3. Un correo de dominio no permitido o una contraseña de menos de 4 o más de
+>    10 caracteres se rechazan con su error y el formulario no se envía.
+> 4. Unas credenciales que no coinciden con ningún usuario producen un mensaje
+>    genérico ("correo o contraseña incorrectos"), sin revelar cuál de los dos
+>    falló.
 
 > **HU-13 (RF-13) — Cerrar sesión**
->
-> Actores: Cliente, Administrador logístico, Administrador
 >
 > Como **usuario autenticado**, quiero cerrar mi sesión para que nadie más pueda
 > usar mi cuenta en un equipo compartido.
 >
 > Criterios de aceptación:
 >
-> 1. Dado un usuario autenticado, entonces la opción de cerrar sesión está
->    visible en todas las vistas a las que tiene acceso.
-> 2. Dado un usuario autenticado, cuando cierra sesión, entonces los datos de
->    sesión almacenados en el cliente se eliminan y se redirige a la tienda
->    pública.
-> 3. Dado un usuario que acaba de cerrar sesión, cuando intenta abrir una vista
->    administrativa por URL directa, entonces se le redirige al inicio de sesión
->    (ver 3.3.2).
+> 1. La opción de cerrar sesión está visible en todas las vistas a las que el
+>    usuario autenticado tiene acceso.
+> 2. Cuando el usuario cierra sesión, los datos de sesión almacenados en el
+>    cliente se eliminan y se redirige a la tienda pública.
+> 3. Tras cerrar sesión, intentar abrir una vista administrativa por URL directa
+>    redirige al inicio de sesión (ver 3.3.2).
 > 4. El contenido del carrito guardado en `localStorage` no se elimina al cerrar
 >    sesión, ya que en esta entrega el carrito se asocia al navegador y no al
 >    usuario.
 
 ## 4.2 Historias de la tienda
 
-Historias correspondientes a las vistas públicas del sitio.
-
 > **HU-03 (RF-03) — Visualizar catálogo de productos**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero ver el listado de productos disponibles con su
 > imagen, nombre y precio para identificar rápidamente lo que me interesa.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el arreglo de productos, cuando se carga la página de inicio o la de
->    productos, entonces se renderiza una tarjeta por producto con su imagen,
->    nombre y precio.
-> 2. Dado que se agrega un elemento al arreglo de productos, cuando se recarga
->    la página, entonces la nueva tarjeta aparece sin haber modificado el HTML,
->    lo que demuestra que el listado se genera dinámicamente.
+> 1. Al cargar la página de inicio o la de productos, se renderiza una tarjeta
+>    por cada producto del arreglo con su imagen, nombre y precio.
+> 2. Cuando se agrega un elemento al arreglo y se recarga la página, la nueva
+>    tarjeta aparece sin haber modificado el HTML, lo que demuestra que el
+>    listado se genera dinámicamente.
 > 3. Los precios se muestran formateados como moneda (pesos chilenos).
-> 4. Dado un arreglo de productos vacío, cuando se carga la vista, entonces se
->    muestra un mensaje de "no hay productos disponibles" en lugar de un área en
->    blanco.
-> 5. Dada la página de inicio, entonces presenta un componente principal con la
->    información y la imagen de la tienda, visible antes del listado de
->    productos.
+> 4. Con el arreglo de productos vacío, la vista muestra un mensaje de "no hay
+>    productos disponibles" en lugar de un área en blanco.
+> 5. La página de inicio presenta un componente principal con la información y
+>    la imagen de la tienda, visible antes del listado de productos.
 
 > **HU-04 (RF-04) — Ver detalle de producto**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero revisar el detalle de un producto para conocer sus
 > características antes de decidir la compra.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el listado de productos, cuando se hace clic sobre un producto,
->    entonces se navega a la vista de detalle de ese producto y no de otro.
-> 2. Dada la vista de detalle, entonces muestra imagen, nombre, precio,
->    descripción y categoría del producto seleccionado.
-> 3. Dada la vista de detalle, entonces incluye un botón "Añadir al carrito"
->    operativo (RF-05).
-> 4. Dado un código de producto que no existe en el arreglo, cuando se intenta
->    abrir su detalle, entonces se muestra un mensaje de producto no encontrado
->    en lugar de una vista vacía o un error de JavaScript.
-> 5. Dado un producto que define el campo `video`, cuando se abre su detalle,
->    entonces el video se muestra embebido en la vista y puede reproducirse sin
->    salir del sitio.
-> 6. Dado un producto que no define el campo `video`, cuando se abre su detalle,
->    entonces la vista se muestra completa y sin contenedores de video vacíos.
+> 1. Al hacer clic sobre un producto del listado se navega al detalle de ese
+>    producto y no de otro.
+> 2. El detalle muestra imagen, nombre, precio, descripción y categoría del
+>    producto seleccionado, e incluye un botón "Añadir al carrito" operativo
+>    (RF-05).
+> 3. Un código de producto que no existe en el arreglo produce un mensaje de
+>    producto no encontrado, en lugar de una vista vacía o un error de
+>    JavaScript.
+> 4. Dado un producto que define el campo `video`, su detalle lo muestra
+>    embebido y reproducible sin salir del sitio; si no lo define, la vista se
+>    muestra completa y sin contenedores vacíos.
+> 5. Los datos mostrados provienen del arreglo de productos, no del HTML de la
+>    vista.
 
 > **HU-05 (RF-05) — Agregar producto al carrito**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero añadir un producto al carrito desde el listado o
 > desde su detalle para no perder el hilo de mi navegación.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el listado de productos, cuando se pulsa el botón de añadir de un
->    producto, entonces el producto se agrega al carrito y el contador del menú
->    superior aumenta en uno.
-> 2. Dada la vista de detalle de producto, cuando se pulsa "Añadir al carrito",
->    entonces se obtiene el mismo resultado que desde el listado.
-> 3. Dado un producto que ya está en el carrito, cuando se vuelve a añadir,
->    entonces se incrementa su cantidad en lugar de crear una segunda línea para
->    el mismo producto.
-> 4. Cuando se añade un producto, entonces se muestra una confirmación visual al
+> 1. Al pulsar el botón de añadir, tanto desde el listado como desde el detalle,
+>    el producto se agrega al carrito y el contador del menú superior aumenta en
+>    uno.
+> 2. Un producto que ya está en el carrito incrementa su cantidad en lugar de
+>    crear una segunda línea para el mismo producto.
+> 3. Cada vez que se añade un producto se muestra una confirmación visual al
 >    cliente.
-> 5. Cuando se añade un producto, entonces el contenido del carrito se guarda de
->    inmediato en `localStorage`.
+> 4. El contenido del carrito se guarda en `localStorage` de inmediato al
+>    añadir.
 
 > **HU-06 (RF-06) — Gestionar carrito de compras**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero revisar y ajustar el contenido de mi carrito para
 > controlar qué voy a comprar y cuánto voy a gastar.
 >
 > Criterios de aceptación:
 >
-> 1. Dada la vista del carrito con productos, entonces cada línea muestra
->    imagen, nombre, precio unitario, cantidad y subtotal.
-> 2. Dado un ítem del carrito, cuando se elimina, entonces desaparece del
->    listado y el total se recalcula sin recargar la página.
-> 3. Dado un ítem del carrito, cuando se modifica su cantidad, entonces su
->    subtotal y el total se recalculan; no se permite una cantidad menor que 1.
-> 4. El total mostrado corresponde exactamente a la suma de precio unitario por
->    cantidad de todas las líneas del carrito.
-> 5. Dado un carrito con productos, cuando se recarga la página o se cierra y
->    reabre el navegador, entonces el carrito conserva su contenido
->    (persistencia en `localStorage`).
-> 6. Dado un carrito vacío, entonces se muestra un mensaje indicándolo y el
->    total es 0.
+> 1. Cada línea del carrito muestra imagen, nombre, precio unitario, cantidad y
+>    subtotal.
+> 2. Al eliminar un ítem, este desaparece del listado y el total se recalcula
+>    sin recargar la página.
+> 3. Al modificar la cantidad de un ítem se recalculan su subtotal y el total,
+>    que corresponde exactamente a la suma de precio unitario por cantidad de
+>    todas las líneas; no se permite una cantidad menor que 1.
+> 4. Dado un carrito con productos, al recargar la página o cerrar y reabrir el
+>    navegador el carrito conserva su contenido (persistencia en
+>    `localStorage`).
+> 5. Con el carrito vacío se muestra un mensaje indicándolo y el total es 0.
 
 > **HU-07 (RF-07) — Armar PC gamer por componentes**
->
-> Actores: Cliente
 >
 > Como **cliente sin conocimientos técnicos**, quiero que el sitio me guíe
 > categoría por categoría al elegir los componentes de mi PC gamer para no
@@ -906,202 +799,158 @@ Historias correspondientes a las vistas públicas del sitio.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el asistente de armado, entonces presenta las categorías en un orden
->    definido y una categoría a la vez.
-> 2. Dado un componente seleccionado, cuando se avanza a la siguiente categoría,
->    entonces solo se listan las opciones asociadas a ese componente en la tabla
->    de compatibilidad.
-> 3. Dado un CPU de un socket determinado, cuando se avanza a la categoría de
->    placa madre, entonces no se ofrecen placas madre asociadas a otro socket en
->    la tabla.
-> 4. Dado un armado parcial (modo módulos), cuando el cliente decide finalizar
->    sin recorrer todas las categorías, entonces el sistema lo permite y agrega
->    al carrito únicamente los componentes seleccionados.
-> 5. Dado un armado que recorre todas las categorías (equipo completo), cuando
->    se finaliza, entonces se agrega al carrito el conjunto completo.
-> 6. Dado un armado agregado al carrito, entonces se identifica como un
->    conjunto, muestra el detalle de sus componentes y su precio corresponde a
->    la suma de ellos.
+> 1. El asistente presenta las categorías en un orden definido y una categoría a
+>    la vez.
+> 2. Seleccionado un componente, la siguiente categoría lista solo las opciones
+>    asociadas a él en la tabla de compatibilidad.
+> 3. Dado un CPU de un socket determinado, la categoría de placa madre no ofrece
+>    placas asociadas a otro socket en la tabla.
+> 4. En modo módulos, finalizar sin recorrer todas las categorías está permitido
+>    y agrega al carrito únicamente los componentes seleccionados.
+> 5. Recorridas todas las categorías (equipo completo), al finalizar se agrega
+>    al carrito el conjunto completo.
+> 6. Un armado agregado al carrito se identifica como un conjunto, muestra el
+>    detalle de sus componentes y su precio corresponde a la suma de ellos.
 > 7. El sistema no emite ningún juicio de compatibilidad técnica real: si la
 >    tabla asocia dos componentes, la combinación se acepta (ver 1.2 y 2.6).
 
 > **HU-08 (RF-08) — Enviar mensaje de contacto**
->
-> Actores: Cliente
 >
 > Como **visitante**, quiero enviar un mensaje a la empresa para resolver dudas
 > antes de comprar.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el formulario de contacto, cuando se envía con nombre, correo o
->    comentario vacíos, entonces se impide el envío y se muestra el error en
->    cada campo faltante.
-> 2. Dado un correo con un dominio no permitido, cuando se valida, entonces se
->    muestra el error indicando los dominios aceptados.
-> 3. Dados un nombre de más de 100 caracteres o un comentario de más de 500,
->    cuando se intenta ingresarlos, entonces el campo impide superar el límite o
->    muestra el error.
-> 4. Las validaciones se ejecutan en tiempo real, antes de pulsar el botón de
->    envío (ver 3.3.2).
-> 5. Dado un formulario válido, cuando se envía, entonces se muestra un mensaje
->    de éxito y los campos quedan limpios.
+> 1. Cuando se envía con el nombre, el correo o el comentario vacíos, se impide
+>    el envío y se muestra el error en cada campo faltante.
+> 2. Un correo de dominio no permitido se rechaza con un error que indica los
+>    dominios aceptados.
+> 3. Un nombre de más de 100 caracteres o un comentario de más de 500 no pueden
+>    ingresarse o muestran el error correspondiente.
+> 4. Cuando se envía un formulario válido, se muestra un mensaje de éxito y los
+>    campos quedan limpios.
 
 > **HU-09 (RF-09) — Consultar blogs**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero leer los artículos del blog de la tienda para
 > informarme sobre tecnología y novedades.
 >
 > Criterios de aceptación:
 >
-> 1. Dada la vista de blogs, entonces muestra un listado de artículos y cada uno
->    presenta imagen, título y descripción corta.
-> 2. Dado un artículo del listado, cuando se hace clic en él, entonces se abre
->    su detalle con imagen, título y descripción larga.
+> 1. La vista de blogs muestra un listado de artículos, cada uno con imagen,
+>    título y descripción corta.
+> 2. Al hacer clic en un artículo se abre su detalle con imagen, título y
+>    descripción larga.
 > 3. Existen al menos dos artículos con detalle navegable.
 
 > **HU-14 (RF-14) — Navegar el sitio**
->
-> Actores: Cliente
 >
 > Como **cliente**, quiero un menú de navegación siempre visible con acceso al
 > carrito para moverme por el sitio y saber cuántos ítems llevo.
 >
 > Criterios de aceptación:
 >
-> 1. Dada cualquier vista pública, entonces muestra el menú superior con el logo
->    y los enlaces a Inicio, Productos, Blogs, Nosotros y Contacto.
-> 2. Dado el menú superior, cuando se pulsa un enlace, entonces se navega a la
->    vista correspondiente.
-> 3. Dado el acceso al carrito del menú, entonces muestra la cantidad de ítems
->    que contiene y se actualiza al agregar o eliminar productos.
-> 4. Dado el logo de la tienda, cuando se pulsa, entonces se navega a la página
->    de inicio.
-> 5. Dado un viewport de ancho menor a 768 px, entonces el menú colapsa en un
->    botón desplegable y todos sus enlaces siguen siendo accesibles (ver 3.1.2).
-> 6. Dada cualquier vista pública, entonces muestra un pie de página con el
->    nombre de la tienda, los enlaces de navegación principales, los datos de
->    contacto y el año.
-> 7. Dado que se modifica el archivo del pie de página, entonces el cambio se
->    refleja en todas las vistas, porque todas lo incluyen desde ese mismo
->    archivo.
+> 1. Toda vista pública muestra el menú superior con el logo y los enlaces a
+>    Inicio, Productos, Blogs, Nosotros y Contacto; cada enlace navega a su
+>    vista y el logo, a la página de inicio.
+> 2. El acceso al carrito del menú muestra la cantidad de ítems y se actualiza
+>    al agregar o eliminar productos.
+> 3. Con un viewport de ancho menor a 768 px el menú colapsa en un botón
+>    desplegable y todos sus enlaces siguen siendo accesibles (ver 3.1.2).
+> 4. Toda vista pública muestra un pie de página con el nombre de la tienda, los
+>    enlaces de navegación principales, los datos de contacto y el año.
+> 5. Al modificar el archivo del pie de página el cambio se refleja en todas las
+>    vistas, porque todas lo incluyen desde ese mismo archivo.
 
 > **HU-15 (RF-15) — Consultar información de la empresa**
->
-> Actores: Cliente
 >
 > Como **visitante**, quiero conocer quién está detrás de la tienda para decidir
 > si le compro con confianza.
 >
 > Criterios de aceptación:
 >
-> 1. Dada la vista "Nosotros", entonces es accesible desde el menú superior de
->    cualquier vista pública.
-> 2. Dada la vista "Nosotros", entonces contiene una descripción de la empresa y
->    la presentación de sus desarrolladores.
-> 3. La vista reutiliza el mismo encabezado, navegación y pie de página que el
->    resto del sitio, y utiliza etiquetado HTML semántico.
+> 1. La vista "Nosotros" es accesible desde el menú superior de cualquier vista
+>    pública y contiene una descripción de la empresa y la presentación de sus
+>    desarrolladores.
+> 2. La vista reutiliza el mismo encabezado, navegación y pie de página que el
+>    resto del sitio.
 
 ## 4.3 Historias de administración
 
-Historias correspondientes a las vistas protegidas del panel administrativo.
-
 > **HU-10 (RF-10) — Mantenedor de Productos**
->
-> Actores: Administrador
 >
 > Como **administrador**, quiero mantener el catálogo de productos para que la
 > información que ve el cliente esté correcta y actualizada.
 >
 > Criterios de aceptación:
 >
-> 1. Dada la vista de listado, entonces muestra todos los productos del arreglo
->    con las acciones de crear y editar disponibles.
-> 2. Dado un código de producto de menos de 3 caracteres, cuando se valida,
->    entonces se muestra el error y no se guarda.
-> 3. Dado un precio negativo, cuando se valida, entonces se muestra el error; un
->    precio 0 se acepta y se interpreta como producto gratuito; se aceptan
->    valores decimales.
-> 4. Dado un stock negativo o con decimales, cuando se valida, entonces se
->    muestra el error, ya que solo se admiten enteros mayores o iguales a 0.
-> 5. Dado un stock crítico sin completar, cuando se guarda, entonces el producto
->    se acepta por ser un campo opcional.
-> 6. Dado un producto cuyo stock es igual o inferior a su stock crítico, cuando
->    se lista, entonces se muestra una alerta visible de bajo inventario.
-> 7. Dada una categoría sin seleccionar, cuando se envía el formulario, entonces
->    se muestra el error, ya que el campo es requerido.
-> 8. Dado un formulario válido, cuando se crea un producto, entonces aparece en
->    el listado; cuando se edita uno existente, entonces los cambios se reflejan
->    en el listado.
-> 9. La vista no ofrece la acción Eliminar, que queda fuera del alcance de esta
+> 1. La vista de listado muestra todos los productos del arreglo con las
+>    acciones de crear y editar disponibles.
+> 2. Se rechazan con su error un código de menos de 3 caracteres, un precio
+>    negativo y un stock negativo o con decimales; el precio admite decimales y
+>    un precio 0 se acepta como producto gratuito.
+> 3. Una categoría sin seleccionar impide el envío del formulario, por ser un
+>    campo requerido.
+> 4. Un producto cuyo stock es igual o inferior a su stock crítico muestra una
+>    alerta visible de bajo inventario en el listado.
+> 5. Cuando se guarda una URL en el campo video, el valor se conserva y el
+>    detalle del producto lo muestra embebido; dejarlo vacío no impide guardar.
+> 6. Al crear un producto con un formulario válido, este aparece en el listado;
+>    al editar uno existente, los cambios se reflejan en él.
+> 7. La vista no ofrece la acción Eliminar, que queda fuera del alcance de esta
 >    entrega (ver 1.3 y 2.6).
-> 10. Dado el formulario de producto, cuando se guarda indicando una URL en el
->     campo video, entonces el valor se conserva y el detalle del producto lo
->     muestra embebido; dejarlo vacío no impide guardar.
 
 > **HU-11 (RF-11) — Mantenedor de Usuarios**
->
-> Actores: Administrador
 >
 > Como **administrador**, quiero mantener los usuarios del sistema y asignarles
 > su rol para controlar quién accede a cada funcionalidad.
 >
 > Criterios de aceptación:
 >
-> 1. Dada la vista de listado, entonces muestra todos los usuarios del arreglo
->    con las acciones de crear y editar disponibles.
-> 2. Dado el formulario de crear o editar usuario, entonces aplica las mismas
->    validaciones de RF-01, incluidas las de RUN y contraseña.
-> 3. Dado el select de tipo de usuario, entonces ofrece exactamente las opciones
->    Administrador, Cliente y Administrador logístico.
-> 4. Dado un usuario creado con un rol determinado, cuando ese usuario inicia
->    sesión, entonces accede únicamente a lo que su rol permite (RF-02, RF-12).
-> 5. Dado un formulario válido, cuando se crea un usuario, entonces aparece en
->    el listado; cuando se edita uno existente, entonces los cambios se reflejan
->    en el listado.
+> 1. La vista de listado muestra todos los usuarios del arreglo con las acciones
+>    de crear y editar disponibles.
+> 2. El formulario de crear o editar usuario aplica las mismas validaciones de
+>    RF-01, incluidas las de RUN y contraseña.
+> 3. El select de tipo de usuario ofrece exactamente las opciones Administrador,
+>    Cliente y Administrador logístico, y no aparece en el registro público
+>    (RF-01).
+> 4. Creado un usuario con un rol determinado, al iniciar sesión accede
+>    únicamente a lo que su rol permite (RF-02, RF-12).
+> 5. Al crear un usuario con un formulario válido, este aparece en el listado;
+>    al editar uno existente, los cambios se reflejan en él.
 > 6. La vista no ofrece la acción Eliminar, que queda fuera del alcance de esta
 >    entrega (ver 1.3 y 2.6).
 
 > **HU-12 (RF-12) — Visualizar productos y órdenes (rol Administrador
 > logístico)**
 >
-> Actores: Administrador logístico
->
 > Como **administrador logístico**, quiero consultar productos y órdenes en modo
 > lectura para preparar los despachos sin riesgo de alterar datos.
 >
 > Criterios de aceptación:
 >
-> 1. Dado un usuario autenticado con rol Administrador logístico, entonces el
->    menú administrativo muestra únicamente las opciones de Productos y Órdenes.
-> 2. Dado ese mismo rol, cuando se intenta abrir por URL directa un mantenedor
->    de creación o edición, entonces el acceso se deniega y no se renderiza la
->    vista.
-> 3. Dado el listado de productos, entonces se muestra en modo lectura, sin
->    botones de crear, editar ni eliminar.
-> 4. Dado el listado de órdenes, entonces cada orden muestra cliente, fecha,
->    productos y total, y su detalle también se presenta en modo lectura.
+> 1. Dado un usuario autenticado con rol Administrador logístico, el menú
+>    administrativo muestra únicamente las opciones de Productos y Órdenes.
+> 2. Dado ese mismo rol, abrir por URL directa un mantenedor de creación o
+>    edición deniega el acceso y no renderiza la vista.
+> 3. El listado de productos se muestra en modo lectura, sin botones de crear,
+>    editar ni eliminar.
+> 4. Cada orden del listado muestra cliente, fecha, productos y total, y su
+>    detalle también se presenta en modo lectura.
 
 > **HU-16 (RF-16) — Acceder al home administrativo**
->
-> Actores: Administrador
 >
 > Como **administrador**, quiero un panel de inicio con un menú visible para
 > llegar de forma directa a los mantenedores del sistema.
 >
 > Criterios de aceptación:
 >
-> 1. Dado un usuario con rol Administrador, cuando inicia sesión correctamente,
->    entonces se le dirige al home administrativo.
-> 2. Dado el home administrativo, entonces presenta un menú vertical visible con
->    enlaces a los mantenedores de Productos y Usuarios.
-> 3. Dado el menú vertical, cuando se pulsa una de sus opciones, entonces se
->    abre el mantenedor correspondiente (RF-10 o RF-11).
-> 4. Dado un visitante sin sesión iniciada, cuando intenta abrir el home
->    administrativo por URL directa, entonces se le redirige al inicio de sesión
->    (ver 3.3.2).
+> 1. Dado un usuario con rol Administrador, iniciar sesión correctamente lo
+>    dirige al home administrativo.
+> 2. El home administrativo presenta un menú vertical visible cuyas opciones
+>    abren los mantenedores de Productos y Usuarios (RF-10 o RF-11).
+> 3. Dado un visitante sin sesión iniciada, abrir el home administrativo por URL
+>    directa lo redirige al inicio de sesión (ver 3.3.2).
 
 ## 4.4 Criterios de aceptación de los requisitos no funcionales
 
@@ -1113,175 +962,142 @@ conservan su numeración original y no llevan código en sus títulos.
 >
 > Criterios de aceptación:
 >
-> 1. Dado el sitio servido por HTTP en una conexión de banda ancha estándar,
->    cuando se abre cualquier vista, entonces termina de cargar en menos de 2
->    segundos, medido en la pestaña de red del navegador con la caché
->    deshabilitada.
-> 2. Dada la carga de cualquier vista, entonces las únicas peticiones
->    registradas corresponden a recursos del mismo origen (HTML de secciones,
->    CSS, JS e imágenes); no se observan llamadas a servicios externos.
-> 3. Dada la composición de secciones mediante `fetch()`, entonces se completa
->    antes de que el usuario pueda interactuar, sin dejar contenedores vacíos de
->    forma permanente.
+> 1. Servido por HTTP en una conexión de banda ancha estándar, cualquier vista
+>    termina de cargar en menos de 2 segundos, medido en la pestaña de red del
+>    navegador con la caché deshabilitada.
+> 2. Al cargar cualquier vista, las únicas peticiones registradas son de
+>    recursos del mismo origen (HTML de secciones, CSS, JS e imágenes); no se
+>    observan llamadas a servicios externos.
+> 3. La composición de secciones mediante `fetch()` se completa antes de que el
+>    usuario pueda interactuar, sin dejar contenedores vacíos de forma
+>    permanente.
 
 > **RNF-02 (3.3.2 Seguridad)**
 >
 > Criterios de aceptación:
 >
-> 1. Dado un usuario sin sesión iniciada, cuando intenta abrir una vista
->    administrativa por URL directa, entonces se le redirige al inicio de
->    sesión.
-> 2. Dado un usuario autenticado con rol Cliente, cuando intenta abrir una vista
->    administrativa por URL directa, entonces el acceso se deniega.
-> 3. Dado un usuario autenticado con rol Administrador logístico, cuando se
->    renderiza el menú administrativo, entonces solo contiene Productos y
->    Órdenes, y las demás opciones no están presentes en el DOM (no basta con
->    ocultarlas por CSS).
-> 4. Dado cualquier campo de contraseña del sistema (inicio de sesión, registro
->    y mantenedor de Usuarios), entonces tiene el atributo `type="password"`,
->    verificable inspeccionando el DOM.
-> 5. Dado cualquier formulario del sistema, cuando se ingresa un valor inválido,
->    entonces el mensaje de error se muestra antes de pulsar el botón de envío.
-> 6. Dado un usuario que ha cerrado sesión (RF-13), cuando intenta volver a una
->    vista administrativa, entonces se le redirige nuevamente al inicio de
->    sesión.
+> 1. Intentar abrir una vista administrativa por URL directa redirige al inicio
+>    de sesión sin sesión iniciada, y deniega el acceso con rol Cliente o tras
+>    haber cerrado sesión (RF-13).
+> 2. Dado un usuario autenticado con rol Administrador logístico, el menú
+>    administrativo solo contiene Productos y Órdenes: las demás opciones no
+>    están presentes en el DOM, no basta con ocultarlas por CSS.
+> 3. Todo campo de contraseña del sistema (inicio de sesión, registro y
+>    mantenedor de Usuarios) tiene el atributo `type="password"`, verificable
+>    inspeccionando el DOM.
+> 4. En cualquier formulario, un valor inválido muestra su mensaje de error
+>    antes de pulsar el botón de envío.
 
 > **RNF-03 (3.3.3 Fiabilidad)**
 >
 > Criterios de aceptación:
 >
-> 1. Dada la navegación por todas las vistas del sitio, entonces la consola del
->    navegador no registra errores de JavaScript.
-> 2. Dado un archivo de sección que no se puede cargar, entonces el error se
->    registra en la consola y el resto de la página permanece utilizable, según
->    el manejo de errores implementado en `src/scripts/includes.js`.
-> 3. Dado un error de validación en cualquier formulario, entonces se comunica
->    junto al campo afectado y la navegación del sitio sigue disponible.
-> 4. Dado un contenido inválido o corrupto en `localStorage`, cuando se carga el
->    carrito, entonces el sistema lo inicializa vacío en lugar de interrumpir la
->    ejecución.
+> 1. Navegando por todas las vistas del sitio, la consola del navegador no
+>    registra errores de JavaScript.
+> 2. Un archivo de sección que no se puede cargar deja el error en la consola y
+>    el resto de la página utilizable, según el manejo de errores implementado
+>    en `src/scripts/includes.js`.
+> 3. Un error de validación se comunica junto al campo afectado y la navegación
+>    del sitio sigue disponible.
+> 4. Un contenido inválido o corrupto en `localStorage` hace que el carrito se
+>    inicialice vacío, en lugar de interrumpir la ejecución.
 
 > **RNF-04 (3.3.4 Disponibilidad)**
 >
 > Criterios de aceptación:
 >
-> 1. Dado el sitio publicado en el servicio de hosting o repositorio elegido,
->    entonces es accesible mediante su URL pública sin requerir credenciales.
-> 2. Dado el sitio en ejecución, entonces no realiza llamadas a servicios
->    propios, por lo que su disponibilidad corresponde a la del hosting
->    utilizado.
-> 3. Dado el proyecto recién clonado desde el repositorio, entonces puede
->    ejecutarse localmente únicamente con un servidor HTTP, sin pasos de
->    compilación ni instalación de dependencias.
+> 1. Publicado en el servicio de hosting o repositorio elegido, el sitio es
+>    accesible mediante su URL pública sin requerir credenciales.
+> 2. En ejecución, el sitio no realiza llamadas a servicios propios, por lo que
+>    su disponibilidad corresponde a la del hosting utilizado.
 
 > **RNF-05 (3.3.5 Mantenibilidad)**
 >
 > Criterios de aceptación:
 >
-> 1. Dada la estructura del proyecto, entonces cada sección de la página
->    (encabezado, navegación, aside, cuerpo y pie) reside en su propio archivo
->    dentro de `src/pages/` y se referencia desde `index.html` mediante el
->    atributo `data-include`.
-> 2. Dado el proyecto completo, entonces existe una única hoja de estilos propia
->    y externa (`src/styles/style.css`), y ninguna vista define estilos mediante
->    atributos `style` ni bloques `<style>`.
-> 3. Dado que se agrega un elemento al arreglo de productos, cuando se recarga
->    el catálogo, entonces el producto aparece sin haber modificado el HTML ni
->    el CSS.
-> 4. Dado que se modifica una sección compartida (por ejemplo el pie de página),
->    entonces el cambio se refleja en todas las vistas habiendo editado un solo
->    archivo.
-> 5. Dada cualquier vista, cuando se inspecciona su marcado, entonces la
->    estructura se expresa con `<header>`, `<nav>`, `<main>`,
->    `<section>`/`<article>` y `<footer>`, y no con contenedores `<div>`
->    genéricos en su lugar.
-> 6. Dado cualquier formulario del sitio, entonces cada control tiene una
->    etiqueta `<label>` asociada mediante un atributo `for` que coincide con el
->    `id` del campo.
-> 7. Dado cualquier formulario del sitio, entonces sus campos declaran el
->    atributo `autocomplete` con el valor que corresponde al dato solicitado.
+> 1. Cada sección de la página (encabezado, navegación, aside, cuerpo y pie)
+>    reside en su propio archivo dentro de `src/pages/` y se referencia desde
+>    `index.html` mediante el atributo `data-include`.
+> 2. Existe una única hoja de estilos propia y externa (`src/styles/style.css`),
+>    y ninguna vista define estilos mediante atributos `style` ni bloques
+>    `<style>`.
+> 3. Al modificar una sección compartida (por ejemplo el pie de página), el
+>    cambio se refleja en todas las vistas habiendo editado un solo archivo.
+> 4. Inspeccionando el marcado de cualquier vista, la estructura se expresa con
+>    `<header>`, `<nav>`, `<main>`, `<section>`/`<article>` y `<footer>`, y no
+>    con contenedores `<div>` genéricos en su lugar.
+> 5. Cada control de formulario tiene una etiqueta `<label>` asociada mediante
+>    un atributo `for` que coincide con el `id` del campo.
+> 6. Los campos de formulario declaran el atributo `autocomplete` con el valor
+>    que corresponde al dato solicitado.
 
 > **RNF-06 (3.3.6 Portabilidad)**
 >
 > Criterios de aceptación:
 >
-> 1. Dado el sitio servido por HTTP, entonces se visualiza y opera correctamente
->    en las versiones actuales de Chrome, Firefox y Edge.
-> 2. Dado el proyecto, entonces no requiere compilación, instalación de
->    dependencias ni configuración específica del sistema operativo para
->    ejecutarse.
-> 3. Dado el sitio abierto con el esquema `file://`, entonces las secciones no
->    se cargan; la única forma de ejecución soportada es detrás de un servidor
->    HTTP (ver 3.1.4).
-> 4. Dado cualquier viewport de escritorio, tablet o móvil, entonces el diseño
->    se adapta sin producir desplazamiento horizontal (ver 3.1.2).
+> 1. Servido por HTTP, el sitio se visualiza y opera correctamente en las
+>    versiones actuales de Chrome, Firefox y Edge; abierto con el esquema
+>    `file://` las secciones no se cargan (ver 3.1.4).
+> 2. El proyecto no requiere compilación, instalación de dependencias ni
+>    configuración específica del sistema operativo para ejecutarse.
+> 3. En cualquier viewport de escritorio, tablet o móvil el diseño se adapta sin
+>    producir desplazamiento horizontal (ver 3.1.2).
 
 > **RNF-07 (3.4 Otros Requisitos)**
 >
 > Criterios de aceptación:
 >
-> 1. Dado el proyecto publicado, entonces su repositorio Git/GitHub es público y
->    accesible mediante su URL sin requerir credenciales.
-> 2. Dado el historial del repositorio, entonces los commits documentan el
->    avance del desarrollo con mensajes claros y coherentes, verificables en la
->    ronda de preguntas de la Entrega I.
-> 3. Dado el repositorio, entonces documenta cómo ejecutar el proyecto
->    localmente (`python3 -m http.server 8000` y luego
->    `http://localhost:8000/src/pages/index.html`).
-> 4. Dado el proyecto comprimido que se entrega, entonces su contenido
->    corresponde al mismo estado publicado en el repositorio público.
-> 5. Dado este documento, entonces declara la modalidad individual de desarrollo
->    autorizada por el docente, de modo que el historial de un solo autor es
->    verificable como tal.
+> 1. El repositorio Git/GitHub del proyecto es público y accesible mediante su
+>    URL sin requerir credenciales.
+> 2. Los commits documentan el avance del desarrollo con mensajes claros y
+>    coherentes, verificables en la ronda de preguntas de la Entrega I.
+> 3. El repositorio documenta cómo ejecutar el proyecto localmente (`python3 -m
+>    http.server 8000` y luego `http://localhost:8000/src/pages/index.html`).
+> 4. El proyecto comprimido que se entrega corresponde al mismo estado publicado
+>    en el repositorio público.
+> 5. Este documento declara la modalidad individual de desarrollo autorizada por
+>    el docente, de modo que el historial de un solo autor es verificable como
+>    tal.
 
 # 5. Trazabilidad de requisitos
 
 La siguiente tabla relaciona cada requisito con su historia de usuario,
 clasificación, prioridad, origen, actores y la vista o alcance donde se
 implementa, replicando las columnas de la Planilla de Requerimientos (Anexos 2 y
-3). Se omite la columna "Tipo" porque queda implícita en "Clasificación", cuyo
-valor comienza siempre por Funcional o No funcional. La columna "Crit." indica
-la cantidad de criterios de aceptación definidos; la descripción de cada
-requisito está en su ficha (secciones 3.2, 3.3 y 3.4) y sus criterios completos
-en la sección 4.
-
-La columna "Prioridad" clasifica los requisitos por importancia, según los
-niveles definidos en 1.3, tal como pide el principio de requisitos clasificados
-del Anexo 4. En esta revisión ningún requisito es Opcional: todos son exigidos
-por al menos una de las fuentes del documento. La columna "Origen" registra esa
-procedencia, dando trazabilidad hacia atrás de cada requisito.
+3); se omite "Tipo" porque queda implícita en "Clasificación". "Crit." indica la
+cantidad de criterios de aceptación, detallados en la sección 4. "Prioridad"
+clasifica los requisitos por importancia, como pide el principio de requisitos
+clasificados del Anexo 4, con los niveles definidos en 1.3: en esta revisión
+ninguno es Opcional, porque todos son exigidos por al menos una fuente, y
+"Origen" registra cuál, dando trazabilidad hacia atrás.
 
 | Código | HU    | Clasificación                   | Prioridad   | Origen | Actores                                | Vista / alcance               | Crit. | Estado     |
 |--------|-------|---------------------------------|-------------|--------|----------------------------------------|-------------------------------|-------|------------|
-| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 10    | Solicitado |
-| RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 6     | Solicitado |
+| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 7     | Solicitado |
+| RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 4     | Solicitado |
 | RF-03  | HU-03 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Inicio / Productos            | 5     | Solicitado |
-| RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | 6     | Solicitado |
-| RF-05  | HU-05 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Productos / Detalle           | 5     | Solicitado |
-| RF-06  | HU-06 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Carrito de compras            | 6     | Solicitado |
+| RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | 5     | Solicitado |
+| RF-05  | HU-05 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Productos / Detalle           | 4     | Solicitado |
+| RF-06  | HU-06 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Carrito de compras            | 5     | Solicitado |
 | RF-07  | HU-07 | Funcional de sistema            | Esencial    | P      | Cliente                                | Asistente de armado           | 7     | Solicitado |
-| RF-08  | HU-08 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Contacto                      | 5     | Solicitado |
+| RF-08  | HU-08 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Contacto                      | 4     | Solicitado |
 | RF-09  | HU-09 | Funcional de usuario            | Condicional | A1     | Cliente                                | Blogs / Detalle de blog       | 3     | Solicitado |
-| RF-10  | HU-10 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Productos              | 10    | Solicitado |
+| RF-10  | HU-10 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Productos              | 7     | Solicitado |
 | RF-11  | HU-11 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Usuarios               | 6     | Solicitado |
 | RF-12  | HU-12 | Funcional de sistema            | Condicional | A1     | Adm. logístico                         | Admin: Productos y Órdenes    | 4     | Solicitado |
 | RF-13  | HU-13 | Funcional de usuario            | Esencial    | P      | Cliente, Adm. logístico, Administrador | Transversal                   | 4     | Solicitado |
-| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 7     | Solicitado |
-| RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | 3     | Solicitado |
-| RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | 4     | Solicitado |
+| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 5     | Solicitado |
+| RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | 2     | Solicitado |
+| RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | 3     | Solicitado |
 | RNF-01 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.1 Rendimiento             | 3     | Solicitado |
-| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 6     | Solicitado |
+| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 4     | Solicitado |
 | RNF-03 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.3 Fiabilidad              | 4     | Solicitado |
-| RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | 3     | Solicitado |
-| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 7     | Solicitado |
-| RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | 4     | Solicitado |
+| RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | 2     | Solicitado |
+| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 6     | Solicitado |
+| RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | 3     | Solicitado |
 | RNF-07 | —     | No funcional de la Organización | Esencial    | A1+R   | Desarrollador                          | 3.4 Otros Requisitos          | 5     | Solicitado |
 
 Origen: **A1** = Anexo 1 (instrucciones del cliente) · **R** = pauta de la
 Evaluación Parcial N° 1 · **A4** = plantilla ERS del Anexo 4 · **P** = decisión
 del proyecto. Las combinaciones indican que el requisito proviene de la primera
 fuente y fue extendido por la segunda.
-
-El estado de todos los requisitos es "Solicitado": esta revisión del ERS define
-la propuesta y aún no existe implementación asociada. El estado se actualizará
-en las revisiones siguientes conforme avance el desarrollo.
