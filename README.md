@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 1.3**
+**Revisión: 1.4**
 
 **Autor:** Daniel Muñoz
 
@@ -101,6 +101,7 @@ funcionales](#44-criterios-de-aceptación-de-los-requisitos-no-funcionales)
 | 29-09-2026 | 1.1          | Daniel Muñoz | Corrección de inconsistencias y requisitos faltantes |
 | 29-09-2026 | 1.2          | Daniel Muñoz | Historias de usuario, criterios de aceptación y trazabilidad |
 | 29-09-2026 | 1.3          | Daniel Muñoz | Historias de usuario y criterios de aceptación en sección propia |
+| 29-09-2026 | 1.4          | Daniel Muñoz | Conformidad con Anexos 1 y 4 y con la pauta de Evaluación Parcial N° 1 |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -122,12 +123,14 @@ visión general del documento.
 El propósito de este documento es describir de forma detallada los requisitos
 funcionales y no funcionales del sitio web **Ensambla.me**, una tienda online de
 productos tecnológicos que además ofrece un asistente de armado guiado de PC
-gamer por componentes, en su primera versión (Entrega I de la Evaluación 1 de
-la asignatura DSY1104).
+gamer por componentes, en su primera versión (Entrega I de la Evaluación Parcial
+N° 1 de la asignatura Desarrollo Fullstack II, DSY1104).
 
 El documento está dirigido al docente evaluador de la asignatura, y sirve además
 como referencia interna para el desarrollador durante la construcción del sitio
-y en evaluaciones futuras del mismo proyecto.
+y en evaluaciones futuras del mismo proyecto. El proyecto se desarrolla de forma
+individual por un único estudiante, modalidad autorizada por el docente de la
+asignatura.
 
 ## 1.2. Ámbito del Sistema
 
@@ -174,6 +177,12 @@ datos y pasarela de pago.
 - **Criterio de aceptación**: condición verificable y objetiva que debe
   cumplirse para dar por satisfecho un requisito. Cuando describe un flujo se
   redacta en formato Dado / Cuando / Entonces.
+- **Prioridad**: clasificación de un requisito por importancia, usada en la
+  sección 5. *Esencial*: sin él no se cumple la Entrega I, porque el Anexo 1 lo
+  exige como vista o campo obligatorio, o porque lo evalúa un indicador de la
+  pauta de evaluación. *Condicional*: exigido por alguna de las fuentes, pero no
+  determinante para la entrega ni evaluado de forma directa. *Opcional*:
+  propuesta propia del proyecto que puede diferirse sin afectar la entrega.
 - **RUN**: Rol Único Nacional, identificador de personas en Chile. En este
   sistema se ingresa sin puntos ni guion (ej. `19011022K`) y se valida su dígito
   verificador.
@@ -219,6 +228,9 @@ datos y pasarela de pago.
 - Anexo 3 — Ejemplo de Planilla de Requerimientos.
 - Anexo 4 — Plantilla ERS - Especificación de Requisitos del Software (IEEE
   830), base de este documento.
+- Pauta de la Evaluación Parcial N° 1 — «Construyendo las bases para mi
+  aplicación web»: situaciones evaluativas, indicadores de evaluación (IE) y
+  ponderaciones de la asignatura Desarrollo Fullstack II (DSY1104).
 
 ## 1.5. Visión General del Documento
 
@@ -228,6 +240,13 @@ Requisitos Específicos), donde se detallan los requisitos funcionales mediante
 fichas y los requisitos no funcionales del sistema, una sección de historias de
 usuario y criterios de aceptación (sección 4) y una tabla de trazabilidad que
 relaciona todos los requisitos con sus historias, actores y vistas (sección 5).
+
+Las secciones 4 y 5 son adiciones a la plantilla del Anexo 4, que concluye en
+3.4; se incorporan para satisfacer los principios de requisitos verificables y
+trazables enunciados en su sección 3. Por la misma razón los requisitos se
+identifican con códigos estables RF-xx y RNF-xx en lugar de la numeración 3.2.n
+de la plantilla, conforme a la exigencia de que todo requisito sea unívocamente
+identificable mediante un código adecuado.
 
 # 2. Descripción General
 
@@ -420,6 +439,11 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > comuna se actualiza al cambiar la región) y dirección (requerida, máx. 300).
 > Estas son las mismas reglas usadas por el mantenedor "Crear usuario" del
 > administrador (RF-11).
+>
+> Nota: el Anexo 1 no incluye el campo contraseña en su lista de campos de
+> usuario, aunque sí lo exige en el inicio de sesión; se define como requerido
+> en el registro por decisión del proyecto, dado que sin él no es posible
+> autenticar al usuario.
 
 > **RF-02 — Iniciar sesión**
 >
@@ -437,7 +461,9 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 >
 > Descripción: El cliente debe poder ver, en la página de inicio y en la página
 > de productos, un listado de productos con imagen, nombre y precio, generado
-> dinámicamente desde un arreglo de JavaScript.
+> dinámicamente desde un arreglo de JavaScript. Además, la página de inicio debe
+> presentar un componente principal que muestre la información e imagen de la
+> tienda, por sobre el listado de productos.
 
 > **RF-04 — Ver detalle de producto**
 >
@@ -445,7 +471,10 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 >
 > Descripción: Al hacer clic sobre un producto del listado, el cliente debe ser
 > redirigido a una vista de detalle del producto, donde puede añadirlo al
-> carrito de compras.
+> carrito de compras. La vista de detalle debe mostrar además un video embebido
+> del producto cuando este define uno en el campo opcional `video` del arreglo
+> de productos (ver RF-10); si el producto no define video, la vista no debe
+> dejar un contenedor vacío en su lugar.
 
 > **RF-05 — Agregar producto al carrito**
 >
@@ -514,8 +543,13 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > valor 0 se considera un producto gratuito—, sin límite superior, admite
 > decimales), stock (requerido, mín. 0, sin límite superior, solo enteros),
 > stock crítico (opcional, mín. 0, solo enteros, muestra alerta cuando el stock
-> sea igual o inferior a este valor), categoría (requerida, mediante select) e
-> imagen (opcional).
+> sea igual o inferior a este valor), categoría (requerida, mediante select),
+> imagen (opcional) y video (opcional, URL de un video embebido que se muestra
+> en el detalle del producto, ver RF-04).
+>
+> Nota: el campo video no figura en la lista de campos de producto del Anexo 1;
+> se agrega por decisión del proyecto para dar soporte mantenible al video
+> embebido que exige el indicador IE1.1.1 de la pauta de evaluación.
 
 > **RF-11 — Mantenedor de Usuarios**
 >
@@ -526,6 +560,10 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > RF-01 (incluidos RUN y contraseña), más un campo adicional de tipo de usuario
 > (select: Administrador, Cliente o Administrador logístico), visible solo en
 > esta vista administrativa.
+>
+> Nota: el campo contraseña tampoco figura en la lista de campos de usuario del
+> Anexo 1; se mantiene aquí por consistencia con RF-01, ya que este mantenedor
+> crea las mismas cuentas con que opera el inicio de sesión.
 
 > **RF-12 — Visualizar productos y órdenes (rol Administrador logístico)**
 >
@@ -552,7 +590,10 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > Descripción: Todas las vistas públicas deben presentar un menú superior de
 > navegación con el logo de la tienda, enlaces a Inicio, Productos, Blogs,
 > Nosotros y Contacto, y un acceso al carrito de compras que muestre la cantidad
-> de ítems que contiene.
+> de ítems que contiene. Todas las vistas deben presentar además un pie de
+> página informativo con el nombre de la tienda, los enlaces de navegación
+> principales, los datos de contacto de la empresa y el año, resuelto desde un
+> único archivo compartido (ver 3.3.5).
 
 > **RF-15 — Consultar información de la empresa**
 >
@@ -621,6 +662,15 @@ CSS externa única. El mantenimiento (agregar productos de prueba, ajustar
 validaciones, etc.) puede ser realizado directamente por el desarrollador
 editando estos archivos.
 
+Cada vista debe construirse con etiquetado HTML5 semántico —`<header>`, `<nav>`,
+`<main>`, `<section>`, `<article>` y `<footer>`— en lugar de contenedores
+`<div>` genéricos, de modo que la estructura del documento sea autodescriptiva y
+las secciones compartidas puedan reemplazarse sin ambigüedad. Del mismo modo,
+cada control de formulario debe tener su etiqueta `<label>` asociada mediante el
+atributo `for` y declarar el atributo `autocomplete` que corresponda al dato
+solicitado, de manera que el marcado exprese por sí mismo el propósito de cada
+campo. El comportamiento de las validaciones se especifica en 3.3.2.
+
 ### 3.3.6 Portabilidad
 
 El sistema debe funcionar correctamente en cualquier navegador web moderno
@@ -641,6 +691,13 @@ archivos (ver 3.1.4).
   `http://localhost:8000/src/pages/index.html`), dado que la composición de
   páginas mediante `fetch()` convierte el uso de un servidor HTTP en un
   prerrequisito y no en una comodidad.
+- El proyecto es desarrollado de forma individual por un único estudiante,
+  modalidad autorizada por el docente de la asignatura; en consecuencia, el
+  historial del repositorio refleja el avance de un solo autor y no una
+  distribución de tareas entre integrantes de un equipo.
+- Además del enlace al repositorio público, la entrega incluye el proyecto
+  frontend comprimido y este documento ERS, conforme a los entregables definidos
+  en el Anexo 1 y en la pauta de la Evaluación Parcial N° 1.
 
 # 4. Historias de Usuario y Criterios de Aceptación
 
@@ -766,6 +823,9 @@ Historias correspondientes a las vistas públicas del sitio.
 > 4. Dado un arreglo de productos vacío, cuando se carga la vista, entonces se
 >    muestra un mensaje de "no hay productos disponibles" en lugar de un área en
 >    blanco.
+> 5. Dada la página de inicio, entonces presenta un componente principal con la
+>    información y la imagen de la tienda, visible antes del listado de
+>    productos.
 
 > **HU-04 (RF-04) — Ver detalle de producto**
 >
@@ -785,6 +845,11 @@ Historias correspondientes a las vistas públicas del sitio.
 > 4. Dado un código de producto que no existe en el arreglo, cuando se intenta
 >    abrir su detalle, entonces se muestra un mensaje de producto no encontrado
 >    en lugar de una vista vacía o un error de JavaScript.
+> 5. Dado un producto que define el campo `video`, cuando se abre su detalle,
+>    entonces el video se muestra embebido en la vista y puede reproducirse sin
+>    salir del sitio.
+> 6. Dado un producto que no define el campo `video`, cuando se abre su detalle,
+>    entonces la vista se muestra completa y sin contenedores de video vacíos.
 
 > **HU-05 (RF-05) — Agregar producto al carrito**
 >
@@ -916,6 +981,12 @@ Historias correspondientes a las vistas públicas del sitio.
 >    de inicio.
 > 5. Dado un viewport de ancho menor a 768 px, entonces el menú colapsa en un
 >    botón desplegable y todos sus enlaces siguen siendo accesibles (ver 3.1.2).
+> 6. Dada cualquier vista pública, entonces muestra un pie de página con el
+>    nombre de la tienda, los enlaces de navegación principales, los datos de
+>    contacto y el año.
+> 7. Dado que se modifica el archivo del pie de página, entonces el cambio se
+>    refleja en todas las vistas, porque todas lo incluyen desde ese mismo
+>    archivo.
 
 > **HU-15 (RF-15) — Consultar información de la empresa**
 >
@@ -966,6 +1037,9 @@ Historias correspondientes a las vistas protegidas del panel administrativo.
 >    en el listado.
 > 9. La vista no ofrece la acción Eliminar, que queda fuera del alcance de esta
 >    entrega (ver 1.3 y 2.6).
+> 10. Dado el formulario de producto, cuando se guarda indicando una URL en el
+>     campo video, entonces el valor se conserva y el detalle del producto lo
+>     muestra embebido; dejarlo vacío no impide guardar.
 
 > **HU-11 (RF-11) — Mantenedor de Usuarios**
 >
@@ -1117,6 +1191,15 @@ conservan su numeración original y no llevan código en sus títulos.
 > 4. Dado que se modifica una sección compartida (por ejemplo el pie de página),
 >    entonces el cambio se refleja en todas las vistas habiendo editado un solo
 >    archivo.
+> 5. Dada cualquier vista, cuando se inspecciona su marcado, entonces la
+>    estructura se expresa con `<header>`, `<nav>`, `<main>`,
+>    `<section>`/`<article>` y `<footer>`, y no con contenedores `<div>`
+>    genéricos en su lugar.
+> 6. Dado cualquier formulario del sitio, entonces cada control tiene una
+>    etiqueta `<label>` asociada mediante un atributo `for` que coincide con el
+>    `id` del campo.
+> 7. Dado cualquier formulario del sitio, entonces sus campos declaran el
+>    atributo `autocomplete` con el valor que corresponde al dato solicitado.
 
 > **RNF-06 (3.3.6 Portabilidad)**
 >
@@ -1145,41 +1228,59 @@ conservan su numeración original y no llevan código en sus títulos.
 > 3. Dado el repositorio, entonces documenta cómo ejecutar el proyecto
 >    localmente (`python3 -m http.server 8000` y luego
 >    `http://localhost:8000/src/pages/index.html`).
+> 4. Dado el proyecto comprimido que se entrega, entonces su contenido
+>    corresponde al mismo estado publicado en el repositorio público.
+> 5. Dado este documento, entonces declara la modalidad individual de desarrollo
+>    autorizada por el docente, de modo que el historial de un solo autor es
+>    verificable como tal.
 
 # 5. Trazabilidad de requisitos
 
-La siguiente tabla relaciona cada requisito con su historia de usuario, tipo,
-clasificación, actores y la vista o alcance donde se implementa, replicando las
-columnas de la Planilla de Requerimientos (Anexos 2 y 3). La columna "Crit."
-indica la cantidad de criterios de aceptación definidos; la descripción de cada
+La siguiente tabla relaciona cada requisito con su historia de usuario,
+clasificación, prioridad, origen, actores y la vista o alcance donde se
+implementa, replicando las columnas de la Planilla de Requerimientos (Anexos 2 y
+3). Se omite la columna "Tipo" porque queda implícita en "Clasificación", cuyo
+valor comienza siempre por Funcional o No funcional. La columna "Crit." indica
+la cantidad de criterios de aceptación definidos; la descripción de cada
 requisito está en su ficha (secciones 3.2, 3.3 y 3.4) y sus criterios completos
 en la sección 4.
 
-| Código | HU    | Tipo         | Clasificación                   | Actores                                | Vista / alcance               | Crit. | Estado     |
-|--------|-------|--------------|---------------------------------|----------------------------------------|-------------------------------|-------|------------|
-| RF-01  | HU-01 | Funcional    | Funcional de usuario            | Cliente                                | Registro de usuario           | 10    | Solicitado |
-| RF-02  | HU-02 | Funcional    | Funcional de usuario            | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 6     | Solicitado |
-| RF-03  | HU-03 | Funcional    | Funcional de usuario            | Cliente                                | Inicio / Productos            | 4     | Solicitado |
-| RF-04  | HU-04 | Funcional    | Funcional de usuario            | Cliente                                | Detalle de producto           | 4     | Solicitado |
-| RF-05  | HU-05 | Funcional    | Funcional de usuario            | Cliente                                | Productos / Detalle           | 5     | Solicitado |
-| RF-06  | HU-06 | Funcional    | Funcional de usuario            | Cliente                                | Carrito de compras            | 6     | Solicitado |
-| RF-07  | HU-07 | Funcional    | Funcional de sistema            | Cliente                                | Asistente de armado           | 7     | Solicitado |
-| RF-08  | HU-08 | Funcional    | Funcional de usuario            | Cliente                                | Contacto                      | 5     | Solicitado |
-| RF-09  | HU-09 | Funcional    | Funcional de usuario            | Cliente                                | Blogs / Detalle de blog       | 3     | Solicitado |
-| RF-10  | HU-10 | Funcional    | Funcional de usuario            | Administrador                          | Admin: Productos              | 9     | Solicitado |
-| RF-11  | HU-11 | Funcional    | Funcional de usuario            | Administrador                          | Admin: Usuarios               | 6     | Solicitado |
-| RF-12  | HU-12 | Funcional    | Funcional de sistema            | Adm. logístico                         | Admin: Productos y Órdenes    | 4     | Solicitado |
-| RF-13  | HU-13 | Funcional    | Funcional de usuario            | Cliente, Adm. logístico, Administrador | Transversal                   | 4     | Solicitado |
-| RF-14  | HU-14 | Funcional    | Funcional de usuario            | Cliente                                | Transversal (vistas públicas) | 5     | Solicitado |
-| RF-15  | HU-15 | Funcional    | Funcional de usuario            | Cliente                                | Nosotros                      | 3     | Solicitado |
-| RF-16  | HU-16 | Funcional    | Funcional de usuario            | Administrador                          | Admin: Home                   | 4     | Solicitado |
-| RNF-01 | —     | No funcional | No funcional de producto        | Todos                                  | 3.3.1 Rendimiento             | 3     | Solicitado |
-| RNF-02 | —     | No funcional | No funcional de producto        | Todos                                  | 3.3.2 Seguridad               | 6     | Solicitado |
-| RNF-03 | —     | No funcional | No funcional de producto        | Todos                                  | 3.3.3 Fiabilidad              | 4     | Solicitado |
-| RNF-04 | —     | No funcional | No funcional Externos           | Todos                                  | 3.3.4 Disponibilidad          | 3     | Solicitado |
-| RNF-05 | —     | No funcional | No funcional de producto        | Desarrollador                          | 3.3.5 Mantenibilidad          | 4     | Solicitado |
-| RNF-06 | —     | No funcional | No funcional de producto        | Todos                                  | 3.3.6 Portabilidad            | 4     | Solicitado |
-| RNF-07 | —     | No funcional | No funcional de la Organización | Desarrollador                          | 3.4 Otros Requisitos          | 3     | Solicitado |
+La columna "Prioridad" clasifica los requisitos por importancia, según los
+niveles definidos en 1.3, tal como pide el principio de requisitos clasificados
+del Anexo 4. En esta revisión ningún requisito es Opcional: todos son exigidos
+por al menos una de las fuentes del documento. La columna "Origen" registra esa
+procedencia, dando trazabilidad hacia atrás de cada requisito.
+
+| Código | HU    | Clasificación                   | Prioridad   | Origen | Actores                                | Vista / alcance               | Crit. | Estado     |
+|--------|-------|---------------------------------|-------------|--------|----------------------------------------|-------------------------------|-------|------------|
+| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 10    | Solicitado |
+| RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 6     | Solicitado |
+| RF-03  | HU-03 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Inicio / Productos            | 5     | Solicitado |
+| RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | 6     | Solicitado |
+| RF-05  | HU-05 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Productos / Detalle           | 5     | Solicitado |
+| RF-06  | HU-06 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Carrito de compras            | 6     | Solicitado |
+| RF-07  | HU-07 | Funcional de sistema            | Esencial    | P      | Cliente                                | Asistente de armado           | 7     | Solicitado |
+| RF-08  | HU-08 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Contacto                      | 5     | Solicitado |
+| RF-09  | HU-09 | Funcional de usuario            | Condicional | A1     | Cliente                                | Blogs / Detalle de blog       | 3     | Solicitado |
+| RF-10  | HU-10 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Productos              | 10    | Solicitado |
+| RF-11  | HU-11 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Usuarios               | 6     | Solicitado |
+| RF-12  | HU-12 | Funcional de sistema            | Condicional | A1     | Adm. logístico                         | Admin: Productos y Órdenes    | 4     | Solicitado |
+| RF-13  | HU-13 | Funcional de usuario            | Esencial    | P      | Cliente, Adm. logístico, Administrador | Transversal                   | 4     | Solicitado |
+| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 7     | Solicitado |
+| RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | 3     | Solicitado |
+| RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | 4     | Solicitado |
+| RNF-01 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.1 Rendimiento             | 3     | Solicitado |
+| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 6     | Solicitado |
+| RNF-03 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.3 Fiabilidad              | 4     | Solicitado |
+| RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | 3     | Solicitado |
+| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 7     | Solicitado |
+| RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | 4     | Solicitado |
+| RNF-07 | —     | No funcional de la Organización | Esencial    | A1+R   | Desarrollador                          | 3.4 Otros Requisitos          | 5     | Solicitado |
+
+Origen: **A1** = Anexo 1 (instrucciones del cliente) · **R** = pauta de la
+Evaluación Parcial N° 1 · **A4** = plantilla ERS del Anexo 4 · **P** = decisión
+del proyecto. Las combinaciones indican que el requisito proviene de la primera
+fuente y fue extendido por la segunda.
 
 El estado de todos los requisitos es "Solicitado": esta revisión del ERS define
 la propuesta y aún no existe implementación asociada. El estado se actualizará
