@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 1.6**
+**Revisión: 1.7**
 
 **Autor:** Daniel Muñoz
 
@@ -47,6 +47,7 @@ Especificación de Requisitos según estándar de IEEE 830.
     - [3.3.5 Mantenibilidad](#335-mantenibilidad)
     - [3.3.6 Portabilidad](#336-portabilidad)
   - [3.4 Otros Requisitos](#34-otros-requisitos)
+  - [3.5 Modelo de datos lógico](#35-modelo-de-datos-lógico)
 - [4. Historias de Usuario y Criterios de Aceptación](#4-historias-de-usuario-y-criterios-de-aceptación)
   - [4.1 Historias de acceso y autenticación](#41-historias-de-acceso-y-autenticación)
   - [4.2 Historias de la tienda](#42-historias-de-la-tienda)
@@ -65,6 +66,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 29-09-2026 | 1.4          | Daniel Muñoz | Conformidad con Anexos 1 y 4 y con la pauta de Evaluación Parcial N° 1 |
 | 29-09-2026 | 1.5          | Daniel Muñoz | Reducción de redundancia y compactación del documento |
 | 29-09-2026 | 1.6          | Daniel Muñoz | Sugerencias de validación, HTML válido, barra lateral y herramientas |
+| 29-09-2026 | 1.7          | Daniel Muñoz | Modelo de datos lógico, diagramas y trazabilidad hacia delante |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -176,12 +178,15 @@ datos y pasarela de pago.
 Este documento consta de un área de definición del negocio (sección 2,
 Descripción General), un área de especificación de requisitos (sección 3,
 Requisitos Específicos), donde se detallan los requisitos funcionales mediante
-fichas y los requisitos no funcionales del sistema, una sección de historias de
-usuario y criterios de aceptación (sección 4) y una tabla de trazabilidad que
-relaciona todos los requisitos con sus historias, actores y vistas (sección 5).
+fichas, los requisitos no funcionales del sistema y el modelo de datos lógico
+que sustenta a ambos, una sección de historias de usuario y criterios de
+aceptación (sección 4) y una tabla de trazabilidad que relaciona todos los
+requisitos con sus historias, actores, vistas y archivos (sección 5).
 
-Las secciones 4 y 5 son adiciones a la plantilla del Anexo 4, que concluye en
-3.4; se incorporan para satisfacer los principios de requisitos verificables y
+La subsección 3.5 y las secciones 4 y 5 son adiciones a la plantilla del Anexo
+4, que concluye en 3.4: la primera recoge la especificación de los requisitos
+lógicos de la información almacenada que pide su sección 3.2, y las dos últimas
+se incorporan para satisfacer los principios de requisitos verificables y
 trazables enunciados en su sección 3. Por la misma razón los requisitos se
 identifican con códigos estables RF-xx y RNF-xx en lugar de la numeración 3.2.n
 de la plantilla, conforme a la exigencia de que todo requisito sea unívocamente
@@ -217,9 +222,49 @@ La estructura del `index.html` referencia archivos separados por sección
 el evento `DOMContentLoaded` y solicita cada archivo mediante `fetch()`, lo que
 obliga a servir el proyecto por HTTP (ver 3.1.4).
 
+El siguiente diagrama de bloques resume el producto y su entorno:
+
+```mermaid
+flowchart LR
+  U["Cliente / Administrador<br/>(navegador)"] --> V["Vistas de src/pages/"]
+  V -- "fetch()" --> S["Secciones: header, nav,<br/>aside, body, footer"]
+  V --> A["Arreglos JavaScript:<br/>productos, usuarios, órdenes"]
+  A --> L["localStorage:<br/>clave carrito"]
+  V --> B["Bootstrap 5.3.8<br/>(copia local)"]
+  V -. "fuera de alcance (ver 2.6)" .-> X["Backend y base de datos"]
+```
+
 ## 2.2. Funciones del Producto
 
 Las funciones del sistema se agrupan en dos grandes áreas:
+
+El siguiente diagrama muestra esos grupos de funciones y sus relaciones:
+
+```mermaid
+flowchart TB
+  subgraph TIENDA["Tienda (pública)"]
+    CAT["Catálogo y detalle<br/>RF-03, RF-04"]
+    ARM["Asistente de armado<br/>RF-07"]
+    CARR["Carrito de compras<br/>RF-05, RF-06"]
+    CTA["Registro, inicio y cierre de sesión<br/>RF-01, RF-02, RF-13"]
+    CONT["Blogs, Nosotros y Contacto<br/>RF-08, RF-09, RF-15"]
+    NAV["Navegación: menú, barra lateral y pie<br/>RF-14"]
+  end
+  subgraph ADMIN["Administración (protegida)"]
+    HOME["Home administrativo<br/>RF-16"]
+    MP["Mantenedor de Productos<br/>RF-10"]
+    MU["Mantenedor de Usuarios<br/>RF-11"]
+    RO["Productos y órdenes en solo lectura<br/>RF-12"]
+  end
+  NAV --> CAT
+  CAT --> CARR
+  ARM --> CARR
+  CTA --> HOME
+  CTA --> RO
+  HOME --> MP
+  HOME --> MU
+  MP --> CAT
+```
 
 **Tienda (pública):**
 - Navegación entre páginas mediante menú superior con logo y acceso al carrito,
@@ -388,10 +433,10 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > máx. 100), correo (requerido, máx. 100, restringido a los dominios permitidos
 > definidos en 1.3), contraseña (requerida, entre 4 y 10 caracteres, enmascarada
 > en pantalla, misma regla que el inicio de sesión de RF-02), fecha de
-> nacimiento (opcional), región y comuna (seleccionadas desde arreglos JS, la
-> comuna se actualiza al cambiar la región) y dirección (requerida, máx. 300).
-> Estas son las mismas reglas usadas por el mantenedor "Crear usuario" del
-> administrador (RF-11).
+> nacimiento (opcional), región y comuna (requeridas, seleccionadas desde
+> arreglos JS, la comuna se actualiza al cambiar la región) y dirección
+> (requerida, máx. 300). Estas son las mismas reglas usadas por el mantenedor
+> "Crear usuario" del administrador (RF-11).
 >
 > Nota: el Anexo 1 no incluye el campo contraseña en su lista de campos de
 > usuario, aunque sí lo exige en el inicio de sesión; se define como requerido
@@ -662,6 +707,86 @@ servidor HTTP (ver 3.1.4).
   frontend comprimido y este documento ERS, conforme a los entregables definidos
   en el Anexo 1 y en la pauta de la Evaluación Parcial N° 1.
 
+## 3.5 Modelo de datos lógico
+
+Esta sección especifica los requisitos lógicos de la información que el sistema
+almacena —tipo de dato y obligatoriedad de cada campo—, como pide la sección 3.2
+de la plantilla del Anexo 4, y anticipa el modelo de la base de datos que el
+Anexo 1 proyecta para las entregas siguientes. Las fichas de 3.2 siguen siendo
+la fuente normativa de las reglas de validación y de los límites de cada campo:
+las tablas indican el tipo y la obligatoriedad, y remiten al requisito
+correspondiente en lugar de repetir esos límites. En esta entrega ninguna
+entidad reside en una base de datos, sino en arreglos JavaScript, y el carrito
+se serializa además en la clave `carrito` de `localStorage` (ver 3.1.3).
+
+**Producto** (RF-03, RF-04, RF-10)
+
+| Campo                    | Tipo             | Requerido | Notas                                  |
+|--------------------------|------------------|-----------|----------------------------------------|
+| código de producto (SKU) | Texto            | Sí        | Clave de la entidad; reglas en RF-10   |
+| nombre                   | Texto            | Sí        | —                                      |
+| descripción              | Texto            | No        | Se muestra en el detalle (RF-04)       |
+| precio                   | Decimal ≥ 0      | Sí        | Un valor 0 es un producto gratuito     |
+| stock                    | Entero ≥ 0       | Sí        | Unidades en inventario                 |
+| stock crítico            | Entero ≥ 0       | No        | Umbral de la alerta de bajo inventario |
+| categoría                | Conjunto cerrado | Sí        | Se escoge mediante select              |
+| imagen                   | URL              | No        | —                                      |
+| video                    | URL              | No        | Video embebido del detalle (RF-04)     |
+
+**Usuario** (RF-01, RF-02, RF-11)
+
+| Campo               | Tipo                                             | Requerido | Notas                                                    |
+|---------------------|--------------------------------------------------|-----------|----------------------------------------------------------|
+| RUN                 | Texto                                            | Sí        | Clave de la entidad; se valida el dígito verificador     |
+| nombre              | Texto                                            | Sí        | —                                                        |
+| apellidos           | Texto                                            | Sí        | —                                                        |
+| correo              | Texto                                            | Sí        | Dominios permitidos (ver 1.3); credencial de RF-02       |
+| contraseña          | Texto                                            | Sí        | Se presenta enmascarada (ver 3.3.2); credencial de RF-02 |
+| fecha de nacimiento | Fecha                                            | No        | —                                                        |
+| región              | Conjunto cerrado                                 | Sí        | Se escoge desde el arreglo de regiones; ver Nota         |
+| comuna              | Conjunto cerrado                                 | Sí        | Depende de la región escogida; ver Nota                  |
+| dirección           | Texto                                            | Sí        | Dirección de despacho                                    |
+| tipo de usuario     | Administrador, Cliente o Administrador logístico | Sí        | Determina el acceso (ver 3.3.2); editable solo en RF-11  |
+
+**Orden** (RF-12)
+
+| Campo           | Tipo                       | Requerido | Notas                                    |
+|-----------------|----------------------------|-----------|------------------------------------------|
+| número de orden | Texto                      | Sí        | Clave de la entidad; ver Nota            |
+| cliente         | Referencia a Usuario (RUN) | Sí        | —                                        |
+| fecha           | Fecha                      | Sí        | Fecha de la compra simulada              |
+| productos       | Lista de ítems             | Sí        | Cada ítem con su producto y su cantidad  |
+| total           | Decimal                    | Sí        | Suma del precio unitario por la cantidad |
+
+**Ítem de carrito** (RF-05, RF-06)
+
+| Campo             | Tipo                             | Requerido | Notas                                        |
+|-------------------|----------------------------------|-----------|----------------------------------------------|
+| producto o armado | Referencia a Producto o a Armado | Sí        | Un armado se trata como un solo ítem         |
+| cantidad          | Entero ≥ 1                       | Sí        | Regla de mínimo en HU-06                     |
+| subtotal          | Decimal                          | Derivado  | Precio unitario por cantidad; no se almacena |
+
+**Armado** (RF-07)
+
+| Campo       | Tipo                            | Requerido | Notas                                   |
+|-------------|---------------------------------|-----------|-----------------------------------------|
+| componentes | Lista de referencias a Producto | Sí        | Una por categoría recorrida (ver RF-07) |
+| precio      | Decimal                         | Derivado  | Suma del precio de sus componentes      |
+
+La tabla de compatibilidad no es una entidad del negocio, sino una estructura
+estática de los arreglos JavaScript que asocia cada componente con la lista de
+componentes admisibles de la siguiente categoría (ver 1.3). Las órdenes son de
+solo lectura en esta entrega (RF-12): su creación desde el carrito es un
+requisito futuro (ver 2.6).
+
+> Nota: el número de orden no figura en la lista de campos del Anexo 1; se
+> agrega por decisión del proyecto, porque RF-12 exige un detalle de orden
+> navegable y sin una clave no es posible identificar cuál se abre.
+
+> Nota: el Anexo 1 no declara si región y comuna son requeridas. En esta
+> revisión se declaran requeridas por decisión del proyecto, por coherencia con
+> la dirección de despacho, que sí lo es; RF-01 y HU-01 recogen la regla.
+
 # 4. Historias de Usuario y Criterios de Aceptación
 
 Esta sección reúne, en un único lugar, la motivación y las condiciones de
@@ -689,8 +814,8 @@ usuario.
 > Criterios de aceptación:
 >
 > 1. Cuando se envía con un campo requerido vacío (RUN, nombre, apellidos,
->    correo, contraseña o dirección), el sistema impide el envío y marca cada
->    campo faltante con su mensaje de error.
+>    correo, contraseña, región, comuna o dirección), el sistema impide el envío
+>    y marca cada campo faltante con su mensaje de error.
 > 2. El RUN se acepta sin puntos ni guion, con entre 7 y 9 caracteres y dígito
 >    verificador correcto (`19011022K`); uno con puntos, guion o dígito
 >    incorrecto (`19.011.022-3`) se rechaza con el error "RUN inválido" y el
@@ -1111,33 +1236,39 @@ clasificados del Anexo 4, con los niveles definidos en 1.3: en esta revisión
 ninguno es Opcional, porque todos son exigidos por al menos una fuente, y
 "Origen" registra cuál, dando trazabilidad hacia atrás.
 
-| Código | HU    | Clasificación                   | Prioridad   | Origen | Actores                                | Vista / alcance               | Crit. | Estado     |
-|--------|-------|---------------------------------|-------------|--------|----------------------------------------|-------------------------------|-------|------------|
-| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 8     | Solicitado |
-| RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 4     | Solicitado |
-| RF-03  | HU-03 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Inicio / Productos            | 5     | Solicitado |
-| RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | 5     | Solicitado |
-| RF-05  | HU-05 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Productos / Detalle           | 4     | Solicitado |
-| RF-06  | HU-06 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Carrito de compras            | 5     | Solicitado |
-| RF-07  | HU-07 | Funcional de sistema            | Esencial    | P      | Cliente                                | Asistente de armado           | 7     | Solicitado |
-| RF-08  | HU-08 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Contacto                      | 4     | Solicitado |
-| RF-09  | HU-09 | Funcional de usuario            | Condicional | A1     | Cliente                                | Blogs / Detalle de blog       | 3     | Solicitado |
-| RF-10  | HU-10 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Productos              | 7     | Solicitado |
-| RF-11  | HU-11 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Usuarios               | 6     | Solicitado |
-| RF-12  | HU-12 | Funcional de sistema            | Condicional | A1     | Adm. logístico                         | Admin: Productos y Órdenes    | 4     | Solicitado |
-| RF-13  | HU-13 | Funcional de usuario            | Esencial    | P      | Cliente, Adm. logístico, Administrador | Transversal                   | 4     | Solicitado |
-| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 6     | Solicitado |
-| RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | 2     | Solicitado |
-| RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | 3     | Solicitado |
-| RNF-01 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.1 Rendimiento             | 3     | Solicitado |
-| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 5     | Solicitado |
-| RNF-03 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.3 Fiabilidad              | 4     | Solicitado |
-| RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | 2     | Solicitado |
-| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 7     | Solicitado |
-| RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | 3     | Solicitado |
-| RNF-07 | —     | No funcional de la Organización | Esencial    | A1+R   | Desarrollador                          | 3.4 Otros Requisitos          | 5     | Solicitado |
+| Código | HU    | Clasificación                   | Prioridad   | Origen | Actores                                | Vista / alcance               | Archivos                                          | Crit. | Estado     |
+|--------|-------|---------------------------------|-------------|--------|----------------------------------------|-------------------------------|---------------------------------------------------|-------|------------|
+| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | registro.html, scripts/validaciones.js            | 8     | Solicitado |
+| RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | login.html, scripts/sesion.js                     | 4     | Solicitado |
+| RF-03  | HU-03 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Inicio / Productos            | index.html, productos.html, scripts/catalogo.js   | 5     | Solicitado |
+| RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | producto.html, scripts/catalogo.js                | 5     | Solicitado |
+| RF-05  | HU-05 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Productos / Detalle           | productos.html, producto.html, scripts/carrito.js | 4     | Solicitado |
+| RF-06  | HU-06 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Carrito de compras            | carrito.html, scripts/carrito.js                  | 5     | Solicitado |
+| RF-07  | HU-07 | Funcional de sistema            | Esencial    | P      | Cliente                                | Asistente de armado           | armado.html, scripts/armado.js                    | 7     | Solicitado |
+| RF-08  | HU-08 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Contacto                      | contacto.html, scripts/validaciones.js            | 4     | Solicitado |
+| RF-09  | HU-09 | Funcional de usuario            | Condicional | A1     | Cliente                                | Blogs / Detalle de blog       | blogs.html, blog.html                             | 3     | Solicitado |
+| RF-10  | HU-10 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Productos              | admin/productos.html, scripts/mantenedores.js     | 7     | Solicitado |
+| RF-11  | HU-11 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Usuarios               | admin/usuarios.html, scripts/mantenedores.js      | 6     | Solicitado |
+| RF-12  | HU-12 | Funcional de sistema            | Condicional | A1     | Adm. logístico                         | Admin: Productos y Órdenes    | admin/ordenes.html, scripts/sesion.js             | 4     | Solicitado |
+| RF-13  | HU-13 | Funcional de usuario            | Esencial    | P      | Cliente, Adm. logístico, Administrador | Transversal                   | nav.html, scripts/sesion.js                       | 4     | Solicitado |
+| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | header/nav/aside/footer.html                      | 6     | Solicitado |
+| RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | nosotros.html                                     | 2     | Solicitado |
+| RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | admin/index.html, scripts/sesion.js               | 3     | Solicitado |
+| RNF-01 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.1 Rendimiento             | scripts/includes.js, styles/style.css             | 3     | Solicitado |
+| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | scripts/sesion.js, scripts/validaciones.js        | 5     | Solicitado |
+| RNF-03 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.3 Fiabilidad              | scripts/includes.js, scripts/carrito.js           | 4     | Solicitado |
+| RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | — (hosting)                                       | 2     | Solicitado |
+| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | index.html, scripts/includes.js, styles/style.css | 7     | Solicitado |
+| RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | styles/style.css, scripts/includes.js             | 3     | Solicitado |
+| RNF-07 | —     | No funcional de la Organización | Esencial    | A1+R   | Desarrollador                          | 3.4 Otros Requisitos          | — (repositorio)                                   | 5     | Solicitado |
 
 Origen: **A1** = Anexo 1 (instrucciones del cliente) · **R** = pauta de la
 Evaluación Parcial N° 1 · **A4** = plantilla ERS del Anexo 4 · **P** = decisión
 del proyecto. Las combinaciones indican que el requisito proviene de la primera
 fuente y fue extendido por la segunda.
+
+Archivos: rutas relativas a `src/pages/`, salvo `scripts/` y `styles/`, que lo
+son a `src/`. Los arreglos de datos residen en `scripts/datos.js`. Los nombres
+indican la ubicación prevista de cada componente: a la fecha de esta revisión el
+repositorio contiene `index.html`, `header.html`, `nav.html`, `aside.html`,
+`body.html`, `footer.html`, `scripts/includes.js` y `styles/style.css`.
