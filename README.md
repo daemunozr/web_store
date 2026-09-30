@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 1.5**
+**Revisión: 1.6**
 
 **Autor:** Daniel Muñoz
 
@@ -64,6 +64,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 29-09-2026 | 1.3          | Daniel Muñoz | Historias de usuario y criterios de aceptación en sección propia |
 | 29-09-2026 | 1.4          | Daniel Muñoz | Conformidad con Anexos 1 y 4 y con la pauta de Evaluación Parcial N° 1 |
 | 29-09-2026 | 1.5          | Daniel Muñoz | Reducción de redundancia y compactación del documento |
+| 29-09-2026 | 1.6          | Daniel Muñoz | Sugerencias de validación, HTML válido, barra lateral y herramientas |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -186,6 +187,11 @@ identifican con códigos estables RF-xx y RNF-xx en lugar de la numeración 3.2.
 de la plantilla, conforme a la exigencia de que todo requisito sea unívocamente
 identificable mediante un código adecuado.
 
+La pauta de la Evaluación Parcial N° 1 exige que el ERS cubra tres bloques de
+contenido: los requerimientos (secciones 3 y 4, con su trazabilidad en la 5),
+las herramientas (2.1, 2.4 y 3.1.3) y las propuestas del proyecto (1.2, 2.2 y
+2.6).
+
 # 2. Descripción General
 
 Esta sección describe los factores que afectan al producto **Ensambla.me** y a
@@ -216,7 +222,9 @@ obliga a servir el proyecto por HTTP (ver 3.1.4).
 Las funciones del sistema se agrupan en dos grandes áreas:
 
 **Tienda (pública):**
-- Navegación entre páginas mediante menú superior con logo y acceso al carrito.
+- Navegación entre páginas mediante menú superior con logo y acceso al carrito,
+  y barra lateral con accesos a las categorías del catálogo en las vistas de
+  tienda.
 - Visualización de catálogo de productos (imagen, nombre, precio) y su detalle.
 - Asistente de armado de PC gamer (*Ensambla.me*): selección guiada de
   componentes por categoría (CPU, placa madre, RAM, almacenamiento, fuente de
@@ -292,7 +300,9 @@ El sistema contempla tres tipos de perfiles de usuario:
 - Gestión completa de órdenes (estado del pedido, historial de compras del
   cliente).
 - Operación Eliminar en los mantenedores de Producto y Usuario, completando el
-  CRUD definido en 1.3.
+  CRUD definido en 1.3; el Anexo 1 la menciona al describir el sistema de
+  gestión, pero no la exige en los mockups de mantenedor, que solo definen el
+  listado y la creación.
 - Panel de reportes y estadísticas para el rol Administrador.
 - Recuperación de contraseña y verificación de correo electrónico en el
   registro.
@@ -312,12 +322,13 @@ una vez construido.
 ### 3.1.1 Interfaces de usuario
 
 Las interfaces de usuario serán páginas web con una distribución de menú
-superior (navegación, logo y carrito) y un área de contenido central para
-mostrar la funcionalidad de cada vista. El panel de administración utiliza
-además un menú lateral vertical. El asistente de armado se presenta como un
-flujo guiado paso a paso (una categoría de componente a la vez) dentro del área
-de contenido. El diseño es responsivo y consistente en todas las páginas
-gracias a una hoja de estilos CSS externa y a los componentes de Bootstrap.
+superior (navegación, logo y carrito), un área de contenido central para mostrar
+la funcionalidad de cada vista y, en las vistas de tienda, una barra lateral con
+accesos a las categorías del catálogo. El panel de administración utiliza además
+un menú lateral vertical. El asistente de armado se presenta como un flujo
+guiado paso a paso (una categoría de componente a la vez) dentro del área de
+contenido. El diseño es responsivo y consistente en todas las páginas gracias a
+una hoja de estilos CSS externa y a los componentes de Bootstrap.
 
 ### 3.1.2 Interfaces de hardware
 
@@ -327,14 +338,19 @@ escritorio, gracias al diseño responsivo.
 
 ### 3.1.3 Interfaces de software
 
-- **Bootstrap (CSS y JS)**: framework utilizado para estilos, componentes de
-  interfaz (menús, formularios, botones) y comportamiento responsivo.
+- **Bootstrap 5.3.8 (CSS y JS)**: framework utilizado para estilos, componentes
+  de interfaz (menús, formularios, botones) y comportamiento responsivo. Se
+  declara como dependencia npm en `package.json` y se distribuye en el proyecto
+  como copia local en `src/bootstrap/`, de modo que el sitio no dependa de una
+  CDN.
 - **Fetch API**: utilizada por `src/scripts/includes.js` para solicitar,
   mediante peticiones HTTP GET del mismo origen, los archivos HTML de cada
   sección (encabezado, navegación, aside, cuerpo, pie de página) y componer así
   cada página del sitio.
 - **Web Storage API (`localStorage`)**: utilizada para persistir el contenido
-  del carrito de compras en el navegador del cliente.
+  del carrito de compras en el navegador del cliente, bajo una única clave
+  `carrito` cuyo valor es un arreglo serializado en JSON con una entrada por
+  ítem (producto individual o armado) y su cantidad.
 
 ### 3.1.4 Interfaces de comunicación
 
@@ -527,10 +543,12 @@ reutilizan ni se renumeran al agregar nuevos requisitos.
 > Descripción: Todas las vistas públicas deben presentar un menú superior de
 > navegación con el logo de la tienda, enlaces a Inicio, Productos, Blogs,
 > Nosotros y Contacto, y un acceso al carrito de compras que muestre la cantidad
-> de ítems que contiene. Todas las vistas deben presentar además un pie de
-> página informativo con el nombre de la tienda, los enlaces de navegación
-> principales, los datos de contacto de la empresa y el año, resuelto desde un
-> único archivo compartido (ver 3.3.5).
+> de ítems que contiene. Las vistas de tienda deben presentar además una barra
+> lateral de navegación con accesos a las categorías del catálogo (ver 3.3.5).
+> Todas las vistas deben presentar además un pie de página informativo con el
+> nombre de la tienda, los enlaces de navegación principales, los datos de
+> contacto de la empresa y el año, resuelto desde un único archivo compartido
+> (ver 3.3.5).
 
 > **RF-15 — Consultar información de la empresa**
 >
@@ -576,6 +594,10 @@ en esta entrega.
 - Todos los formularios (registro, login, contacto, producto, usuario) deben
   validarse en tiempo real en el cliente, mostrando mensajes de error y
   sugerencias personalizados antes de permitir el envío.
+- Además del mensaje de error, cada campo validado debe ofrecer una sugerencia
+  que anticipe el formato esperado (por ejemplo el formato del RUN o los
+  dominios de correo aceptados), visible antes de que el usuario cometa el
+  error.
 
 ### 3.3.3 Fiabilidad
 
@@ -588,7 +610,9 @@ comunicados claramente al usuario sin interrumpir la navegación.
 
 Al ser un sitio 100% estático (sin servidor de aplicación ni base de datos), la
 disponibilidad depende únicamente del servicio de hosting/repositorio utilizado
-para publicarlo, esperando una disponibilidad cercana al 100% del tiempo.
+para publicarlo. El proyecto no compromete un porcentaje propio de
+disponibilidad: el exigible es el que ofrezca el servicio de hosting elegido, ya
+que ningún componente del sistema puede degradarla.
 
 ### 3.3.5 Mantenibilidad
 
@@ -597,16 +621,20 @@ El sitio debe mantenerse mediante la separación de cada sección de la página
 independientes referenciados desde `index.html`, y mediante una hoja de estilos
 CSS externa única. El mantenimiento (agregar productos de prueba, ajustar
 validaciones, etc.) puede ser realizado directamente por el desarrollador
-editando estos archivos.
+editando estos archivos, bajo demanda y sin ventanas programadas, dado que el
+sitio no almacena datos de producción que obliguen a detenerlo.
 
 Cada vista debe construirse con etiquetado HTML5 semántico —`<header>`, `<nav>`,
 `<main>`, `<section>`, `<article>` y `<footer>`— en lugar de contenedores
 `<div>` genéricos, de modo que la estructura del documento sea autodescriptiva y
-las secciones compartidas puedan reemplazarse sin ambigüedad. Del mismo modo,
-cada control de formulario debe tener su etiqueta `<label>` asociada mediante el
-atributo `for` y declarar el atributo `autocomplete` que corresponda al dato
-solicitado, de manera que el marcado exprese por sí mismo el propósito de cada
-campo. El comportamiento de las validaciones se especifica en 3.3.2.
+las secciones compartidas puedan reemplazarse sin ambigüedad. El contenido
+textual debe estructurarse con una jerarquía de encabezados, párrafos y listas,
+y no con saltos de línea o estilos que los imiten. Del mismo modo, cada control
+de formulario debe tener su etiqueta `<label>` asociada mediante el atributo
+`for` y declarar el atributo `autocomplete` que corresponda al dato solicitado,
+de manera que el marcado exprese por sí mismo el propósito de cada campo. El
+comportamiento de las validaciones se especifica en 3.3.2, y el marcado de cada
+vista debe validar sin errores contra el validador del W3C.
 
 ### 3.3.6 Portabilidad
 
@@ -678,6 +706,8 @@ usuario.
 >    muestran el error correspondiente.
 > 7. Cuando se envía un formulario completo y válido, el usuario se agrega al
 >    arreglo de usuarios y se muestra un mensaje de confirmación.
+> 8. El campo de correo ofrece los dominios permitidos como sugerencia
+>    seleccionable (`datalist`), de modo que puedan completarse sin escribirlos.
 
 > **HU-02 (RF-02) — Iniciar sesión**
 >
@@ -861,6 +891,8 @@ usuario.
 >    enlaces de navegación principales, los datos de contacto y el año.
 > 5. Al modificar el archivo del pie de página el cambio se refleja en todas las
 >    vistas, porque todas lo incluyen desde ese mismo archivo.
+> 6. Toda vista de tienda muestra la barra lateral con los accesos a las
+>    categorías del catálogo, y cada acceso navega al listado de productos.
 
 > **HU-15 (RF-15) — Consultar información de la empresa**
 >
@@ -987,6 +1019,9 @@ conservan su numeración original y no llevan código en sus títulos.
 >    inspeccionando el DOM.
 > 4. En cualquier formulario, un valor inválido muestra su mensaje de error
 >    antes de pulsar el botón de envío.
+> 5. Cada campo con reglas de formato (RUN, correo, contraseña) muestra una
+>    sugerencia con el formato esperado antes de cualquier intento de envío,
+>    distinta del mensaje de error que aparece al infringirlo.
 
 > **RNF-03 (3.3.3 Fiabilidad)**
 >
@@ -1025,11 +1060,15 @@ conservan su numeración original y no llevan código en sus títulos.
 >    cambio se refleja en todas las vistas habiendo editado un solo archivo.
 > 4. Inspeccionando el marcado de cualquier vista, la estructura se expresa con
 >    `<header>`, `<nav>`, `<main>`, `<section>`/`<article>` y `<footer>`, y no
->    con contenedores `<div>` genéricos en su lugar.
+>    con contenedores `<div>` genéricos en su lugar; cada vista tiene un único
+>    `<h1>` y su contenido textual se estructura con encabezados, párrafos y
+>    listas.
 > 5. Cada control de formulario tiene una etiqueta `<label>` asociada mediante
 >    un atributo `for` que coincide con el `id` del campo.
 > 6. Los campos de formulario declaran el atributo `autocomplete` con el valor
 >    que corresponde al dato solicitado.
+> 7. El marcado de cada vista, servido por HTTP, pasa el validador del W3C
+>    (`validator.w3.org`) sin errores.
 
 > **RNF-06 (3.3.6 Portabilidad)**
 >
@@ -1064,7 +1103,8 @@ conservan su numeración original y no llevan código en sus títulos.
 La siguiente tabla relaciona cada requisito con su historia de usuario,
 clasificación, prioridad, origen, actores y la vista o alcance donde se
 implementa, replicando las columnas de la Planilla de Requerimientos (Anexos 2 y
-3); se omite "Tipo" porque queda implícita en "Clasificación". "Crit." indica la
+3); se omite "Tipo" porque queda implícita en "Clasificación" y la "Descripción
+corta" de cada requisito es la Descripción de su ficha en 3.2. "Crit." indica la
 cantidad de criterios de aceptación, detallados en la sección 4. "Prioridad"
 clasifica los requisitos por importancia, como pide el principio de requisitos
 clasificados del Anexo 4, con los niveles definidos en 1.3: en esta revisión
@@ -1073,7 +1113,7 @@ ninguno es Opcional, porque todos son exigidos por al menos una fuente, y
 
 | Código | HU    | Clasificación                   | Prioridad   | Origen | Actores                                | Vista / alcance               | Crit. | Estado     |
 |--------|-------|---------------------------------|-------------|--------|----------------------------------------|-------------------------------|-------|------------|
-| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 7     | Solicitado |
+| RF-01  | HU-01 | Funcional de usuario            | Esencial    | A1+P   | Cliente                                | Registro de usuario           | 8     | Solicitado |
 | RF-02  | HU-02 | Funcional de usuario            | Esencial    | A1     | Cliente, Adm. logístico, Administrador | Inicio de sesión              | 4     | Solicitado |
 | RF-03  | HU-03 | Funcional de usuario            | Esencial    | A1     | Cliente                                | Inicio / Productos            | 5     | Solicitado |
 | RF-04  | HU-04 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Detalle de producto           | 5     | Solicitado |
@@ -1086,14 +1126,14 @@ ninguno es Opcional, porque todos son exigidos por al menos una fuente, y
 | RF-11  | HU-11 | Funcional de usuario            | Esencial    | A1+P   | Administrador                          | Admin: Usuarios               | 6     | Solicitado |
 | RF-12  | HU-12 | Funcional de sistema            | Condicional | A1     | Adm. logístico                         | Admin: Productos y Órdenes    | 4     | Solicitado |
 | RF-13  | HU-13 | Funcional de usuario            | Esencial    | P      | Cliente, Adm. logístico, Administrador | Transversal                   | 4     | Solicitado |
-| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 5     | Solicitado |
+| RF-14  | HU-14 | Funcional de usuario            | Esencial    | A1+R   | Cliente                                | Transversal (vistas públicas) | 6     | Solicitado |
 | RF-15  | HU-15 | Funcional de usuario            | Condicional | A1     | Cliente                                | Nosotros                      | 2     | Solicitado |
 | RF-16  | HU-16 | Funcional de usuario            | Esencial    | A1     | Administrador                          | Admin: Home                   | 3     | Solicitado |
 | RNF-01 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.1 Rendimiento             | 3     | Solicitado |
-| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 4     | Solicitado |
+| RNF-02 | —     | No funcional de producto        | Esencial    | A4     | Todos                                  | 3.3.2 Seguridad               | 5     | Solicitado |
 | RNF-03 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.3 Fiabilidad              | 4     | Solicitado |
 | RNF-04 | —     | No funcional Externos           | Condicional | A4     | Todos                                  | 3.3.4 Disponibilidad          | 2     | Solicitado |
-| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 6     | Solicitado |
+| RNF-05 | —     | No funcional de producto        | Esencial    | A4+R   | Desarrollador                          | 3.3.5 Mantenibilidad          | 7     | Solicitado |
 | RNF-06 | —     | No funcional de producto        | Condicional | A4     | Todos                                  | 3.3.6 Portabilidad            | 3     | Solicitado |
 | RNF-07 | —     | No funcional de la Organización | Esencial    | A1+R   | Desarrollador                          | 3.4 Otros Requisitos          | 5     | Solicitado |
 
