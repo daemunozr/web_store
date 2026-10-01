@@ -5,11 +5,11 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 2.1**
+**Revisión: 2.2**
 
 **Autor:** Daniel Muñoz
 
-**30-09-2026**
+**01-10-2026**
 -----------------------------------------------------------------------
 
 -----------------------------------------------------------------------
@@ -64,6 +64,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 29-09-2026 | 1.8          | Daniel Muñoz | Modelo de datos lógico normalizado hasta 3NF                           |
 | 30-09-2026 | 2.0          | Daniel Muñoz | Reestructuración del documento a la plantilla del Anexo 4              |
 | 30-09-2026 | 2.1          | Daniel Muñoz | Reclasificación de requisitos funcionales y poda de criterios          |
+| 01-10-2026 | 2.2          | Daniel Muñoz | Corrección del ejemplo de RUN, sessionStorage y trazabilidad vigente   |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -122,7 +123,7 @@ pasarela de pago.
 - **Prioridad**: importancia de un requisito en el Anexo A: *Esencial*,
   *Condicional* u *Opcional*, según qué fuente lo exija.
 - **RUN**: Rol Único Nacional, identificador de personas en Chile; se ingresa
-  sin puntos ni guion (ej. `19011022K`) y se valida su dígito verificador.
+  sin puntos ni guion (ej. `190110222`) y se valida su dígito verificador.
 - **Dominios permitidos**: únicos dominios de correo aceptados por cualquier
   campo de correo del sistema: `@duoc.cl`, `@profesor.duoc.cl` y `@gmail.com`.
 - **Código de producto (SKU)**: identificador de texto único de cada producto
@@ -181,8 +182,9 @@ Ensambla.me es un producto independiente: un sitio web frontend (HTML, CSS y
 JavaScript puro, apoyado en el framework Bootstrap para estilos y componentes)
 que no depende de ni se integra con otros sistemas externos en esta entrega. No
 existe backend ni base de datos; toda la información de productos, usuarios,
-órdenes y carrito se maneja del lado del cliente (arreglos JavaScript y
-`localStorage`).
+órdenes y carrito se maneja del lado del cliente: arreglos JavaScript y Web
+Storage, donde `localStorage` conserva el carrito y `sessionStorage` la sesión
+iniciada y la copia de trabajo de productos y usuarios (ver 3.1.3).
 
 Además del catálogo tradicional, Ensambla.me se diferencia por incorporar un
 asistente de armado por componentes que guía al cliente, categoría por
@@ -199,6 +201,7 @@ flowchart LR
   V -- "fetch()" --> S["Secciones: header, nav,<br/>aside, body, footer"]
   V --> A["Arreglos JavaScript:<br/>productos, usuarios, órdenes"]
   A --> L["localStorage:<br/>clave carrito"]
+  A --> SS["sessionStorage:<br/>sesión y copia de<br/>productos y usuarios"]
   V --> B["Bootstrap 5.3.8<br/>(copia local)"]
   V -. "fuera de alcance (ver 2.6)" .-> X["Backend y base de datos"]
 ```
@@ -280,7 +283,7 @@ El sistema contempla tres tipos de perfiles de usuario:
 - El sistema debe construirse únicamente con HTML, CSS y JavaScript puro, más el
   framework Bootstrap, sin frameworks adicionales de JavaScript.
 - No debe utilizarse backend ni base de datos real; los datos se simulan en
-  arreglos JavaScript y `localStorage`.
+  arreglos JavaScript, `localStorage` y `sessionStorage`.
 - El diseño debe ser responsivo y consistente en todas las páginas mediante una
   hoja de estilos CSS externa y propia.
 - El proyecto debe versionarse con Git y publicarse en un repositorio público de
@@ -293,10 +296,13 @@ El sistema contempla tres tipos de perfiles de usuario:
 ## 2.5. Suposiciones y Dependencias
 
 - Se asume que el usuario accede desde un navegador web moderno con soporte de
-  `localStorage`, Fetch API y JavaScript habilitado.
+  Web Storage (`localStorage` y `sessionStorage`), Fetch API y JavaScript
+  habilitado.
 - Se asume que los datos de prueba de productos, usuarios y órdenes (arreglos
   JS) son representativos para la demostración, y que no se requiere
-  persistencia real entre distintos dispositivos o usuarios.
+  persistencia real entre distintos dispositivos o usuarios: los productos y
+  usuarios creados en el registro o en los mantenedores se pierden al cerrar el
+  navegador.
 - Si en evaluaciones futuras se incorpora un backend y base de datos real,
   varios requisitos actuales —especialmente los de persistencia de carrito,
   productos y usuarios— deberán revisarse y actualizarse.
@@ -387,11 +393,18 @@ escritorio, gracias al diseño responsivo.
   mediante peticiones HTTP GET del mismo origen, los archivos HTML de cada
   sección (encabezado, navegación, aside, cuerpo, pie de página) y componer así
   cada página del sitio.
-- **Web Storage API (`localStorage`)**: persiste el contenido del carrito en el
-  navegador del cliente, bajo una única clave `carrito` cuyo valor es un arreglo
-  serializado en JSON con una entrada por línea, cada una con su producto, su
-  cantidad y, si pertenece a un armado, el agrupador de ese armado (ver el
-  modelo lógico al final de 3.2).
+- **Web Storage API (`localStorage` y `sessionStorage`)**: `localStorage`
+  persiste el contenido del carrito en el navegador del cliente, bajo una única
+  clave `carrito` cuyo valor es un arreglo serializado en JSON con una entrada
+  por línea, cada una con su producto, su cantidad y, si pertenece a un armado,
+  el agrupador de ese armado (ver el modelo lógico al final de 3.2).
+  `sessionStorage` dura lo que la sesión del navegador y guarda tres claves:
+  `sesion`, con el RUN, nombre, apellidos, correo y rol del usuario autenticado,
+  que se elimina al cerrar sesión (RF-13); y `productos` y `usuarios`, copias de
+  trabajo sembradas desde los arreglos JavaScript, para que los registros
+  creados o editados en RF-01, RF-10 y RF-11 puedan usarse en la misma sesión
+  del navegador (por ejemplo, para iniciar sesión con un usuario recién
+  registrado).
 
 ### 3.1.4 Interfaces de comunicación
 
@@ -451,7 +464,7 @@ información que el sistema almacena.
 >    correo, contraseña, región, comuna o dirección), el sistema impide el envío
 >    y marca cada campo faltante con su mensaje de error.
 > 2. El RUN se acepta sin puntos ni guion, con entre 7 y 9 caracteres y dígito
->    verificador correcto (`19011022K`); uno con puntos, guion o dígito
+>    verificador correcto (`190110222`); uno con puntos, guion o dígito
 >    incorrecto (`19.011.022-3`) se rechaza con el error "RUN inválido" y el
 >    formulario no se envía.
 > 3. Un correo cuyo dominio no está entre los permitidos (`juan@hotmail.com`) se
@@ -791,8 +804,10 @@ análisis que lo justifica cierra la subsección. Las fichas anteriores siguen
 siendo la fuente normativa de las reglas de validación y de los límites de cada
 campo: las tablas indican el tipo, la clave y la obligatoriedad, y remiten al
 requisito correspondiente en lugar de repetir esos límites. En esta entrega
-ninguna relación reside en una base de datos, sino en arreglos JavaScript, y el
-carrito se serializa además en la clave `carrito` de `localStorage` (ver 3.1.3).
+ninguna relación reside en una base de datos, sino en arreglos JavaScript;
+Producto y Usuario se leen y escriben a través de su copia de trabajo en
+`sessionStorage`, y el carrito se serializa además en la clave `carrito` de
+`localStorage` (ver 3.1.3).
 
 ```mermaid
 erDiagram
@@ -1139,7 +1154,6 @@ del proyecto. Las combinaciones indican que el requisito proviene de la primera
 fuente y fue extendido por la segunda.
 
 Archivos: rutas relativas a `src/pages/`, salvo `scripts/` y `styles/`, que lo
-son a `src/`. Los arreglos de datos residen en `scripts/datos.js`. Los nombres
-indican la ubicación prevista de cada componente: a la fecha de esta revisión el
-repositorio contiene `index.html`, `header.html`, `nav.html`, `aside.html`,
-`body.html`, `footer.html`, `scripts/includes.js` y `styles/style.css`.
+son a `src/`. Los arreglos de datos residen en `scripts/datos.js`. A la fecha de
+esta revisión todos los archivos listados existen en el repositorio, de modo que
+la trazabilidad hacia delante apunta a componentes ya implementados.
