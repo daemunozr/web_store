@@ -382,6 +382,7 @@ img {
 .video-producto {
 	width: 100%;
 	max-width: 720px;
+	height: auto;
 	border: 1px solid var(--borde);
 	border-radius: 0.75rem;
 	background-color: #000000;

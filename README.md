@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 2.3**
+**Revisión: 2.4**
 
 **Autor:** Daniel Muñoz
 
@@ -66,6 +66,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 30-09-2026 | 2.1          | Daniel Muñoz | Reclasificación de requisitos funcionales y poda de criterios          |
 | 01-10-2026 | 2.2          | Daniel Muñoz | Corrección del ejemplo de RUN, sessionStorage y trazabilidad vigente   |
 | 01-10-2026 | 2.3          | Daniel Muñoz | Reglas de stock del carrito (RF-05, RF-06 y RF-07)                     |
+| 01-10-2026 | 2.4          | Daniel Muñoz | Video demostrativo del armado en la página de inicio                   |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -353,7 +354,8 @@ el nombre de la tienda, los enlaces de navegación principales, los datos de
 contacto de la empresa y el año. Las vistas de tienda presentan además una barra
 lateral con accesos a las categorías del catálogo. La página de inicio presenta,
 por sobre el listado de productos, un componente principal con la información y
-la imagen de la tienda. La vista "Nosotros" presenta la información
+la imagen de la tienda, y bajo ese listado un video embebido que demuestra el
+asistente de armado. La vista "Nosotros" presenta la información
 institucional de la empresa y de sus desarrolladores (RF-15).
 
 El panel de administración utiliza un menú lateral vertical visible con los
