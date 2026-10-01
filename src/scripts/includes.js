@@ -1,24 +1,24 @@
 /*
  * Cargador de secciones (partials) y resolucion de rutas del sitio.
  *
- * Cada seccion de la pagina vive en su propio archivo con el nombre del
- * elemento que contiene (header.html -> <header>, main.html -> <main>) y cada
- * vista es una carpeta con su index.html y su main.html. La vista solo declara
- * los contenedores:
+ * Cada seccion compartida de la pagina vive en su propio archivo, con el nombre
+ * del elemento que contiene (header.html -> <header>, nav.html -> <nav>,
+ * aside.html -> <aside>, body.html -> el <main> del inicio, footer.html ->
+ * <footer>). La vista solo declara los contenedores:
  *
- *   <header data-include="../header.html"></header>
- *   <main   data-include="main.html"></main>
+ *   <header data-include="header.html"></header>
+ *   <main   data-include="body.html"></main>
  *
  * El contenedor se REEMPLAZA por los nodos del archivo, de modo que el partial
  * es literalmente su elemento con sus clases. Los href/src relativos del
  * fragmento se resuelven contra la URL del partial y no contra la de la vista,
  * para que las secciones compartidas de src/pages/ funcionen igual desde
- * productos/ o desde admin/usuarios/.
+ * productos.html que desde admin/usuarios.html.
  *
  * IMPORTANTE: fetch() no funciona abriendo el archivo con doble clic (file://).
  * Hay que servir el proyecto por HTTP, por ejemplo:
  *   python3 -m http.server 8000
- * y abrir http://localhost:8000/src/pages/
+ * y abrir http://localhost:8000/src/pages/index.html
  */
 
 /* -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ const Rutas = (() => {
 	return {
 		// Base de las vistas: .../src/pages/
 		base,
-		// Enlace a una vista: Rutas.a("producto/?sku=CPU-01")
+		// Enlace a una vista: Rutas.a("producto.html?sku=CPU-01")
 		a: (ruta) => (esExterna(ruta) ? ruta : base + ruta),
 		// Recurso guardado como ruta relativa a src/: "resources/img/cpu.svg"
 		recurso: (ruta) => {

@@ -2,20 +2,22 @@
 <html lang="es" data-bs-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<title>Crear cuenta — Ensambla.me</title>
+		<title>Detalle de orden — Panel Ensambla.me</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Registro de nuevos clientes de Ensambla.me.">
+		<meta name="description" content="Detalle de una orden de compra en solo lectura.">
 		<link rel="icon" href="../../resources/img/logo.svg" type="image/svg+xml">
 		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../../styles/style.css">
 	</head>
 	<body>
-		<!-- Cada seccion de la pagina vive en su propio archivo y se compone con scripts/includes.js -->
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
 		<header data-include="../header.html"></header>
-		<nav data-include="../nav.html"></nav>
-
 		<div class="container my-4">
-			<main data-include="main.html"></main>
+			<div class="row g-4">
+				<aside data-include="aside.html"></aside>
+				<!-- Cuerpo del detalle de una orden en solo lectura (RF-12). -->
+				<main class="col-12 col-lg-9" id="detalle-orden"></main>
+			</div>
 		</div>
 
 		<footer data-include="../footer.html"></footer>
@@ -24,7 +26,6 @@
 		<script src="../../scripts/includes.js"></script>
 		<script src="../../scripts/datos.js"></script>
 		<script src="../../scripts/sesion.js"></script>
-		<script src="../../scripts/carrito.js"></script>
-		<script src="../../scripts/validaciones.js"></script>
+		<script src="../../scripts/mantenedores.js"></script>
 	</body>
 </html>

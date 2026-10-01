@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<title>Armar mi PC — Ensambla.me</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Asistente de armado de PC gamer: escoge categoria por categoria y el sistema filtra lo compatible.">
+		<link rel="icon" href="../resources/img/logo.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../styles/style.css">
+	</head>
+	<body>
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
+		<header data-include="header.html"></header>
+		<nav data-include="nav.html"></nav>
+
+		<div class="container my-4">
+			<div class="row g-4">
+				<aside data-include="aside.html"></aside>
+				<!-- Cuerpo del asistente de armado de PC gamer (RF-07). -->
+				<main class="col-12 col-lg-9">
+					<p class="sobretitulo">Ensambla.me</p>
+					<h1 class="h3">Asistente de armado</h1>
+					<p class="text-secondary">
+						Avanza una categoria a la vez. Cada eleccion filtra las opciones de la categoria
+						siguiente segun la tabla de compatibilidad del catalogo.
+					</p>
+
+					<!-- armado.js llena el selector de modo, los pasos, el paso actual y el resumen. -->
+					<section id="modo-armado" class="mb-4"></section>
+					<ol id="pasos-armado" class="pasos-armado"></ol>
+					<section id="paso-actual"></section>
+					<section id="resumen-armado"></section>
+				</main>
+			</div>
+		</div>
+
+		<footer data-include="footer.html"></footer>
+
+		<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../scripts/includes.js"></script>
+		<script src="../scripts/datos.js"></script>
+		<script src="../scripts/sesion.js"></script>
+		<script src="../scripts/carrito.js"></script>
+		<script src="../scripts/catalogo.js"></script>
+		<script src="../scripts/armado.js"></script>
+	</body>
+</html>

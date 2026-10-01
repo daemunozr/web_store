@@ -18,7 +18,7 @@ function renderizarCategorias() {
 	Datos.categorias.forEach((categoria) => {
 		const enlace = document.createElement("a");
 		enlace.className = "list-group-item list-group-item-action";
-		enlace.href = Rutas.a(`productos/?categoria=${encodeURIComponent(categoria.codigo)}`);
+		enlace.href = Rutas.a(`productos.html?categoria=${encodeURIComponent(categoria.codigo)}`);
 		enlace.textContent = categoria.nombre;
 		if (categoria.codigo === activa) {
 			enlace.classList.add("activa");
@@ -30,7 +30,7 @@ function renderizarCategorias() {
 
 /* ----------------------------------------------------- Tarjeta de producto */
 function tarjetaDeProducto(producto, nivel = 3) {
-	const enlace = Rutas.a(`producto/?sku=${encodeURIComponent(producto.sku)}`);
+	const enlace = Rutas.a(`producto.html?sku=${encodeURIComponent(producto.sku)}`);
 	const nombre = escapar(producto.nombre);
 	const precio =
 		producto.precio === 0
@@ -141,7 +141,7 @@ function renderizarDetalle() {
 			<h1 class="h3 mb-3">Producto no encontrado</h1>
 			<div class="estado-vacio">
 				<p>No existe un producto con el codigo <strong>${escapar(sku) || "(sin codigo)"}</strong> en el catalogo.</p>
-				<a class="btn btn-primary" href="${Rutas.a("productos/")}">Volver al catalogo</a>
+				<a class="btn btn-primary" href="${Rutas.a("productos.html")}">Volver al catalogo</a>
 			</div>
 		`;
 		return;
@@ -170,9 +170,9 @@ function renderizarDetalle() {
 	contenedor.innerHTML = `
 		<nav aria-label="Ubicacion" class="mb-3">
 			<ol class="breadcrumb small mb-0">
-				<li class="breadcrumb-item"><a href="${Rutas.a("productos/")}">Productos</a></li>
+				<li class="breadcrumb-item"><a href="${Rutas.a("productos.html")}">Productos</a></li>
 				<li class="breadcrumb-item">
-					<a href="${Rutas.a(`productos/?categoria=${encodeURIComponent(producto.categoria)}`)}">
+					<a href="${Rutas.a(`productos.html?categoria=${encodeURIComponent(producto.categoria)}`)}">
 						${escapar(Datos.nombreCategoria(producto.categoria))}
 					</a>
 				</li>
@@ -210,7 +210,7 @@ function renderizarDetalle() {
 					<button type="button" class="btn btn-primary" data-agregar="${escapar(producto.sku)}">
 						Anadir al carrito
 					</button>
-					<a class="btn btn-outline-primary" href="${Rutas.a("carrito/")}">Ir al carrito</a>
+					<a class="btn btn-outline-primary" href="${Rutas.a("carrito.html")}">Ir al carrito</a>
 				</div>
 			</div>
 		</div>

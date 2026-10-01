@@ -44,8 +44,8 @@ function guardarSesion(usuario) {
 
 /** Vista a la que llega cada rol al autenticarse (RF-02 CA1). */
 function inicioDeRol(rol) {
-	if (rol === "ADMIN") return Rutas.a("admin/");
-	if (rol === "LOGISTICA") return Rutas.a("admin/productos/");
+	if (rol === "ADMIN") return Rutas.a("admin/index.html");
+	if (rol === "LOGISTICA") return Rutas.a("admin/productos.html");
 	return Rutas.a("index.html");
 }
 
@@ -89,7 +89,7 @@ function protegerVista(rolesPermitidos) {
 
 	if (!sesion) {
 		const destino = window.location.pathname + window.location.search;
-		window.location.replace(`${Rutas.a("login/")}?destino=${encodeURIComponent(destino)}`);
+		window.location.replace(`${Rutas.a("login.html")}?destino=${encodeURIComponent(destino)}`);
 		return false;
 	}
 
@@ -136,10 +136,10 @@ function pintarAccionesSesion() {
 
 /* -------------------------------------------- Panel: menu vertical por rol */
 const OPCIONES_PANEL = [
-	{ texto: "Resumen", ruta: "admin/", roles: ["ADMIN"] },
-	{ texto: "Productos", ruta: "admin/productos/", roles: ["ADMIN", "LOGISTICA"] },
-	{ texto: "Usuarios", ruta: "admin/usuarios/", roles: ["ADMIN"] },
-	{ texto: "Ordenes", ruta: "admin/ordenes/", roles: ["ADMIN", "LOGISTICA"] },
+	{ texto: "Resumen", ruta: "admin/index.html", roles: ["ADMIN"] },
+	{ texto: "Productos", ruta: "admin/productos.html", roles: ["ADMIN", "LOGISTICA"] },
+	{ texto: "Usuarios", ruta: "admin/usuarios.html", roles: ["ADMIN"] },
+	{ texto: "Ordenes", ruta: "admin/ordenes.html", roles: ["ADMIN", "LOGISTICA"] },
 ];
 
 function pintarMenuAdmin() {
@@ -158,7 +158,8 @@ function pintarMenuAdmin() {
 		enlace.className = "nav-link";
 		enlace.href = destino;
 		enlace.textContent = opcion.texto;
-		if (actual === destino || actual === `${destino}index.html`) {
+		const sinIndice = (ruta) => ruta.replace(/index\.html$/, "");
+		if (sinIndice(actual) === sinIndice(destino)) {
 			enlace.classList.add("activo");
 			enlace.setAttribute("aria-current", "page");
 		}

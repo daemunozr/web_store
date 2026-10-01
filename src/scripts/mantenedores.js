@@ -57,19 +57,19 @@ function iniciarResumen() {
 		{
 			titulo: "Mantenedor de Productos",
 			texto: "Listar, crear y editar los productos del catalogo, con alerta de bajo inventario.",
-			ruta: "admin/productos/",
+			ruta: "admin/productos.html",
 			boton: "Abrir productos",
 		},
 		{
 			titulo: "Mantenedor de Usuarios",
 			texto: "Listar, crear y editar usuarios, y asignarles su tipo de usuario.",
-			ruta: "admin/usuarios/",
+			ruta: "admin/usuarios.html",
 			boton: "Abrir usuarios",
 		},
 		{
 			titulo: "Ordenes",
 			texto: "Consultar las ordenes simuladas y su detalle en modo de solo lectura.",
-			ruta: "admin/ordenes/",
+			ruta: "admin/ordenes.html",
 			boton: "Abrir ordenes",
 		},
 	];
@@ -112,7 +112,7 @@ function iniciarListadoProductos() {
 	// El boton de crear solo existe para el rol Administrador (RF-12 CA1).
 	const acciones = document.getElementById("acciones-productos");
 	if (acciones && puedeEditar) {
-		acciones.innerHTML = `<a class="btn btn-primary" href="${Rutas.a("admin/producto/")}">Nuevo producto</a>`;
+		acciones.innerHTML = `<a class="btn btn-primary" href="${Rutas.a("admin/producto.html")}">Nuevo producto</a>`;
 	}
 
 	const guardado = parametro("guardado");
@@ -133,7 +133,7 @@ function iniciarListadoProductos() {
 	const filas = productos
 		.map((producto) => {
 			const critico = enStockCritico(producto);
-			const detalle = Rutas.a(`producto/?sku=${encodeURIComponent(producto.sku)}`);
+			const detalle = Rutas.a(`producto.html?sku=${encodeURIComponent(producto.sku)}`);
 
 			return `
 				<tr class="${critico ? "fila-stock-critico" : ""}">
@@ -154,7 +154,7 @@ function iniciarListadoProductos() {
 					${
 						puedeEditar
 							? `<td class="text-end">
-									<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/producto/?sku=${encodeURIComponent(producto.sku)}`)}">
+									<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/producto.html?sku=${encodeURIComponent(producto.sku)}`)}">
 										Editar
 									</a>
 							   </td>`
@@ -264,7 +264,7 @@ function iniciarFormularioProducto() {
 			else productos[posicion] = guardado;
 
 			Datos.guardarProductos(productos);
-			window.location.assign(`${Rutas.a("admin/productos/")}?guardado=${encodeURIComponent(codigo)}`);
+			window.location.assign(`${Rutas.a("admin/productos.html")}?guardado=${encodeURIComponent(codigo)}`);
 		},
 	);
 }
@@ -278,7 +278,7 @@ function iniciarListadoUsuarios() {
 	const usuarios = Datos.usuarios();
 
 	document.getElementById("acciones-usuarios").innerHTML =
-		`<a class="btn btn-primary" href="${Rutas.a("admin/usuario/")}">Nuevo usuario</a>`;
+		`<a class="btn btn-primary" href="${Rutas.a("admin/usuario.html")}">Nuevo usuario</a>`;
 
 	const guardado = parametro("guardado");
 	if (guardado) {
@@ -305,7 +305,7 @@ function iniciarListadoUsuarios() {
 					<td>${escapar(Datos.nombreRol(usuario.tipoUsuario))}</td>
 					<td>${escapar(Datos.nombreComuna(usuario.comuna))}, ${escapar(Datos.nombreRegionDeComuna(usuario.comuna))}</td>
 					<td class="text-end">
-						<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/usuario/?run=${encodeURIComponent(usuario.run)}`)}">
+						<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/usuario.html?run=${encodeURIComponent(usuario.run)}`)}">
 							Editar
 						</a>
 					</td>
@@ -422,7 +422,7 @@ function iniciarFormularioUsuario() {
 			else usuarios[posicion] = guardado;
 
 			Datos.guardarUsuarios(usuarios);
-			window.location.assign(`${Rutas.a("admin/usuarios/")}?guardado=${encodeURIComponent(identificador)}`);
+			window.location.assign(`${Rutas.a("admin/usuarios.html")}?guardado=${encodeURIComponent(identificador)}`);
 		},
 	);
 }
@@ -460,7 +460,7 @@ function iniciarListadoOrdenes() {
 					<td class="small">${productos}</td>
 					<td class="text-end">${Datos.precio(Datos.totalOrden(orden.numero))}</td>
 					<td class="text-end">
-						<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/orden/?orden=${encodeURIComponent(orden.numero)}`)}">
+						<a class="btn btn-sm btn-outline-primary" href="${Rutas.a(`admin/orden.html?orden=${encodeURIComponent(orden.numero)}`)}">
 							Ver detalle
 						</a>
 					</td>
@@ -499,7 +499,7 @@ function iniciarDetalleOrden() {
 			<h1 class="h3">Orden no encontrada</h1>
 			<div class="estado-vacio">
 				<p>No existe una orden con el numero <strong>${escapar(numero) || "(sin numero)"}</strong>.</p>
-				<a class="btn btn-primary" href="${Rutas.a("admin/ordenes/")}">Volver a las ordenes</a>
+				<a class="btn btn-primary" href="${Rutas.a("admin/ordenes.html")}">Volver a las ordenes</a>
 			</div>
 		`;
 		return;
@@ -564,7 +564,7 @@ function iniciarDetalleOrden() {
 			</table>
 		</div>
 
-		<p><a class="btn btn-outline-primary" href="${Rutas.a("admin/ordenes/")}">Volver a las ordenes</a></p>
+		<p><a class="btn btn-outline-primary" href="${Rutas.a("admin/ordenes.html")}">Volver a las ordenes</a></p>
 	`;
 }
 

@@ -298,7 +298,7 @@ function conectarRegistro() {
 
 			aviso(
 				zonaAviso,
-				`Cuenta creada para ${escapar(datos.nombre)} ${escapar(datos.apellidos)}. Ya puedes <a href="${Rutas.a("login/")}">iniciar sesion</a> con ${escapar(correo)}.`,
+				`Cuenta creada para ${escapar(datos.nombre)} ${escapar(datos.apellidos)}. Ya puedes <a href="${Rutas.a("login.html")}">iniciar sesion</a> con ${escapar(correo)}.`,
 			);
 
 			formulario.reset();

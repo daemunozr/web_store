@@ -269,7 +269,7 @@ function pintarResumen() {
 	if (estado.agregado) {
 		acciones = `
 			<div class="d-flex flex-wrap gap-2">
-				<a class="btn btn-primary" href="${Rutas.a("carrito/")}">Ir al carrito</a>
+				<a class="btn btn-primary" href="${Rutas.a("carrito.html")}">Ir al carrito</a>
 				<button type="button" class="btn btn-outline-primary" data-accion="reiniciar">Armar otro equipo</button>
 			</div>`;
 	} else if (puedeAgregar) {

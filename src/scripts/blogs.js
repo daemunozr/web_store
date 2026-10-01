@@ -18,7 +18,7 @@ function renderizarListadoBlogs() {
 	contenedor.className = "row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4";
 	contenedor.innerHTML = Datos.blogs
 		.map((articulo) => {
-			const enlace = Rutas.a(`blog/?slug=${encodeURIComponent(articulo.slug)}`);
+			const enlace = Rutas.a(`blog.html?slug=${encodeURIComponent(articulo.slug)}`);
 			return `
 				<div class="col">
 					<article class="card tarjeta-blog h-100">
@@ -55,7 +55,7 @@ function renderizarArticulo() {
 			<h1 class="h3">Articulo no encontrado</h1>
 			<div class="estado-vacio">
 				<p>No existe un articulo con el identificador <strong>${escapar(slug) || "(sin identificador)"}</strong>.</p>
-				<a class="btn btn-primary" href="${Rutas.a("blogs/")}">Volver a los blogs</a>
+				<a class="btn btn-primary" href="${Rutas.a("blogs.html")}">Volver a los blogs</a>
 			</div>
 		`;
 		return;
@@ -69,7 +69,7 @@ function renderizarArticulo() {
 		<img src="${Rutas.recurso(articulo.imagen)}" alt="" class="imagen-articulo mb-4">
 		<p class="lead">${escapar(articulo.resumen)}</p>
 		${articulo.cuerpo.map((parrafo) => `<p>${escapar(parrafo)}</p>`).join("")}
-		<p class="mt-4"><a class="btn btn-outline-primary" href="${Rutas.a("blogs/")}">Volver a los blogs</a></p>
+		<p class="mt-4"><a class="btn btn-outline-primary" href="${Rutas.a("blogs.html")}">Volver a los blogs</a></p>
 	`;
 }
 

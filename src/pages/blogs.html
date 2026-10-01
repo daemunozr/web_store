@@ -2,23 +2,31 @@
 <html lang="es" data-bs-theme="dark">
 	<head>
 		<meta charset="utf-8">
-		<title>Ensambla.me — Arma tu PC gamer pieza por pieza</title>
+		<title>Blogs — Ensambla.me</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Tienda online de componentes de PC gamer con asistente de armado guiado por compatibilidad.">
+		<meta name="description" content="Articulos del taller de Ensambla.me sobre armado, fuentes de poder y memoria.">
 		<link rel="icon" href="../resources/img/logo.svg" type="image/svg+xml">
 		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../styles/style.css">
 	</head>
 	<body>
-		<!-- Cada seccion de la pagina vive en su propio archivo y se compone con scripts/includes.js -->
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
 		<header data-include="header.html"></header>
 		<nav data-include="nav.html"></nav>
 
 		<div class="container my-4">
-			<div class="row g-4">
-				<aside data-include="aside.html"></aside>
-				<main data-include="body.html"></main>
-			</div>
+			<!-- Cuerpo del listado de blogs (RF-09). -->
+			<main>
+				<p class="sobretitulo">Taller Ensambla.me</p>
+				<h1 class="h3">Blogs</h1>
+				<p class="text-secondary mb-4">
+					Lo que aprendimos armando equipos: en que orden montar las piezas, cuanta fuente
+					necesitas y cuando conviene cambiar de memoria.
+				</p>
+
+				<!-- blogs.js genera las tarjetas desde los datos de articulos. -->
+				<div id="listado-blogs"></div>
+			</main>
 		</div>
 
 		<footer data-include="footer.html"></footer>
@@ -28,6 +36,6 @@
 		<script src="../scripts/datos.js"></script>
 		<script src="../scripts/sesion.js"></script>
 		<script src="../scripts/carrito.js"></script>
-		<script src="../scripts/catalogo.js"></script>
+		<script src="../scripts/blogs.js"></script>
 	</body>
 </html>

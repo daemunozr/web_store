@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<title>Crear cuenta — Ensambla.me</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Registro de nuevos clientes de Ensambla.me.">
+		<link rel="icon" href="../resources/img/logo.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../styles/style.css">
+	</head>
+	<body>
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
+		<header data-include="header.html"></header>
+		<nav data-include="nav.html"></nav>
+
+		<div class="container my-4">
+			<!-- Cuerpo del registro de usuarios (RF-01). -->
+			<main>
+				<p class="sobretitulo">Crear cuenta</p>
+				<h1 class="h3">Registro de cliente</h1>
+				<p class="text-secondary mb-4">
+					Con tu cuenta puedes comprar, guardar tus armados y revisar tus datos de despacho.
+				</p>
+
+				<section class="tarjeta-formulario p-4">
+					<div id="aviso-registro" aria-live="polite"></div>
+
+					<form id="form-registro">
+						<div class="row g-3">
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-run">
+									RUN <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="text"
+									class="form-control"
+									id="registro-run"
+									name="run"
+									maxlength="9"
+									autocomplete="off"
+									required
+								>
+								<p class="form-text">Sin puntos ni guion, con el digito verificador. Ejemplo: 190110222.</p>
+							</div>
+
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-nombre">
+									Nombre <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="text"
+									class="form-control"
+									id="registro-nombre"
+									name="nombre"
+									maxlength="50"
+									autocomplete="given-name"
+									required
+								>
+								<p class="form-text">Hasta 50 caracteres.</p>
+							</div>
+
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-apellidos">
+									Apellidos <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="text"
+									class="form-control"
+									id="registro-apellidos"
+									name="apellidos"
+									maxlength="100"
+									autocomplete="family-name"
+									required
+								>
+								<p class="form-text">Hasta 100 caracteres.</p>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<label class="form-label" for="registro-correo">
+									Correo <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="email"
+									class="form-control"
+									id="registro-correo"
+									name="correo"
+									maxlength="100"
+									list="dominios-registro"
+									autocomplete="email"
+									required
+								>
+								<datalist id="dominios-registro"></datalist>
+								<p class="form-text">Dominios aceptados: @duoc.cl, @profesor.duoc.cl y @gmail.com.</p>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<label class="form-label" for="registro-contrasena">
+									Contrasena <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="password"
+									class="form-control"
+									id="registro-contrasena"
+									name="contrasena"
+									maxlength="10"
+									autocomplete="new-password"
+									required
+								>
+								<p class="form-text">Entre 4 y 10 caracteres.</p>
+							</div>
+
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-nacimiento">Fecha de nacimiento</label>
+								<input
+									type="date"
+									class="form-control"
+									id="registro-nacimiento"
+									name="fechaNacimiento"
+									autocomplete="bday"
+								>
+								<p class="form-text">Campo opcional.</p>
+							</div>
+
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-region">
+									Region <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<select
+									class="form-select"
+									id="registro-region"
+									name="region"
+									autocomplete="address-level1"
+									required
+								>
+									<option value="">Selecciona una region</option>
+								</select>
+								<p class="form-text">Al cambiarla se recargan sus comunas.</p>
+							</div>
+
+							<div class="col-12 col-md-4">
+								<label class="form-label" for="registro-comuna">
+									Comuna <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<select
+									class="form-select"
+									id="registro-comuna"
+									name="comuna"
+									autocomplete="address-level2"
+									required
+								>
+									<option value="">Selecciona una comuna</option>
+								</select>
+								<p class="form-text">Solo las comunas de la region escogida.</p>
+							</div>
+
+							<div class="col-12">
+								<label class="form-label" for="registro-direccion">
+									Direccion <span class="obligatorio" aria-hidden="true">*</span>
+								</label>
+								<input
+									type="text"
+									class="form-control"
+									id="registro-direccion"
+									name="direccion"
+									maxlength="300"
+									autocomplete="address-line1"
+									required
+								>
+								<p class="form-text">Calle, numero y departamento. Hasta 300 caracteres.</p>
+							</div>
+						</div>
+
+						<div class="d-flex flex-wrap gap-2 mt-4">
+							<button type="submit" class="btn btn-primary">Crear mi cuenta</button>
+							<a class="btn btn-outline-primary" href="login.html">Ya tengo cuenta</a>
+						</div>
+					</form>
+				</section>
+			</main>
+		</div>
+
+		<footer data-include="footer.html"></footer>
+
+		<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../scripts/includes.js"></script>
+		<script src="../scripts/datos.js"></script>
+		<script src="../scripts/sesion.js"></script>
+		<script src="../scripts/carrito.js"></script>
+		<script src="../scripts/validaciones.js"></script>
+	</body>
+</html>

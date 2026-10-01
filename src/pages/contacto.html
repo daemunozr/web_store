@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<title>Contacto — Ensambla.me</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Escribenos: formulario de contacto de Ensambla.me.">
+		<link rel="icon" href="../resources/img/logo.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../styles/style.css">
+	</head>
+	<body>
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
+		<header data-include="header.html"></header>
+		<nav data-include="nav.html"></nav>
+
+		<div class="container my-4">
+			<!-- Cuerpo del formulario de contacto (RF-08). -->
+			<main>
+				<p class="sobretitulo">Escribenos</p>
+				<h1 class="h3">Contacto</h1>
+				<p class="text-secondary mb-4">
+					Dudas de compatibilidad, cotizaciones o estado de un pedido: respondemos en dias habiles.
+				</p>
+
+				<div class="row g-4">
+					<div class="col-12 col-lg-7">
+						<section class="tarjeta-formulario p-4">
+							<h2 class="h5 mb-3">Formulario de contacto</h2>
+							<div id="aviso-contacto" aria-live="polite"></div>
+
+							<form id="form-contacto">
+								<div class="mb-3">
+									<label class="form-label" for="contacto-nombre">
+										Nombre <span class="obligatorio" aria-hidden="true">*</span>
+									</label>
+									<input
+										type="text"
+										class="form-control"
+										id="contacto-nombre"
+										name="nombre"
+										maxlength="100"
+										autocomplete="name"
+										required
+									>
+									<p class="form-text">Hasta 100 caracteres.</p>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="contacto-correo">
+										Correo <span class="obligatorio" aria-hidden="true">*</span>
+									</label>
+									<input
+										type="email"
+										class="form-control"
+										id="contacto-correo"
+										name="correo"
+										maxlength="100"
+										list="dominios-contacto"
+										autocomplete="email"
+										required
+									>
+									<datalist id="dominios-contacto"></datalist>
+									<p class="form-text">
+										Solo aceptamos correos @duoc.cl, @profesor.duoc.cl y @gmail.com.
+									</p>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="contacto-comentario">
+										Comentario <span class="obligatorio" aria-hidden="true">*</span>
+									</label>
+									<textarea
+										class="form-control"
+										id="contacto-comentario"
+										name="comentario"
+										rows="5"
+										maxlength="500"
+										autocomplete="off"
+										required
+									></textarea>
+									<p class="form-text">Hasta 500 caracteres. Cuentanos tu caso con detalle.</p>
+								</div>
+
+								<button type="submit" class="btn btn-primary">Enviar mensaje</button>
+							</form>
+						</section>
+					</div>
+
+					<div class="col-12 col-lg-5">
+						<section class="card">
+							<div class="card-body">
+								<h2 class="h6 card-title">Datos de la tienda</h2>
+								<address class="small mb-0">
+									<strong>Ensambla.me SpA</strong><br>
+									Av. Vicuna Mackenna 4860, Macul, Santiago<br>
+									Lunes a viernes de 10:00 a 19:00<br>
+									Telefono: +56 2 2345 6789<br>
+									Correo: <a href="mailto:contacto@ensambla.me">contacto@ensambla.me</a>
+								</address>
+							</div>
+						</section>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<footer data-include="footer.html"></footer>
+
+		<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../scripts/includes.js"></script>
+		<script src="../scripts/datos.js"></script>
+		<script src="../scripts/sesion.js"></script>
+		<script src="../scripts/carrito.js"></script>
+		<script src="../scripts/validaciones.js"></script>
+	</body>
+</html>

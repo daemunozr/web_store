@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<title>Iniciar sesion — Ensambla.me</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Acceso de clientes y administradores de Ensambla.me.">
+		<link rel="icon" href="../resources/img/logo.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../styles/style.css">
+	</head>
+	<body>
+		<!-- Las secciones compartidas se cargan desde su propio archivo con scripts/includes.js -->
+		<header data-include="header.html"></header>
+		<nav data-include="nav.html"></nav>
+
+		<div class="container my-4">
+			<!-- Cuerpo del inicio de sesion (RF-02). -->
+			<main>
+				<p class="sobretitulo">Acceso</p>
+				<h1 class="h3">Iniciar sesion</h1>
+				<p class="text-secondary mb-4">
+					Cada rol llega a lo que le corresponde: la tienda, el panel de administracion o la
+					consulta de productos y ordenes.
+				</p>
+
+				<div class="row g-4">
+					<div class="col-12 col-lg-6">
+						<section class="tarjeta-formulario p-4">
+							<h2 class="h5 mb-3">Tus credenciales</h2>
+							<div id="aviso-login" aria-live="polite"></div>
+
+							<form id="form-login">
+								<div class="mb-3">
+									<label class="form-label" for="login-correo">
+										Correo <span class="obligatorio" aria-hidden="true">*</span>
+									</label>
+									<input
+										type="email"
+										class="form-control"
+										id="login-correo"
+										name="correo"
+										maxlength="100"
+										list="dominios-login"
+										autocomplete="username"
+										required
+									>
+									<datalist id="dominios-login"></datalist>
+									<p class="form-text">Dominios aceptados: @duoc.cl, @profesor.duoc.cl y @gmail.com.</p>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="login-contrasena">
+										Contrasena <span class="obligatorio" aria-hidden="true">*</span>
+									</label>
+									<input
+										type="password"
+										class="form-control"
+										id="login-contrasena"
+										name="contrasena"
+										maxlength="10"
+										autocomplete="current-password"
+										required
+									>
+									<p class="form-text">Entre 4 y 10 caracteres.</p>
+								</div>
+
+								<div class="d-flex flex-wrap gap-2">
+									<button type="submit" class="btn btn-primary">Entrar</button>
+									<a class="btn btn-outline-primary" href="registro.html">Crear una cuenta</a>
+								</div>
+							</form>
+						</section>
+					</div>
+
+					<div class="col-12 col-lg-6">
+						<section class="card">
+							<div class="card-body">
+								<h2 class="h6 card-title">Cuentas de prueba</h2>
+								<p class="small text-secondary">
+									Los datos de esta entrega se simulan en arreglos JavaScript. Estas cuentas vienen
+									cargadas para revisar cada rol:
+								</p>
+								<dl class="row small mb-0">
+									<dt class="col-5">Administrador</dt>
+									<dd class="col-7">admin@duoc.cl / admin1234</dd>
+									<dt class="col-5">Admin. logistico</dt>
+									<dd class="col-7">bodega@duoc.cl / bodega123</dd>
+									<dt class="col-5">Cliente</dt>
+									<dd class="col-7">camila@gmail.com / cliente123</dd>
+								</dl>
+							</div>
+						</section>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<footer data-include="footer.html"></footer>
+
+		<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../scripts/includes.js"></script>
+		<script src="../scripts/datos.js"></script>
+		<script src="../scripts/sesion.js"></script>
+		<script src="../scripts/carrito.js"></script>
+		<script src="../scripts/validaciones.js"></script>
+	</body>
+</html>

@@ -174,7 +174,7 @@ function filaDeLinea(linea, nivel = 2) {
 
 				<div class="flex-grow-1">
 					<h${nivel} class="h6 mb-1">
-						<a class="enlace-producto" href="${Rutas.a(`producto/?sku=${encodeURIComponent(producto.sku)}`)}">${escapar(producto.nombre)}</a>
+						<a class="enlace-producto" href="${Rutas.a(`producto.html?sku=${encodeURIComponent(producto.sku)}`)}">${escapar(producto.nombre)}</a>
 					</h${nivel}>
 					<p class="etiqueta-categoria mb-1">${escapar(Datos.nombreCategoria(producto.categoria))}</p>
 					<p class="small mb-0">Precio unitario: ${Datos.precio(producto.precio)}</p>
@@ -241,7 +241,7 @@ function renderizarCarrito() {
 		contenedor.innerHTML = `
 			<div class="estado-vacio">
 				<p class="mb-3">Tu carrito esta vacio.</p>
-				<a class="btn btn-primary" href="${Rutas.a("productos/")}">Ver el catalogo</a>
+				<a class="btn btn-primary" href="${Rutas.a("productos.html")}">Ver el catalogo</a>
 			</div>
 		`;
 		if (zonaTotal) zonaTotal.textContent = Datos.precio(0);
