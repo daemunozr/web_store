@@ -43,7 +43,7 @@ function tarjetaDeProducto(producto, nivel = 3) {
 				<a href="${enlace}" aria-label="Ver el detalle de ${nombre}">
 					${
 						producto.imagen
-							? `<img src="${Rutas.recurso(producto.imagen)}" alt="${nombre}" class="imagen-producto card-img-top">`
+							? `<img src="${Rutas.recurso(producto.imagen)}" alt="${nombre}" class="imagen-producto card-img-top" loading="lazy">`
 							: '<p class="sin-imagen card-img-top mb-0"></p>'
 					}
 				</a>

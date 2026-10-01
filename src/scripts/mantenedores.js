@@ -140,7 +140,7 @@ function iniciarListadoProductos() {
 					<td>
 						${
 							producto.imagen
-								? `<img src="${Rutas.recurso(producto.imagen)}" alt="" class="miniatura">`
+								? `<img src="${Rutas.recurso(producto.imagen)}" alt="" class="miniatura" loading="lazy">`
 								: ""
 						}
 					</td>
