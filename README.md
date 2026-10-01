@@ -5,7 +5,7 @@ Especificación de Requisitos de Software
 
 *Proyecto:* Ensambla.me – Tienda Online de Tecnología
 
-**Revisión: 2.2**
+**Revisión: 2.3**
 
 **Autor:** Daniel Muñoz
 
@@ -65,6 +65,7 @@ Especificación de Requisitos según estándar de IEEE 830.
 | 30-09-2026 | 2.0          | Daniel Muñoz | Reestructuración del documento a la plantilla del Anexo 4              |
 | 30-09-2026 | 2.1          | Daniel Muñoz | Reclasificación de requisitos funcionales y poda de criterios          |
 | 01-10-2026 | 2.2          | Daniel Muñoz | Corrección del ejemplo de RUN, sessionStorage y trazabilidad vigente   |
+| 01-10-2026 | 2.3          | Daniel Muñoz | Reglas de stock del carrito (RF-05, RF-06 y RF-07)                     |
 
 Documento validado por las partes en fecha: *pendiente de presentación (Entrega
 I)*.
@@ -553,7 +554,9 @@ información que el sistema almacena.
 > Actores: Cliente
 >
 > Descripción: El cliente debe poder agregar un producto al carrito de compras
-> desde la vista de listado de productos o desde el detalle de producto.
+> desde la vista de listado de productos o desde el detalle de producto. Las
+> unidades de un producto en el carrito, sumando sus líneas sueltas y las de
+> cualquier armado (RF-07), no pueden superar su stock.
 >
 > Criterios de aceptación:
 >
@@ -564,6 +567,12 @@ información que el sistema almacena.
 >    crear una segunda línea para el mismo producto.
 > 3. Cada vez que se añade un producto se muestra una confirmación visual al
 >    cliente.
+> 4. Un producto con stock 0 muestra el botón de añadir deshabilitado con el
+>    texto "Sin stock", tanto en el listado como en el detalle.
+> 5. Si el carrito ya contiene todas las unidades en stock de un producto, el
+>    intento de añadir otra se rechaza con un mensaje que indica las unidades
+>    disponibles y el carrito no cambia; por ejemplo, con stock 2 la tercera
+>    unidad no se agrega.
 
 > **RF-06 — Gestionar carrito de compras**
 >
@@ -582,10 +591,13 @@ información que el sistema almacena.
 >    sin recargar la página.
 > 3. Al modificar la cantidad de un ítem se recalculan su subtotal y el total,
 >    que corresponde exactamente a la suma de precio unitario por cantidad de
->    todas las líneas; no se permite una cantidad menor que 1.
+>    todas las líneas; no se permite una cantidad menor que 1 ni una que, sumada
+>    a las demás líneas del mismo producto, supere su stock: una cantidad mayor
+>    se ajusta al máximo permitido y se informa con un mensaje.
 > 4. Dado un carrito con productos, al recargar la página o cerrar y reabrir el
 >    navegador el carrito conserva su contenido (persistencia en
->    `localStorage`).
+>    `localStorage`); si desde entonces el stock de un producto bajó, su cantidad
+>    se ajusta al stock vigente y la línea sin unidades disponibles se quita.
 > 5. Con el carrito vacío se muestra un mensaje indicándolo y el total es 0.
 
 > **RF-07 — Armar PC gamer por componentes**
@@ -620,6 +632,10 @@ información que el sistema almacena.
 >    detalle de sus componentes y su precio corresponde a la suma de ellos.
 > 6. El sistema no emite ningún juicio de compatibilidad técnica real: si la
 >    tabla asocia dos componentes, la combinación se acepta (ver 1.2 y 2.6).
+> 7. Un componente con stock 0 aparece en su categoría marcado "sin stock" y no
+>    puede seleccionarse; si al finalizar algún componente ya no tiene unidades
+>    disponibles (RF-05), el armado no se agrega al carrito y el mensaje nombra
+>    los componentes sin stock.
 
 > **RF-08 — Enviar mensaje de contacto**
 >
@@ -1128,9 +1144,9 @@ en estado Solicitado en esta revisión.
 | RF-02  | Funcional de usuario            | Esencial    | A1     | Inicio de sesión              | login.html, scripts/sesion.js                                                   |
 | RF-03  | Funcional de usuario            | Esencial    | A1     | Inicio / Productos            | index.html, productos.html, scripts/catalogo.js                                 |
 | RF-04  | Funcional de usuario            | Esencial    | A1+R   | Detalle de producto           | producto.html, scripts/catalogo.js                                              |
-| RF-05  | Funcional de usuario            | Esencial    | A1     | Productos / Detalle           | productos.html, producto.html, scripts/carrito.js                               |
+| RF-05  | Funcional de usuario            | Esencial    | A1     | Productos / Detalle           | productos.html, producto.html, scripts/carrito.js, scripts/catalogo.js          |
 | RF-06  | Funcional de usuario            | Esencial    | A1     | Carrito de compras            | carrito.html, scripts/carrito.js                                                |
-| RF-07  | Funcional de sistema            | Esencial    | P      | Asistente de armado           | armado.html, scripts/armado.js                                                  |
+| RF-07  | Funcional de sistema            | Esencial    | P      | Asistente de armado           | armado.html, scripts/armado.js, scripts/carrito.js                              |
 | RF-08  | Funcional de usuario            | Esencial    | A1+P   | Contacto                      | contacto.html, scripts/validaciones.js                                          |
 | RF-09  | Funcional de usuario            | Condicional | A1     | Blogs / Detalle de blog       | blogs.html, blog.html                                                           |
 | RF-10  | Funcional de usuario            | Esencial    | A1+P   | Admin: Productos              | admin/productos.html, scripts/mantenedores.js                                   |
