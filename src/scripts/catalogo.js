@@ -28,6 +28,16 @@ function renderizarCategorias() {
 	});
 }
 
+/* ------------------------------------------------- Boton de anadir al carrito
+   Un producto sin stock muestra el boton deshabilitado y sin data-agregar,
+   de modo que carrito.js no lo atiende (RF-05). */
+function botonAgregar(producto, clases, texto = "Anadir al carrito") {
+	if (Number(producto.stock) <= 0) {
+		return `<button type="button" class="${clases}" disabled>Sin stock</button>`;
+	}
+	return `<button type="button" class="${clases}" data-agregar="${escapar(producto.sku)}">${texto}</button>`;
+}
+
 /* ----------------------------------------------------- Tarjeta de producto */
 function tarjetaDeProducto(producto, nivel = 3) {
 	const enlace = Rutas.a(`producto.html?sku=${encodeURIComponent(producto.sku)}`);
@@ -53,13 +63,7 @@ function tarjetaDeProducto(producto, nivel = 3) {
 						<a class="enlace-producto" href="${enlace}">${nombre}</a>
 					</h${nivel}>
 					${precio}
-					<button
-						type="button"
-						class="btn btn-sm btn-outline-primary mt-auto"
-						data-agregar="${escapar(producto.sku)}"
-					>
-						Anadir al carrito
-					</button>
+					${botonAgregar(producto, "btn btn-sm btn-outline-primary mt-auto")}
 				</div>
 			</article>
 		</div>
@@ -207,9 +211,7 @@ function renderizarDetalle() {
 				${alerta}
 
 				<div class="d-flex flex-wrap gap-2 mt-3">
-					<button type="button" class="btn btn-primary" data-agregar="${escapar(producto.sku)}">
-						Anadir al carrito
-					</button>
+					${botonAgregar(producto, "btn btn-primary")}
 					<a class="btn btn-outline-primary" href="${Rutas.a("carrito.html")}">Ir al carrito</a>
 				</div>
 			</div>

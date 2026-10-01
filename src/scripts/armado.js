@@ -123,6 +123,8 @@ function pintarPasos() {
 
 /* ------------------------------------------------------------- Paso actual */
 function tarjetaDeOpcion(producto, seleccionado) {
+	// Un componente sin stock se muestra, pero no puede escogerse (RF-07).
+	const sinStock = Number(producto.stock) <= 0;
 	return `
 		<div class="col">
 			<article class="card opcion-componente">
@@ -134,10 +136,11 @@ function tarjetaDeOpcion(producto, seleccionado) {
 							name="componente"
 							id="opcion-${escapar(producto.sku)}"
 							value="${escapar(producto.sku)}"
-							${seleccionado ? "checked" : ""}
+							${seleccionado && !sinStock ? "checked" : ""}
+							${sinStock ? "disabled" : ""}
 						>
 						<label class="form-check-label fw-semibold" for="opcion-${escapar(producto.sku)}">
-							${escapar(producto.nombre)}
+							${escapar(producto.nombre)}${sinStock ? " (sin stock)" : ""}
 						</label>
 					</div>
 					<p class="precio mb-1">${producto.precio === 0 ? "Gratis" : Datos.precio(producto.precio)}</p>
@@ -334,7 +337,8 @@ function agregarAlCarrito() {
 	const skus = elegidos().map((eleccion) => eleccion.sku);
 	if (!skus.length) return;
 
-	Carrito.agregarArmado(skus);
+	// Si falta stock de algun componente, carrito.js avisa y el armado sigue en pantalla.
+	if (!Carrito.agregarArmado(skus)) return;
 	estado.agregado = true;
 	pintarTodo();
 }

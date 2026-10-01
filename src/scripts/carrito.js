@@ -19,15 +19,21 @@ function leerCarrito() {
 		const lineas = JSON.parse(guardado);
 		if (!Array.isArray(lineas)) throw new Error("el contenido no es un arreglo");
 
-		// Se descartan las lineas que ya no corresponden a un producto vigente.
+		// Se descartan las lineas que ya no corresponden a un producto vigente y
+		// se ajustan las cantidades al stock actual, que pudo bajar desde que se
+		// guardo el carrito: la linea que ya no tiene unidades se quita.
+		const ocupadas = {};
 		return lineas
 			.filter((linea) => linea && typeof linea.producto === "string" && Datos.producto(linea.producto))
-			.map((linea, i) => ({
-				linea: i + 1,
-				producto: linea.producto,
-				cantidad: Math.max(1, Math.trunc(Number(linea.cantidad)) || 1),
-				armado: linea.armado || null,
-			}));
+			.map((linea) => {
+				const stock = Number(Datos.producto(linea.producto).stock) || 0;
+				const libres = Math.max(0, stock - (ocupadas[linea.producto] ?? 0));
+				const cantidad = Math.min(Math.max(1, Math.trunc(Number(linea.cantidad)) || 1), libres);
+				ocupadas[linea.producto] = (ocupadas[linea.producto] ?? 0) + cantidad;
+				return { producto: linea.producto, cantidad, armado: linea.armado || null };
+			})
+			.filter((linea) => linea.cantidad > 0)
+			.map((linea, i) => ({ linea: i + 1, ...linea }));
 	} catch (error) {
 		console.error("carrito.js: contenido invalido en localStorage, el carrito parte vacio", error);
 		// Se descarta el contenido ilegible para no repetir el error en cada lectura.
@@ -58,8 +64,29 @@ const subtotalDeLinea = (linea) => (Datos.producto(linea.producto)?.precio ?? 0)
 
 const totalCarrito = () => leerCarrito().reduce((total, linea) => total + subtotalDeLinea(linea), 0);
 
+/* --------------------------------------------------------- Reglas de stock
+   Las unidades de un producto en el carrito, sumando sus lineas sueltas y las
+   de cualquier armado, nunca superan su stock (RF-05, RF-06, RF-07). */
+/** Unidades del producto en el carrito, sin contar la linea indicada. */
+const unidadesEnCarrito = (sku, lineas = leerCarrito(), excluirLinea = null) =>
+	lineas
+		.filter((linea) => linea.producto === sku && linea.linea !== excluirLinea)
+		.reduce((total, linea) => total + linea.cantidad, 0);
+
+/** "1 unidad" o "N unidades". */
+const unidades = (n) => `${n} ${n === 1 ? "unidad" : "unidades"}`;
+
+/** Unidades que todavia pueden agregarse al carrito sin superar el stock. */
+function disponible(sku, lineas = leerCarrito(), excluirLinea = null) {
+	const stock = Number(Datos.producto(sku)?.stock) || 0;
+	return Math.max(0, stock - unidadesEnCarrito(sku, lineas, excluirLinea));
+}
+
 /* ---------------------------------------------------------------- Operaciones */
-/** Agrega un producto; si ya esta suelto en el carrito, suma su cantidad (RF-05 CA2). */
+/**
+ * Agrega un producto; si ya esta suelto en el carrito, suma su cantidad (RF-05 CA2).
+ * Rechaza la operacion si no hay stock suficiente.
+ */
 function agregarProducto(sku, cantidad = 1) {
 	const producto = Datos.producto(sku);
 	if (!producto) {
@@ -68,6 +95,23 @@ function agregarProducto(sku, cantidad = 1) {
 	}
 
 	const lineas = leerCarrito();
+
+	if (Number(producto.stock) <= 0) {
+		confirmar(`"${producto.nombre}" no tiene stock disponible.`);
+		return;
+	}
+
+	const libres = disponible(sku, lineas);
+	if (cantidad > libres) {
+		const enCarrito = unidadesEnCarrito(sku, lineas);
+		confirmar(
+			libres === 0
+				? `Ya tienes en el carrito todo el stock de "${producto.nombre}" (${unidades(enCarrito)}).`
+				: `Solo ${libres === 1 ? "queda" : "quedan"} ${unidades(libres)} de "${producto.nombre}" y ya tienes ${enCarrito} en el carrito.`,
+		);
+		return;
+	}
+
 	const existente = lineas.find((linea) => linea.producto === sku && !linea.armado);
 
 	if (existente) {
@@ -80,18 +124,34 @@ function agregarProducto(sku, cantidad = 1) {
 	confirmar(`"${producto.nombre}" se agrego al carrito.`);
 }
 
-/** Agrega un armado completo: una linea por componente, todas con el mismo agrupador (RF-07). */
+/**
+ * Agrega un armado completo: una linea por componente, todas con el mismo
+ * agrupador (RF-07). Si algun componente no tiene stock disponible, el armado
+ * no se agrega y se devuelve null.
+ */
 function agregarArmado(skus) {
 	if (!skus.length) return null;
 
 	const identificador = `ARM-${Date.now().toString(36).toUpperCase()}`;
 	const lineas = leerCarrito();
+	const sinStock = [];
 
+	// Cada componente se agrega a "lineas" antes de revisar el siguiente, asi un
+	// mismo producto repetido en el armado tambien cuenta contra su stock.
 	skus.forEach((sku) => {
-		if (Datos.producto(sku)) {
-			lineas.push({ linea: lineas.length + 1, producto: sku, cantidad: 1, armado: identificador });
+		const producto = Datos.producto(sku);
+		if (!producto) return;
+		if (disponible(sku, lineas) < 1) {
+			sinStock.push(producto.nombre);
+			return;
 		}
+		lineas.push({ linea: lineas.length + 1, producto: sku, cantidad: 1, armado: identificador });
 	});
+
+	if (sinStock.length) {
+		confirmar(`Sin stock suficiente para: ${sinStock.join(", ")}. El armado no se agrego.`);
+		return null;
+	}
 
 	guardarCarrito(lineas);
 	confirmar(`Armado agregado al carrito con ${skus.length} ${skus.length === 1 ? "componente" : "componentes"}.`);
@@ -106,13 +166,20 @@ function eliminarArmado(identificador) {
 	guardarCarrito(leerCarrito().filter((linea) => linea.armado !== identificador));
 }
 
-/** Cambia la cantidad de una linea; nunca por debajo de 1 (RF-06 CA3). */
+/** Cambia la cantidad de una linea; nunca por debajo de 1 ni por sobre el stock (RF-06 CA3). */
 function cambiarCantidad(numero, cantidad) {
 	const lineas = leerCarrito();
 	const linea = lineas.find((l) => l.linea === numero);
 	if (!linea) return;
 
-	linea.cantidad = Math.max(1, Math.trunc(Number(cantidad)) || 1);
+	const pedida = Math.max(1, Math.trunc(Number(cantidad)) || 1);
+	const tope = Math.max(1, disponible(linea.producto, lineas, numero));
+
+	if (pedida > tope) {
+		confirmar(`Solo puedes llevar ${unidades(tope)} de "${Datos.producto(linea.producto).nombre}".`);
+	}
+
+	linea.cantidad = Math.min(pedida, tope);
 	guardarCarrito(lineas);
 }
 
@@ -164,8 +231,10 @@ const imagenDeProducto = (producto, clase) =>
 		? `<img src="${Rutas.recurso(producto.imagen)}" alt="${escapar(producto.nombre)}" class="${clase}">`
 		: `<p class="sin-imagen ${clase} mb-0"></p>`;
 
-function filaDeLinea(linea, nivel = 2) {
+function filaDeLinea(linea, lineas, nivel = 2) {
 	const producto = Datos.producto(linea.producto);
+	// Tope de esta linea: el stock menos lo que ocupan las demas lineas del producto.
+	const tope = Math.max(linea.cantidad, disponible(producto.sku, lineas, linea.linea));
 
 	return `
 		<article class="linea-carrito card mb-3" data-linea="${linea.linea}">
@@ -178,6 +247,7 @@ function filaDeLinea(linea, nivel = 2) {
 					</h${nivel}>
 					<p class="etiqueta-categoria mb-1">${escapar(Datos.nombreCategoria(producto.categoria))}</p>
 					<p class="small mb-0">Precio unitario: ${Datos.precio(producto.precio)}</p>
+					<p class="small text-secondary mb-0">Puedes llevar hasta ${unidades(tope)}.</p>
 				</div>
 
 				<div>
@@ -188,6 +258,7 @@ function filaDeLinea(linea, nivel = 2) {
 						id="cantidad-${linea.linea}"
 						name="cantidad-${linea.linea}"
 						min="1"
+						max="${tope}"
 						step="1"
 						value="${linea.cantidad}"
 						autocomplete="off"
@@ -205,7 +276,7 @@ function filaDeLinea(linea, nivel = 2) {
 	`;
 }
 
-function grupoDeArmado(identificador, lineas) {
+function grupoDeArmado(identificador, lineas, todas) {
 	const precio = lineas.reduce((total, linea) => total + subtotalDeLinea(linea), 0);
 
 	return `
@@ -223,7 +294,7 @@ function grupoDeArmado(identificador, lineas) {
 				</div>
 			</header>
 			<div class="p-3">
-				${lineas.map((linea) => filaDeLinea(linea, 3)).join("")}
+				${lineas.map((linea) => filaDeLinea(linea, todas, 3)).join("")}
 			</div>
 		</section>
 	`;
@@ -259,8 +330,8 @@ function renderizarCarrito() {
 
 	contenedor.innerHTML =
 		Object.entries(armados)
-			.map(([identificador, suyas]) => grupoDeArmado(identificador, suyas))
-			.join("") + sueltas.map((linea) => filaDeLinea(linea)).join("");
+			.map(([identificador, suyas]) => grupoDeArmado(identificador, suyas, lineas))
+			.join("") + sueltas.map((linea) => filaDeLinea(linea, lineas)).join("");
 
 	if (zonaTotal) zonaTotal.textContent = Datos.precio(totalCarrito());
 	pintarContador();
@@ -319,6 +390,7 @@ window.Carrito = {
 	eliminarLinea,
 	eliminarArmado,
 	cambiarCantidad,
+	disponible,
 	vaciar: vaciarCarrito,
 	total: totalCarrito,
 	cantidadItems,
