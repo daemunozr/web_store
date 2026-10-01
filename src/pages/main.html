@@ -1,0 +1,69 @@
+<!-- Cuerpo de la vista de inicio: componente principal y listado de productos. -->
+<main class="col-12 col-lg-9">
+	<section class="portada mb-5">
+		<div class="row align-items-center g-4">
+			<div class="col-12 col-md-6 order-md-2">
+				<img src="../resources/img/hero.svg" alt="Ilustracion de un PC gamer armado junto a su monitor" class="img-fluid">
+			</div>
+			<div class="col-12 col-md-6 order-md-1">
+				<p class="sobretitulo">Tienda y asistente de armado</p>
+				<h1 class="display-6">Arma tu PC gamer <span class="destacado">pieza por pieza</span></h1>
+				<p class="lead">
+					Componentes con garantia oficial y un asistente que te ofrece solo lo compatible con
+					lo que ya elegiste. Llevate el equipo completo o solo el modulo que te falta.
+				</p>
+				<div class="d-flex flex-wrap gap-2">
+					<a class="btn btn-primary btn-lg" href="armado/">Armar mi PC</a>
+					<a class="btn btn-outline-primary btn-lg" href="productos/">Ver el catalogo</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="mb-5">
+		<h2 class="h4 titulo-seccion mb-3">Productos destacados</h2>
+		<!-- catalogo.js genera las tarjetas desde los datos de productos (RF-03). -->
+		<div id="productos-destacados"></div>
+	</section>
+
+	<section>
+		<h2 class="h4 titulo-seccion mb-3">Como funciona el armado guiado</h2>
+		<div class="row row-cols-1 row-cols-md-3 g-3">
+			<div class="col">
+				<article class="card h-100">
+					<div class="card-body">
+						<p class="sobretitulo mb-1">Paso 1</p>
+						<h3 class="h6 card-title">Elige el procesador</h3>
+						<p class="card-text small mb-0">
+							Es la pieza que define el socket y, con ello, las placas madre que puedes usar.
+						</p>
+					</div>
+				</article>
+			</div>
+			<div class="col">
+				<article class="card h-100">
+					<div class="card-body">
+						<p class="sobretitulo mb-1">Paso 2</p>
+						<h3 class="h6 card-title">Avanza categoria por categoria</h3>
+						<p class="card-text small mb-0">
+							En cada paso el asistente lista solo los componentes asociados a tu eleccion
+							anterior en la tabla de compatibilidad del catalogo.
+						</p>
+					</div>
+				</article>
+			</div>
+			<div class="col">
+				<article class="card h-100">
+					<div class="card-body">
+						<p class="sobretitulo mb-1">Paso 3</p>
+						<h3 class="h6 card-title">Agrega el conjunto al carrito</h3>
+						<p class="card-text small mb-0">
+							El armado entra como un conjunto, con el detalle de sus componentes y el precio
+							sumado de todos ellos.
+						</p>
+					</div>
+				</article>
+			</div>
+		</div>
+	</section>
+</main>

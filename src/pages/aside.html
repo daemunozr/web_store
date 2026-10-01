@@ -1,18 +1,16 @@
-<!-- Barra lateral: categorias de la tienda -->
-<div class="sidebar">
-	<h2 class="h6 text-uppercase text-muted mb-2">Categorias</h2>
-	<div class="list-group mb-3">
-		<a href="productos.html" class="list-group-item list-group-item-action">Notebooks</a>
-		<a href="productos.html" class="list-group-item list-group-item-action">Celulares</a>
-		<a href="productos.html" class="list-group-item list-group-item-action">Audio</a>
-		<a href="productos.html" class="list-group-item list-group-item-action">Accesorios</a>
-		<a href="productos.html" class="list-group-item list-group-item-action">Ofertas</a>
-	</div>
+<!-- Barra lateral de las vistas de tienda: categorias del catalogo (RF-14, RNF-08). -->
+<aside class="col-12 col-lg-3 barra-categorias">
+	<h2 class="sobretitulo mb-2">Categorias</h2>
+	<!-- catalogo.js llena el listado desde los datos de categorias. -->
+	<nav id="lista-categorias" class="list-group mb-3" aria-label="Categorias del catalogo"></nav>
 
-	<div class="card text-bg-primary">
+	<section class="card tarjeta-aviso">
 		<div class="card-body">
-			<h3 class="card-title h6">Despacho gratis</h3>
-			<p class="card-text small mb-0">En compras sobre $50.000 dentro de la Region Metropolitana.</p>
+			<h3 class="card-title h6">Armado guiado</h3>
+			<p class="card-text small">
+				Escoge pieza por pieza y el asistente te ofrece solo lo compatible con lo ya elegido.
+			</p>
+			<a href="armado/" class="btn btn-sm btn-success">Armar mi PC</a>
 		</div>
-	</div>
-</div>
+	</section>
+</aside>

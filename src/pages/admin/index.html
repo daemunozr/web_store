@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<title>Panel de administracion — Ensambla.me</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Resumen del panel de administracion de Ensambla.me.">
+		<link rel="icon" href="../../resources/img/logo.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../../styles/style.css">
+	</head>
+	<body>
+		<!-- Cada seccion de la pagina vive en su propio archivo y se compone con scripts/includes.js -->
+		<header data-include="../header.html"></header>
+		<div class="container my-4">
+			<div class="row g-4">
+				<aside data-include="aside.html"></aside>
+				<main data-include="main.html"></main>
+			</div>
+		</div>
+
+		<footer data-include="../footer.html"></footer>
+
+		<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../../scripts/includes.js"></script>
+		<script src="../../scripts/datos.js"></script>
+		<script src="../../scripts/sesion.js"></script>
+		<script src="../../scripts/mantenedores.js"></script>
+	</body>
+</html>

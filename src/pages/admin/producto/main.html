@@ -1,0 +1,86 @@
+<!-- Cuerpo del formulario de producto: crear y editar (RF-10). -->
+<main class="col-12 col-lg-9">
+	<p class="sobretitulo">Mantenedor de productos</p>
+	<h1 class="h3" id="titulo-formulario-producto">Nuevo producto</h1>
+	<p class="text-secondary mb-4">
+		Los campos marcados con <span class="obligatorio" aria-hidden="true">*</span> son obligatorios.
+		Esta vista no ofrece la accion Eliminar, que queda fuera del alcance de esta entrega.
+	</p>
+
+	<section class="tarjeta-formulario p-4">
+		<div id="aviso-producto" aria-live="polite"></div>
+
+		<form id="form-producto">
+			<div class="row g-3">
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-sku">
+						Codigo de producto (SKU) <span class="obligatorio" aria-hidden="true">*</span>
+					</label>
+					<input type="text" class="form-control" id="producto-sku" name="sku" autocomplete="off" required>
+					<p class="form-text">Texto unico, al menos 3 caracteres. Ejemplo: GPU-RTX4060.</p>
+				</div>
+
+				<div class="col-12 col-md-8">
+					<label class="form-label" for="producto-nombre">
+						Nombre <span class="obligatorio" aria-hidden="true">*</span>
+					</label>
+					<input type="text" class="form-control" id="producto-nombre" name="nombre" maxlength="100" autocomplete="off" required>
+					<p class="form-text">Hasta 100 caracteres.</p>
+				</div>
+
+				<div class="col-12">
+					<label class="form-label" for="producto-descripcion">Descripcion</label>
+					<textarea class="form-control" id="producto-descripcion" name="descripcion" rows="3" maxlength="500" autocomplete="off"></textarea>
+					<p class="form-text">Opcional, hasta 500 caracteres. Se muestra en el detalle del producto.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-precio">
+						Precio <span class="obligatorio" aria-hidden="true">*</span>
+					</label>
+					<input type="number" class="form-control" id="producto-precio" name="precio" min="0" step="0.01" autocomplete="off" required>
+					<p class="form-text">Pesos chilenos, admite decimales. Un precio 0 es un producto gratuito.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-stock">
+						Stock <span class="obligatorio" aria-hidden="true">*</span>
+					</label>
+					<input type="number" class="form-control" id="producto-stock" name="stock" min="0" step="1" autocomplete="off" required>
+					<p class="form-text">Unidades en inventario, solo numeros enteros.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-stock-critico">Stock critico</label>
+					<input type="number" class="form-control" id="producto-stock-critico" name="stockCritico" min="0" step="1" autocomplete="off">
+					<p class="form-text">Opcional. Bajo este umbral el listado muestra una alerta.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-categoria">
+						Categoria <span class="obligatorio" aria-hidden="true">*</span>
+					</label>
+					<select class="form-select" id="producto-categoria" name="categoria" autocomplete="off" required></select>
+					<p class="form-text">Categorias del catalogo.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-imagen">Imagen</label>
+					<input type="text" class="form-control" id="producto-imagen" name="imagen" autocomplete="off">
+					<p class="form-text">Opcional. Ruta relativa a src/, por ejemplo resources/img/gpu.svg.</p>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<label class="form-label" for="producto-video">Video</label>
+					<input type="text" class="form-control" id="producto-video" name="video" autocomplete="off">
+					<p class="form-text">Opcional. Se muestra embebido en el detalle del producto.</p>
+				</div>
+			</div>
+
+			<div class="d-flex flex-wrap gap-2 mt-4">
+				<button type="submit" class="btn btn-primary">Guardar producto</button>
+				<a class="btn btn-outline-primary" href="../productos/">Volver al listado</a>
+			</div>
+		</form>
+	</section>
+</main>

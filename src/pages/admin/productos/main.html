@@ -1,0 +1,15 @@
+<!-- Cuerpo del mantenedor de productos (RF-10) y de la consulta en solo lectura (RF-12). -->
+<main class="col-12 col-lg-9">
+	<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+		<div>
+			<p class="sobretitulo">Mantenedor</p>
+			<h1 class="h3 mb-0">Productos</h1>
+			<p class="solo-lectura mb-0" id="modo-productos"></p>
+		</div>
+		<!-- mantenedores.js inserta el boton de crear solo para el rol Administrador. -->
+		<div id="acciones-productos"></div>
+	</div>
+
+	<div id="aviso-productos" aria-live="polite"></div>
+	<div class="table-responsive" id="tabla-productos"></div>
+</main>

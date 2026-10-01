@@ -1,109 +1,716 @@
 /* ==========================================================================
-   Hoja de estilos personalizada de la tienda.
-   Se carga DESPUES de Bootstrap para poder ajustar y sobrescribir.
+   Ensambla.me — hoja de estilos propia y unica del proyecto (RNF-05 CA2).
+   Se carga DESPUES de Bootstrap para ajustar y sobrescribir sus variables.
+   Ninguna vista define estilos con atributos style ni bloques <style>.
+
+   Indice
+     1. Variables de marca y ajustes de Bootstrap
+     2. Base y utilidades propias
+     3. Encabezado, navegacion y pie
+     4. Barra lateral de categorias
+     5. Portada (hero) y tarjetas de producto
+     6. Detalle de producto
+     7. Asistente de armado
+     8. Carrito
+     9. Formularios y validaciones
+    10. Blogs y Nosotros
+    11. Panel de administracion
+    12. Ajustes responsivos
    ========================================================================== */
 
+/* -------------------------------------------------------------------------
+   1. Variables de marca y ajustes de Bootstrap
+   ------------------------------------------------------------------------- */
 :root {
-	--brand: #0d6efd;
-	--brand-dark: #0a58ca;
-	--placeholder-bg: #e9ecef;
-	--placeholder-fg: #6c757d;
+	--marca: #7c5cff;
+	--marca-clara: #a28bff;
+	--marca-oscura: #6b49f5;
+	--acento: #22d3a6;
+	--acento-oscuro: #15a37e;
+	--fondo: #0d1016;
+	--superficie: #151a23;
+	--superficie-alta: #1b222e;
+	--borde: #263040;
+	--texto: #e8edf5;
+	--texto-suave: #9aa4b2;
+	--alerta: #f0a33c;
 }
 
-/* --------------------------------------------------------------------------
-   Caja de imagen provisional (mientras no hay imagenes reales en resources/)
-   -------------------------------------------------------------------------- */
-.placeholder-box {
+/* Bootstrap 5.3 toma estas variables para colores, fondos y bordes. */
+:root,
+[data-bs-theme="dark"] {
+	--bs-body-bg: var(--fondo);
+	--bs-body-color: var(--texto);
+	--bs-emphasis-color: #ffffff;
+	--bs-secondary-color: var(--texto-suave);
+	--bs-border-color: var(--borde);
+	--bs-border-color-translucent: var(--borde);
+	--bs-secondary-bg: var(--superficie);
+	--bs-tertiary-bg: var(--superficie-alta);
+	--bs-primary: var(--marca);
+	--bs-primary-rgb: 124, 92, 255;
+	--bs-success-rgb: 34, 211, 166;
+	--bs-link-color: var(--marca-clara);
+	--bs-link-hover-color: #c3b4ff;
+	--bs-link-color-rgb: 162, 139, 255;
+	--bs-heading-color: var(--texto);
+	--bs-code-color: var(--acento);
+}
+
+/* Los botones de Bootstrap llevan sus propias variables por componente. */
+.btn-primary {
+	--bs-btn-bg: var(--marca);
+	--bs-btn-border-color: var(--marca);
+	--bs-btn-color: #ffffff;
+	--bs-btn-hover-bg: var(--marca-oscura);
+	--bs-btn-hover-border-color: var(--marca-oscura);
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-active-bg: var(--marca-oscura);
+	--bs-btn-active-border-color: var(--marca-oscura);
+	--bs-btn-disabled-bg: #3b3560;
+	--bs-btn-disabled-border-color: #3b3560;
+}
+
+.btn-outline-primary {
+	--bs-btn-color: var(--marca-clara);
+	--bs-btn-border-color: var(--marca);
+	--bs-btn-hover-bg: var(--marca);
+	--bs-btn-hover-border-color: var(--marca);
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-active-bg: var(--marca-oscura);
+	--bs-btn-active-border-color: var(--marca-oscura);
+}
+
+.btn-success {
+	--bs-btn-bg: var(--acento);
+	--bs-btn-border-color: var(--acento);
+	--bs-btn-color: #06231b;
+	--bs-btn-hover-bg: var(--acento-oscuro);
+	--bs-btn-hover-border-color: var(--acento-oscuro);
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-active-bg: var(--acento-oscuro);
+	--bs-btn-active-border-color: var(--acento-oscuro);
+}
+
+.btn-outline-success {
+	--bs-btn-color: var(--acento);
+	--bs-btn-border-color: var(--acento);
+	--bs-btn-hover-bg: var(--acento);
+	--bs-btn-hover-border-color: var(--acento);
+	--bs-btn-hover-color: #06231b;
+}
+
+/* -------------------------------------------------------------------------
+   2. Base y utilidades propias
+   ------------------------------------------------------------------------- */
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	overflow-x: hidden;
+	background-image:
+		radial-gradient(60rem 30rem at 85% -10%, rgba(124, 92, 255, 0.16), transparent 70%),
+		radial-gradient(50rem 26rem at 5% 0%, rgba(34, 211, 166, 0.1), transparent 70%);
+	background-repeat: no-repeat;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.card {
+	background-color: var(--superficie);
+	border-color: var(--borde);
+}
+
+.list-group-item {
+	background-color: var(--superficie);
+	border-color: var(--borde);
+	color: var(--texto);
+}
+
+.table {
+	--bs-table-bg: transparent;
+	--bs-table-color: var(--texto);
+	--bs-table-border-color: var(--borde);
+	--bs-table-hover-bg: rgba(124, 92, 255, 0.08);
+	--bs-table-hover-color: var(--texto);
+}
+
+/* Titulo de seccion con una barra de marca a la izquierda. */
+.titulo-seccion {
+	padding-left: 0.75rem;
+	border-left: 4px solid var(--marca);
+}
+
+/* Etiqueta pequena en mayusculas para antetitulos. */
+.sobretitulo {
+	color: var(--acento);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+/* Caja para los avisos de lista vacia, carrito vacio o recurso no encontrado. */
+.estado-vacio {
+	padding: 2.5rem 1.5rem;
+	color: var(--texto-suave);
+	text-align: center;
+	background-color: var(--superficie);
+	border: 1px dashed var(--borde);
+	border-radius: 0.75rem;
+}
+
+/* Imagen provisional cuando un producto no define el campo imagen. */
+.sin-imagen {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 160px;
-	color: var(--placeholder-fg);
-	font-size: 0.875rem;
+	color: var(--texto-suave);
+	font-size: 0.8rem;
 	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	background-color: var(--placeholder-bg);
+	letter-spacing: 0.08em;
+	background-color: var(--superficie-alta);
 	background-image: repeating-linear-gradient(
 		45deg,
-		rgba(0, 0, 0, 0.035) 0,
-		rgba(0, 0, 0, 0.035) 10px,
+		rgba(255, 255, 255, 0.03) 0,
+		rgba(255, 255, 255, 0.03) 10px,
 		transparent 10px,
 		transparent 20px
 	);
-	border-radius: 0.375rem;
+	border-radius: 0.5rem;
 }
 
-.placeholder-box::after {
+.sin-imagen::after {
 	content: "Sin imagen";
 }
 
-/* Variante pequenia para el logo del navbar. */
-.placeholder-box--logo {
-	min-height: 0;
-	width: 32px;
-	height: 32px;
-	border-radius: 0.25rem;
+/* -------------------------------------------------------------------------
+   3. Encabezado, navegacion y pie
+   ------------------------------------------------------------------------- */
+.barra-utilidad {
+	background-color: #090b10;
+	border-bottom: 1px solid var(--borde);
+	font-size: 0.8125rem;
 }
 
-.placeholder-box--logo::after {
-	content: "";
+.barra-utilidad a {
+	color: var(--texto-suave);
+	text-decoration: none;
 }
 
-/* Variante alta para el hero. */
-.placeholder-box--hero {
-	min-height: 260px;
+.barra-utilidad a:hover,
+.barra-utilidad a:focus {
+	color: var(--texto);
 }
 
-/* --------------------------------------------------------------------------
-   Marca (navbar + footer)
-   -------------------------------------------------------------------------- */
-.navbar-brand {
+.navbar-principal {
+	background-color: rgba(13, 16, 22, 0.92);
+	border-bottom: 1px solid var(--borde);
+	backdrop-filter: blur(8px);
+}
+
+.navbar-principal .navbar-brand {
 	font-weight: 700;
+	letter-spacing: -0.01em;
 }
 
-.site-header a {
-	color: inherit;
+.navbar-principal .navbar-brand .punto {
+	color: var(--acento);
 }
 
-/* --------------------------------------------------------------------------
-   Hero
-   -------------------------------------------------------------------------- */
-.hero {
-	margin-bottom: 2rem;
+.logo-marca {
+	width: 36px;
+	height: 36px;
 }
 
-/* --------------------------------------------------------------------------
-   Tarjetas de producto
-   -------------------------------------------------------------------------- */
-.product-card {
-	transition: transform 0.15s ease, box-shadow 0.15s ease;
+.navbar-principal .nav-link {
+	color: var(--texto-suave);
+	font-weight: 500;
 }
 
-.product-card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+.navbar-principal .nav-link:hover,
+.navbar-principal .nav-link:focus {
+	color: var(--texto);
 }
 
-.product-card .price {
-	font-weight: 700;
-	color: var(--brand-dark);
+.navbar-principal .nav-link.active {
+	color: var(--texto);
+	box-shadow: inset 0 -2px 0 var(--marca);
 }
 
-/* --------------------------------------------------------------------------
-   Barra lateral: se mantiene visible al hacer scroll en pantallas grandes
-   -------------------------------------------------------------------------- */
+.boton-carrito {
+	white-space: nowrap;
+}
+
+.pie-sitio {
+	margin-top: auto;
+	background-color: #090b10;
+	border-top: 1px solid var(--borde);
+	color: var(--texto-suave);
+}
+
+.pie-sitio h2 {
+	color: var(--texto);
+	font-size: 0.8125rem;
+	letter-spacing: 0.1em;
+}
+
+.pie-sitio a {
+	color: var(--texto-suave);
+	text-decoration: none;
+}
+
+.pie-sitio a:hover,
+.pie-sitio a:focus {
+	color: var(--marca-clara);
+}
+
+/* -------------------------------------------------------------------------
+   4. Barra lateral de categorias
+   ------------------------------------------------------------------------- */
+.barra-categorias .list-group-item-action:hover,
+.barra-categorias .list-group-item-action:focus {
+	background-color: var(--superficie-alta);
+	color: var(--marca-clara);
+}
+
+.barra-categorias .activa {
+	border-left: 3px solid var(--marca);
+	color: var(--marca-clara);
+}
+
+.tarjeta-aviso {
+	background: linear-gradient(140deg, rgba(124, 92, 255, 0.22), rgba(34, 211, 166, 0.16));
+	border: 1px solid var(--borde);
+}
+
 @media (min-width: 992px) {
-	.sidebar {
+	.barra-categorias {
 		position: sticky;
 		top: 1rem;
 	}
 }
 
-/* --------------------------------------------------------------------------
-   Ajuste responsivo: ocultar el eslogan del header en moviles muy pequenios
-   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------
+   5. Portada (hero) y tarjetas de producto
+   ------------------------------------------------------------------------- */
+.portada {
+	padding: 2rem;
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 1rem;
+}
+
+.portada h1 {
+	font-weight: 800;
+	letter-spacing: -0.02em;
+}
+
+.portada .destacado {
+	color: var(--marca-clara);
+}
+
+.portada img {
+	border-radius: 0.75rem;
+}
+
+.tarjeta-producto {
+	height: 100%;
+	transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tarjeta-producto:hover {
+	transform: translateY(-4px);
+	border-color: var(--marca);
+	box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.45);
+}
+
+.tarjeta-producto .imagen-producto {
+	aspect-ratio: 16 / 10;
+	object-fit: cover;
+	background-color: var(--superficie-alta);
+	border-bottom: 1px solid var(--borde);
+}
+
+.tarjeta-producto .enlace-producto {
+	color: var(--texto);
+	text-decoration: none;
+}
+
+.tarjeta-producto .enlace-producto:hover,
+.tarjeta-producto .enlace-producto:focus {
+	color: var(--marca-clara);
+}
+
+.precio {
+	color: var(--acento);
+	font-size: 1.125rem;
+	font-weight: 700;
+}
+
+.precio-gratis {
+	color: var(--acento);
+}
+
+.etiqueta-categoria {
+	color: var(--texto-suave);
+	font-size: 0.75rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+/* -------------------------------------------------------------------------
+   6. Detalle de producto
+   ------------------------------------------------------------------------- */
+.detalle-producto .imagen-detalle {
+	width: 100%;
+	aspect-ratio: 16 / 10;
+	object-fit: cover;
+	background-color: var(--superficie-alta);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.detalle-producto .precio {
+	font-size: 2rem;
+}
+
+.video-producto {
+	width: 100%;
+	max-width: 720px;
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+	background-color: #000000;
+}
+
+.ficha-tecnica {
+	margin-bottom: 0;
+}
+
+.ficha-tecnica dt {
+	color: var(--texto-suave);
+	font-weight: 500;
+}
+
+/* -------------------------------------------------------------------------
+   7. Asistente de armado
+   ------------------------------------------------------------------------- */
+.pasos-armado {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	padding-left: 0;
+	margin-bottom: 1.5rem;
+	list-style: none;
+	counter-reset: paso;
+}
+
+.pasos-armado li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.35rem 0.75rem;
+	color: var(--texto-suave);
+	font-size: 0.8125rem;
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 2rem;
+}
+
+.pasos-armado li::before {
+	counter-increment: paso;
+	content: counter(paso);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--texto-suave);
+	font-weight: 700;
+	background-color: var(--superficie-alta);
+	border-radius: 50%;
+}
+
+.pasos-armado .paso-actual {
+	color: var(--texto);
+	border-color: var(--marca);
+}
+
+.pasos-armado .paso-actual::before {
+	color: #ffffff;
+	background-color: var(--marca);
+}
+
+.pasos-armado .paso-listo {
+	color: var(--acento);
+	border-color: var(--acento);
+}
+
+.pasos-armado .paso-listo::before {
+	content: "\2713";
+	color: #06231b;
+	background-color: var(--acento);
+}
+
+.pasos-armado .paso-omitido {
+	opacity: 0.6;
+}
+
+.pasos-armado .paso-omitido::before {
+	content: "\2013";
+}
+
+.opcion-componente {
+	cursor: pointer;
+	height: 100%;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.opcion-componente:hover {
+	border-color: var(--marca);
+}
+
+.opcion-componente input[type="radio"]:checked ~ .cuerpo-opcion {
+	box-shadow: inset 0 0 0 2px var(--marca);
+}
+
+.resumen-armado {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.resumen-armado .total {
+	color: var(--acento);
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+   8. Carrito
+   ------------------------------------------------------------------------- */
+.linea-carrito .imagen-linea {
+	width: 96px;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border: 1px solid var(--borde);
+	border-radius: 0.5rem;
+}
+
+.grupo-armado {
+	border: 1px solid var(--marca);
+	border-radius: 0.75rem;
+}
+
+.grupo-armado .encabezado-armado {
+	background-color: rgba(124, 92, 255, 0.12);
+	border-bottom: 1px solid var(--borde);
+	border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.cantidad-linea {
+	max-width: 6rem;
+}
+
+.resumen-total {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.resumen-total .total {
+	color: var(--acento);
+	font-size: 1.75rem;
+	font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+   9. Formularios y validaciones
+   ------------------------------------------------------------------------- */
+.tarjeta-formulario {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 1rem;
+}
+
+.form-control,
+.form-select {
+	background-color: var(--superficie-alta);
+	border-color: var(--borde);
+	color: var(--texto);
+}
+
+.form-control:focus,
+.form-select:focus {
+	background-color: var(--superficie-alta);
+	border-color: var(--marca);
+	color: var(--texto);
+	box-shadow: 0 0 0 0.2rem rgba(124, 92, 255, 0.25);
+}
+
+.form-control::placeholder {
+	color: #6b7484;
+}
+
+.form-label {
+	font-weight: 500;
+}
+
+.form-label .obligatorio {
+	color: var(--marca-clara);
+}
+
+/* Sugerencia de formato: visible antes de cualquier error (RNF-02 CA5). */
+.form-text {
+	color: var(--texto-suave);
+}
+
+.invalid-feedback {
+	font-weight: 500;
+}
+
+.toast-container {
+	z-index: 1090;
+}
+
+/* -------------------------------------------------------------------------
+   10. Blogs y Nosotros
+   ------------------------------------------------------------------------- */
+.tarjeta-blog .imagen-blog {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-bottom: 1px solid var(--borde);
+}
+
+.articulo-blog {
+	max-width: 46rem;
+}
+
+.articulo-blog .imagen-articulo {
+	width: 100%;
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.articulo-blog p {
+	line-height: 1.75;
+}
+
+.dato-empresa {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.dato-empresa .cifra {
+	color: var(--marca-clara);
+	font-size: 1.75rem;
+	font-weight: 700;
+}
+
+.tarjeta-persona .inicial {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	color: #ffffff;
+	font-size: 1.5rem;
+	font-weight: 700;
+	background: linear-gradient(140deg, var(--marca), var(--acento));
+	border-radius: 50%;
+}
+
+/* -------------------------------------------------------------------------
+   11. Panel de administracion
+   ------------------------------------------------------------------------- */
+.menu-admin {
+	position: sticky;
+	top: 1rem;
+	padding: 1rem;
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.menu-admin .nav-link {
+	color: var(--texto-suave);
+	border-radius: 0.5rem;
+}
+
+.menu-admin .nav-link:hover,
+.menu-admin .nav-link:focus {
+	background-color: var(--superficie-alta);
+	color: var(--texto);
+}
+
+.menu-admin .nav-link.activo {
+	background-color: rgba(124, 92, 255, 0.18);
+	color: var(--texto);
+	box-shadow: inset 2px 0 0 var(--marca);
+}
+
+.tarjeta-indicador {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 0.75rem;
+}
+
+.tarjeta-indicador .cifra {
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+.tabla-admin {
+	vertical-align: middle;
+}
+
+.tabla-admin .miniatura {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border: 1px solid var(--borde);
+	border-radius: 0.375rem;
+}
+
+.fila-stock-critico {
+	background-color: rgba(240, 163, 60, 0.1);
+}
+
+.alerta-stock {
+	color: var(--alerta);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.solo-lectura {
+	color: var(--texto-suave);
+	font-size: 0.8125rem;
+}
+
+/* -------------------------------------------------------------------------
+   12. Ajustes responsivos
+   ------------------------------------------------------------------------- */
 @media (max-width: 575.98px) {
-	.site-header .tagline {
+	.barra-utilidad .datos-contacto {
 		display: none;
+	}
+
+	.portada {
+		padding: 1.25rem;
+	}
+
+	.linea-carrito .imagen-linea {
+		width: 72px;
+	}
+}
+
+@media (max-width: 991.98px) {
+	.menu-admin {
+		position: static;
 	}
 }

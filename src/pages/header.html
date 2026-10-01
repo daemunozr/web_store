@@ -1,13 +1,14 @@
-<!-- Barra superior de utilidad (contacto + acceso de usuario) -->
-<div class="site-header bg-dark text-light py-1">
-	<div class="container d-flex flex-wrap justify-content-between align-items-center small">
-		<span class="tagline">
-			<span class="me-3">&#9742; +56 2 2345 6789</span>
-			<span>&#9993; contacto@tienda.cl</span>
-		</span>
-		<nav class="d-flex gap-3">
-			<a href="login.html" class="link-light text-decoration-none">Iniciar sesion</a>
-			<a href="registro.html" class="link-light text-decoration-none">Registrarse</a>
+<!-- Barra superior de utilidad: contacto y acciones de sesion (RF-13, RNF-08). -->
+<header class="barra-utilidad py-1">
+	<div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+		<p class="datos-contacto mb-0">
+			<span class="me-3">Mesa de ayuda +56 2 2345 6789</span>
+			<span>contacto@ensambla.me</span>
+		</p>
+		<!-- sesion.js reemplaza este contenido cuando hay sesion iniciada. -->
+		<nav id="acciones-sesion" class="d-flex align-items-center gap-3" aria-label="Acciones de sesion">
+			<a href="login/">Iniciar sesion</a>
+			<a href="registro/">Registrarse</a>
 		</nav>
 	</div>
-</div>
+</header>
