@@ -45,7 +45,7 @@ const productos = [
 		descripcion: "Ocho nucleos con 96 MB de cache 3D en socket AM5, el favorito para juegos a 1440p sin cuello de botella.",
 		precio: 519990, stock: 7, stockCritico: 4,
 		categoria: "cpu", imagen: "resources/img/productos/CPU-R7-7800X3D.webp",
-		video: "resources/video/demo-armado.mp4",
+		video: "resources/video/ensamblame.mp4",
 	},
 	{
 		sku: "CPU-I5-14600K",
@@ -214,7 +214,7 @@ const productos = [
 		descripcion: "Tarjeta de entrada a 1080p con DLSS 3, doble ventilador y consumo de solo 115 W.",
 		precio: 399990, stock: 11, stockCritico: 4,
 		categoria: "gpu", imagen: "resources/img/productos/GPU-RTX4060.webp",
-		video: "resources/video/demo-armado.mp4",
+		video: "resources/video/ensamblame.mp4",
 	},
 	{
 		sku: "GPU-RTX4070S",
