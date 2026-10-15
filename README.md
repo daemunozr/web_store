@@ -99,10 +99,13 @@ autorizado muestra «Acceso denegado» y no renderiza la vista.
 
 ## 4. Modelo de datos
 
+Nombres de campo idénticos a los de `datos.js`. `"req"` = obligatorio.
+
 ```mermaid
 erDiagram
   CATEGORIA ||--o{ PRODUCTO : clasifica
-  PRODUCTO ||--o{ COMPATIBILIDAD : admite
+  PRODUCTO ||--o{ COMPATIBILIDAD : elegido
+  PRODUCTO ||--o{ COMPATIBILIDAD : admisible
   REGION ||--o{ COMUNA : contiene
   COMUNA ||--o{ USUARIO : reside
   ROL ||--o{ USUARIO : perfila
@@ -110,27 +113,99 @@ erDiagram
   ORDEN ||--|{ ITEM_ORDEN : detalla
   PRODUCTO ||--o{ ITEM_ORDEN : figura
   PRODUCTO ||--o{ ITEM_CARRITO : figura
-  ARMADO ||--o{ ITEM_CARRITO : agrupa
+
+  CATEGORIA {
+    string codigo PK
+    string nombre "req"
+    int orden "paso del asistente"
+  }
+  PRODUCTO {
+    string sku PK
+    string nombre "req"
+    string descripcion
+    number precio "req, >= 0"
+    int stock "req, >= 0"
+    int stockCritico "vacio = sin alerta"
+    string categoria FK "req"
+    string imagen "ruta relativa a src/"
+    string video "ruta o URL"
+  }
+  COMPATIBILIDAD {
+    string producto PK, FK
+    string admisible PK, FK
+  }
+  REGION {
+    string codigo PK
+    string nombre "req"
+  }
+  COMUNA {
+    string codigo PK
+    string nombre "req"
+    string region FK "req"
+  }
+  ROL {
+    string codigo PK "ADMIN, CLIENTE, LOGISTICA"
+    string nombre "req"
+  }
+  USUARIO {
+    string run PK
+    string nombre "req"
+    string apellidos "req"
+    string correo "req"
+    string contrasena "req"
+    date fechaNacimiento
+    string comuna FK "req"
+    string direccion "req"
+    string tipoUsuario FK "req"
+  }
+  ORDEN {
+    string numero PK
+    string cliente FK "req, RUN"
+    date fecha "req"
+  }
+  ITEM_ORDEN {
+    string orden PK, FK
+    string producto PK, FK
+    int cantidad "req, >= 1"
+    number precioUnitario "req, precio al comprar"
+  }
+  ITEM_CARRITO {
+    int linea PK
+    string producto FK "req"
+    int cantidad "req, >= 1"
+    string armado "null si es suelta"
+  }
+  BLOG {
+    string slug PK
+    string titulo "req"
+    date fecha "req"
+    string autor "req"
+    string imagen "req"
+    string resumen "req"
+    string[] cuerpo "req, parrafos"
+  }
 ```
 
-Está en 3NF. `*` = requerido.
+| Datos                                                                                      | Origen                                         | Escritura                                                                 |
+|--------------------------------------------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------|
+| `categorias`, `compatibilidad`, `regiones`, `comunas`, `roles`, `ordenes`, `itemsOrden`, `blogs` | Constantes de `datos.js`                       | Solo lectura                                                              |
+| `productos`, `usuarios`                                                                    | Semilla en `datos.js` (`Datos.semillas`)       | Copia de trabajo en `sessionStorage` (`Datos.productos()` / `guardarProductos()`, ídem usuarios) |
+| Ítem carrito                                                                               | —                                              | `localStorage.carrito` (`carrito.js`)                                     |
 
-| Entidad        | PK                          | Atributos                                                                                                                  |
-|----------------|-----------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| Categoría      | `codigo`                    | `nombre*`, `orden` (posición en el asistente; vacío si la categoría no participa)                                           |
-| Producto       | `sku`                       | `nombre*`, `descripcion`, `precio*`, `stock*`, `stockCritico`, `categoria*` → Categoría, `imagen`, `video`                  |
-| Compatibilidad | (`producto`, `admisible`)   | Ambos → Producto. El componente elegido admite la opción de la categoría siguiente                                          |
-| Región         | `codigo`                    | `nombre*`                                                                                                                  |
-| Comuna         | `codigo`                    | `nombre*`, `region*` → Región                                                                                              |
-| Rol            | `codigo`                    | `nombre*`. Exactamente 3 filas: `ADMIN`, `CLIENTE`, `LOGISTICA`                                                             |
-| Usuario        | `run`                       | `nombre*`, `apellidos*`, `correo*`, `contrasena*`, `fechaNacimiento`, `comuna*` → Comuna, `direccion*`, `tipoUsuario*` → Rol |
-| Orden          | `numero`                    | `cliente*` → Usuario, `fecha*`. Solo lectura en esta entrega                                                               |
-| Ítem de orden  | (`orden`, `producto`)       | `cantidad*` ≥ 1, `precioUnitario*` (se congela al comprar)                                                                  |
-| Armado         | `id`                        | Sin atributos: solo agrupa líneas de carrito y no se persiste por sí mismo                                                 |
-| Ítem carrito   | n.º de línea                | `producto*`, `cantidad*` ≥ 1, `armado` → Armado                                                                            |
-
-No se almacenan derivados: total de orden, subtotal y precio del armado se calculan al
-mostrarse. La región se deriva de la comuna.
+- Formatos de clave:
+  - Comuna: `RM-02`, generada como región más índice.
+  - Orden: `ORD-2026-0001`.
+  - Armado: `ARM-<Date.now() en base 36>`.
+  - RUN con el DV incluido, sin puntos ni guion.
+- Fechas en ISO `YYYY-MM-DD`.
+- `compatibilidad` se genera con `flatMap` a partir del mapa `paresDeCompatibilidad`
+  (SKU → SKU admisibles de la categoría siguiente).
+- Armado no es una relación propia: es el valor `armado` que comparten las líneas de
+  carrito de un mismo grupo.
+- No se almacenan derivados: total de la orden, subtotal y precio del armado se calculan
+  al mostrarse. La región del usuario se obtiene de su comuna.
+- El modelo está en 3NF, salvo `Blog.cuerpo`, que se guarda como `string[]` por
+  simplicidad. En una base de datos real sería la relación Párrafo (`blog`, `n`, `texto`).
 
 ## 5. Reglas de validación
 
