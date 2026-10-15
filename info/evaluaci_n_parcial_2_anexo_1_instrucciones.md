@@ -29,7 +29,7 @@ En esta evaluacion, el equipo continuara desarrollando su tienda online con un e
    * Incorporar caracteristicas interactivas adicionales utilizando React, como formularios avanzados, filtros de busqueda y navegacion mejorada.
 
 7. **Configuracion de pruebas:**
-   * Configurar el entorno de pruebas usando Jasmine y Karma para ejecutar pruebas unitarias en componentes de React.
+   * Configurar el entorno de pruebas usando Vitest (integrado en Vite) para ejecutar pruebas unitarias en componentes de React.
 
 8. **Desarrollo de pruebas unitarias:**
    * Escribir pruebas para verificar la logica y el comportamiento de los componentes, asegurando que cada parte de la aplicacion funcione como se espera.
@@ -73,9 +73,9 @@ Flujo de navegacion del Admin:
 
 ---
 
-## Propuesta de pruebas con Jasmine
+## Propuesta de pruebas con Vitest
 
-*Alcance propuesto por el docente:* Utilizar **Jasmine** para escribir y ejecutar pruebas unitarias que aseguren la funcionalidad y calidad del codigo en una aplicacion React. A traves de estas pruebas, se verificara el renderizado, el manejo de propiedades (`props`), el estado (`state`) y los eventos en los componentes React.
+*Alcance propuesto por el docente:* Utilizar **Vitest** para escribir y ejecutar pruebas unitarias que aseguren la funcionalidad y calidad del codigo en una aplicacion React. A traves de estas pruebas, se verificara el renderizado, el manejo de propiedades (`props`), el estado (`state`) y los eventos en los componentes React.
 
 ### 1. Pruebas de renderizado
 * **Renderizado correcto:** Escribe pruebas que verifiquen que los componentes se rendericen con los datos proporcionados.
