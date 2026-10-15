@@ -22,13 +22,27 @@ ERS rev. 2.4 (01-10-2026), Daniel Muñoz. La versión formal IEEE 830 está en
 
 ## 1. Ejecución
 
+Aplicación React + Vite (migración de la Evaluación 2 en curso). Requiere Node ≥ 22.22.
+
 ```
-python3 -m http.server 8000   # desde la raíz del repo
-# http://localhost:8000/src/pages/index.html
+npm install
+npm run dev        # http://localhost:5173/
+npm test           # Vitest en modo watch (npm run test:run: una sola pasada)
+npm run coverage   # cobertura v8: tabla en consola + coverage/index.html
+npm run build      # salida en dist/
+npm run lint
 ```
 
-Por `file://` no funciona, porque las secciones se cargan con `fetch()`. No requiere
-compilar ni instalar nada.
+El sitio de la Entrega I (HTML, CSS y JS sin framework) se conserva en `legacy/` como
+referencia mientras dura la migración. Requiere un servidor HTTP: con `file://` no carga
+las secciones que se traen con `fetch()`.
+
+```
+python3 -m http.server 8000   # desde la raíz del repo
+# http://localhost:8000/legacy/pages/index.html
+```
+
+Las secciones 2 a 9 describen todavía el sitio de `legacy/`; se actualizan en el ERS v2.
 
 | Rol                     | Correo             | Contraseña   |
 |-------------------------|--------------------|--------------|
@@ -39,10 +53,10 @@ compilar ni instalar nada.
 ## 2. Stack y restricciones
 
 - HTML5 semántico, CSS propio y JavaScript sin framework, más Bootstrap 5.3.8 en copia
-  local en `src/bootstrap/`, sin CDN.
+  local en `legacy/bootstrap/`, sin CDN.
 - Sin backend ni base de datos. Los datos viven en arreglos JS y en Web Storage.
 - Solo peticiones HTTP GET del mismo origen, sin APIs externas.
-- Una hoja de estilos propia (`src/styles/style.css`), sin `style=""` ni `<style>`.
+- Una hoja de estilos propia (`legacy/styles/style.css`), sin `style=""` ni `<style>`.
 - Marcado válido en el validador del W3C. Diseño responsivo sin scroll horizontal.
 - Navegadores objetivo: Chrome, Firefox y Edge en sus versiones actuales.
 
@@ -50,7 +64,7 @@ compilar ni instalar nada.
 
 ```mermaid
 flowchart LR
-  U["Navegador"] --> V["src/pages/*.html"]
+  U["Navegador"] --> V["legacy/pages/*.html"]
   V -- "fetch()" --> S["header · nav · aside · body · footer"]
   V --> A["scripts/datos.js"]
   A --> L["localStorage: carrito"]
@@ -65,7 +79,7 @@ Reescribe las rutas relativas del partial (`href`, `src`, `poster`, `action`,
 `includes:loaded`, el evento del que dependen todos los scripts de vista.
 
 ```
-src/
+legacy/
 ├── pages/            index.html (+ body.html), productos, producto, armado, carrito,
 │   │                 blogs, blog, nosotros, contacto, registro, login, creditos
 │   │                 partials: header, nav, aside, footer
@@ -127,7 +141,7 @@ erDiagram
     int stock "req, >= 0"
     int stockCritico "vacio = sin alerta"
     string categoria FK "req"
-    string imagen "ruta relativa a src/"
+    string imagen "ruta relativa a legacy/"
     string video "ruta o URL"
   }
   COMPATIBILIDAD {
@@ -390,9 +404,9 @@ GPU → periféricos. Modos *completo* y *módulos*. El filtrado sale de la tabl
    del hosting.
 
 **RNF-05 Mantenibilidad** · `index.html`, `includes.js`, `style.css`
-1. Cada sección (header, nav, aside, body, footer) tiene su archivo en `src/pages/` y
+1. Cada sección (header, nav, aside, body, footer) tiene su archivo en `legacy/pages/` y
    se incluye con `data-include`.
-2. Hay una única hoja propia, `src/styles/style.css`, sin `style=""` ni `<style>`.
+2. Hay una única hoja propia, `legacy/styles/style.css`, sin `style=""` ni `<style>`.
 3. Un cambio en un partial se refleja en todas las vistas editando un solo archivo.
 4. Estructura con `header`/`nav`/`main`/`section`/`article`/`footer` y no con `div`;
    un solo `<h1>` por vista; texto en encabezados, párrafos y listas.

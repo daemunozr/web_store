@@ -1,0 +1,30 @@
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import { defineConfig, globalIgnores } from "eslint/config";
+
+export default defineConfig([
+	// legacy/ es el sitio de la Entrega I (scripts clasicos, sin modulos).
+	globalIgnores(["dist", "coverage", "legacy"]),
+	{
+		files: ["**/*.{js,jsx}"],
+		extends: [js.configs.recommended, reactHooks.configs.flat.recommended, reactRefresh.configs.vite],
+		languageOptions: {
+			ecmaVersion: "latest",
+			globals: globals.browser,
+			parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
+		},
+		rules: {
+			"no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+		},
+	},
+	{
+		files: ["**/*.test.{js,jsx}", "src/setupTests.js"],
+		languageOptions: { globals: { ...globals.browser, ...globals.vitest } },
+	},
+	{
+		files: ["*.config.js"],
+		languageOptions: { globals: globals.node },
+	},
+]);

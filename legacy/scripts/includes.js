@@ -18,7 +18,7 @@
  * IMPORTANTE: fetch() no funciona abriendo el archivo con doble clic (file://).
  * Hay que servir el proyecto por HTTP, por ejemplo:
  *   python3 -m http.server 8000
- * y abrir http://localhost:8000/src/pages/index.html
+ * y abrir http://localhost:8000/legacy/pages/index.html
  */
 
 /* -------------------------------------------------------------------------
