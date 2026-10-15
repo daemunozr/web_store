@@ -1,13 +1,22 @@
+# Archivos de informacion
 *.pdf
 *.xlsx
 *.docx
-estructura.jpg
-*.sw[a-p]
-node_modules
-feh*.jpg
-anexo_word/**
+anexo_word/*
 *.txt
 anexos/
+
+# Swap files
+*.sw[a-p]
+node_modules
+
+# Archivo de entregable
 *.zip
 evaluacion*.md
+
+# Archivos de vite build
+dist/
+
+# Archivos de vitest
+coverage/
 
