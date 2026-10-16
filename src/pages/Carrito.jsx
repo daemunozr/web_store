@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import EstadoVacio from "../components/EstadoVacio.jsx";
 import ImagenProducto from "../components/ImagenProducto.jsx";
+import PrecioProducto from "../components/PrecioProducto.jsx";
 import { useCarrito } from "../context/carrito.js";
 import { nombreCategoria, producto as buscarProducto } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
@@ -46,7 +47,9 @@ function LineaCarrito({ linea, lineas, nivel = 2 }) {
 						</Link>
 					</Titulo>
 					<p className="etiqueta-categoria mb-1">{nombreCategoria(producto.categoria)}</p>
-					<p className="small mb-0">Precio unitario: {precio(producto.precio)}</p>
+					<p className="small mb-0">
+						Precio unitario: <PrecioProducto producto={producto} />
+					</p>
 					<p className="small text-secondary mb-0">Puedes llevar hasta {unidades(tope)}.</p>
 				</div>
 

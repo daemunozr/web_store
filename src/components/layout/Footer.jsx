@@ -18,6 +18,8 @@ export default function Footer() {
 						<h2>Tienda</h2>
 						<ul className="list-unstyled small mb-0">
 							<li><Link to="/productos">Productos</Link></li>
+							<li><Link to="/categorias">Categorias</Link></li>
+							<li><Link to="/ofertas">Ofertas</Link></li>
 							<li><Link to="/armado">Armar mi PC</Link></li>
 							<li><Link to="/carrito">Carrito</Link></li>
 							<li><Link to="/blogs">Blogs</Link></li>

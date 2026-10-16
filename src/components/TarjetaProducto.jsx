@@ -1,8 +1,9 @@
 import { Link } from "react-router";
 import BotonAgregar from "./BotonAgregar.jsx";
 import ImagenProducto from "./ImagenProducto.jsx";
+import PrecioProducto from "./PrecioProducto.jsx";
 import { nombreCategoria } from "../data/datos.js";
-import { precio } from "../utils/formato.js";
+import { precioVigente } from "../logic/precios.js";
 
 /** Tarjeta de un producto del catalogo: imagen, nombre, precio y boton (RF-03). */
 export default function TarjetaProducto({ producto, nivel = 3 }) {
@@ -22,11 +23,9 @@ export default function TarjetaProducto({ producto, nivel = 3 }) {
 							{producto.nombre}
 						</Link>
 					</Titulo>
-					{producto.precio === 0 ? (
-						<p className="precio precio-gratis mb-3">Gratis</p>
-					) : (
-						<p className="precio mb-3">{precio(producto.precio)}</p>
-					)}
+					<p className={`precio mb-3${precioVigente(producto) === 0 ? " precio-gratis" : ""}`}>
+						<PrecioProducto producto={producto} />
+					</p>
 					<BotonAgregar producto={producto} className="btn btn-sm btn-outline-primary mt-auto" />
 				</div>
 			</article>

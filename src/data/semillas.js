@@ -23,14 +23,15 @@ export const categorias = [
 
 /* ------------------------------------------------------------------- Producto
    Las reglas de cada campo estan en RF-10. La imagen y el video se guardan
-   como ruta relativa a public/ (o URL completa) y se resuelven con recurso(). */
+   como ruta relativa a public/ (o URL completa) y se resuelven con recurso().
+   "descuento" es opcional: porcentaje entero de 0 a 90 (ver logic/precios.js). */
 export const productos = [
 	// --- Procesadores ---
 	{
 		sku: "CPU-R5-7600",
 		nombre: "AMD Ryzen 5 7600",
 		descripcion: "Seis nucleos y doce hilos en socket AM5, hasta 5,1 GHz. Incluye disipador Wraith Stealth y grafica integrada.",
-		precio: 249990, stock: 18, stockCritico: 5,
+		precio: 249990, stock: 18, stockCritico: 5, descuento: 15,
 		categoria: "cpu", imagen: "resources/img/productos/CPU-R5-7600.webp", video: "",
 	},
 	{
@@ -75,7 +76,7 @@ export const productos = [
 		sku: "MB-B760M-DDR4",
 		nombre: "MSI PRO B760M-A DDR4",
 		descripcion: "Placa micro-ATX socket LGA1700 con ranuras DDR4, ideal para reutilizar memoria de un equipo anterior.",
-		precio: 129990, stock: 14, stockCritico: 3,
+		precio: 129990, stock: 14, stockCritico: 3, descuento: 10,
 		categoria: "placa", imagen: "resources/img/productos/MB-B760M-DDR4.webp", video: "",
 	},
 
@@ -91,7 +92,7 @@ export const productos = [
 		sku: "RAM-DDR5-16-5600",
 		nombre: "Kingston Fury Beast DDR5 16 GB 5600 MT/s",
 		descripcion: "Modulo DDR5 unico de 16 GB, la entrada mas economica a la plataforma DDR5.",
-		precio: 74990, stock: 22, stockCritico: 5,
+		precio: 74990, stock: 22, stockCritico: 5, descuento: 20,
 		categoria: "ram", imagen: "resources/img/productos/RAM-DDR5-16-5600.webp", video: "",
 	},
 	{
@@ -114,7 +115,7 @@ export const productos = [
 		sku: "SSD-NVME-1TB",
 		nombre: "Samsung 980 PRO 1 TB NVMe PCIe 4.0",
 		descripcion: "Unidad M.2 de 1 TB con lectura de hasta 7.000 MB/s, pensada para el disco del sistema.",
-		precio: 89990, stock: 20, stockCritico: 5,
+		precio: 89990, stock: 20, stockCritico: 5, descuento: 25,
 		categoria: "almacenamiento", imagen: "resources/img/productos/SSD-NVME-1TB.webp", video: "",
 	},
 	{
@@ -144,7 +145,7 @@ export const productos = [
 		sku: "PSU-750-GOLD",
 		nombre: "Cooler Master MWE Gold 750 W V2",
 		descripcion: "Fuente de 750 W totalmente modular con certificacion 80 Plus Gold y ventilador de 120 mm.",
-		precio: 94990, stock: 12, stockCritico: 4,
+		precio: 94990, stock: 12, stockCritico: 4, descuento: 12,
 		categoria: "fuente", imagen: "resources/img/productos/PSU-750-GOLD.webp", video: "",
 	},
 	{
@@ -190,7 +191,7 @@ export const productos = [
 		sku: "COOL-AIO-240",
 		nombre: "Arctic Liquid Freezer III 240",
 		descripcion: "Refrigeracion liquida cerrada con radiador de 240 mm y pasta termica ya aplicada.",
-		precio: 79990, stock: 9, stockCritico: 3,
+		precio: 79990, stock: 9, stockCritico: 3, descuento: 18,
 		categoria: "refrigeracion", imagen: "resources/img/productos/COOL-AIO-240.webp", video: "",
 	},
 	{
@@ -206,7 +207,7 @@ export const productos = [
 		sku: "GPU-RTX4060",
 		nombre: "NVIDIA GeForce RTX 4060 8 GB",
 		descripcion: "Tarjeta de entrada a 1080p con DLSS 3, doble ventilador y consumo de solo 115 W.",
-		precio: 399990, stock: 11, stockCritico: 4,
+		precio: 399990, stock: 11, stockCritico: 4, descuento: 10,
 		categoria: "gpu", imagen: "resources/img/productos/GPU-RTX4060.webp",
 		video: "resources/video/ensamblame.mp4",
 	},
@@ -237,7 +238,7 @@ export const productos = [
 		sku: "PER-KB-MECH",
 		nombre: "Teclado mecanico Redragon Kumara K552",
 		descripcion: "Teclado TKL con switches rojos, retroiluminacion roja y estructura de aluminio.",
-		precio: 34990, stock: 25, stockCritico: 6,
+		precio: 34990, stock: 25, stockCritico: 6, descuento: 20,
 		categoria: "perifericos", imagen: "resources/img/productos/PER-KB-MECH.webp", video: "",
 	},
 	{

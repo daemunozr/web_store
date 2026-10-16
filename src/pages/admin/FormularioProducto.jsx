@@ -6,6 +6,8 @@ import { useDatos } from "../../context/datos.js";
 import { producto as buscarProducto } from "../../data/datos.js";
 import { useFormulario } from "../../hooks/useFormulario.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
+import { MAXIMO_DESCUENTO, precioVigente } from "../../logic/precios.js";
+import { precioOGratis } from "../../utils/formato.js";
 import { reglas } from "../../utils/validaciones.js";
 
 const VACIO = {
@@ -13,6 +15,7 @@ const VACIO = {
 	nombre: "",
 	descripcion: "",
 	precio: "",
+	descuento: "",
 	stock: "",
 	stockCritico: "",
 	categoria: "",
@@ -25,6 +28,7 @@ const DEFINICION = {
 	nombre: [reglas.requerido(), reglas.maximo(100)],
 	descripcion: [reglas.maximo(500)],
 	precio: [reglas.requerido(), reglas.numeroMinimo(0)],
+	descuento: [reglas.numeroMinimo(0), reglas.numeroMaximo(MAXIMO_DESCUENTO), reglas.entero()],
 	stock: [reglas.requerido(), reglas.numeroMinimo(0), reglas.entero()],
 	stockCritico: [reglas.numeroMinimo(0), reglas.entero()],
 	categoria: [reglas.seleccion("Selecciona la categoria del producto.")],
@@ -39,7 +43,7 @@ function Formulario({ sku }) {
 	const { categorias, crearProducto, actualizarProducto } = useDatos();
 	const existente = sku ? buscarProducto(sku) : null;
 	const formulario = useFormulario(existente ? valoresDe(existente) : VACIO, DEFINICION);
-	const { registrar, estado, errores, enviar } = formulario;
+	const { registrar, estado, errores, enviar, valores } = formulario;
 	const [aviso, setAviso] = useState(
 		sku && !existente ? { tipo: "danger", contenido: `No existe un producto con el codigo ${sku}.` } : null,
 	);
@@ -51,6 +55,7 @@ function Formulario({ sku }) {
 			nombre: datos.nombre,
 			descripcion: datos.descripcion,
 			precio: Number(datos.precio),
+			descuento: datos.descuento === "" ? "" : Number(datos.descuento),
 			stock: Number(datos.stock),
 			stockCritico: datos.stockCritico === "" ? "" : Number(datos.stockCritico),
 			categoria: datos.categoria,
@@ -126,6 +131,29 @@ function Formulario({ sku }) {
 							sugerencia="Pesos chilenos, admite decimales. Un precio 0 es un producto gratuito."
 							{...props("precio")}
 						/>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-descuento"
+							etiqueta="Descuento (%)"
+							type="number"
+							min="0"
+							max={MAXIMO_DESCUENTO}
+							step="1"
+							autoComplete="off"
+							sugerencia={`Opcional. Entero de 0 a ${MAXIMO_DESCUENTO}; vacio o 0 es sin oferta.`}
+							{...props("descuento")}
+						/>
+						<div className="col-12 col-md-4">
+							<label className="form-label" htmlFor="producto-precio-final">
+								Precio final
+							</label>
+							<output id="producto-precio-final" htmlFor="producto-precio producto-descuento" className="precio d-block mb-1">
+								{valores.precio === "" || errores.precio || errores.descuento
+									? "—"
+									: precioOGratis(precioVigente({ precio: valores.precio, descuento: valores.descuento }))}
+							</output>
+							<p className="form-text mb-0">Precio con el descuento aplicado, el que paga el cliente.</p>
+						</div>
 						<Campo
 							className="col-12 col-md-4"
 							id="producto-stock"

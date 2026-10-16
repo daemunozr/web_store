@@ -8,16 +8,18 @@ import Armado from "./pages/Armado.jsx";
 import Blog from "./pages/Blog.jsx";
 import Blogs from "./pages/Blogs.jsx";
 import Carrito from "./pages/Carrito.jsx";
+import Categorias from "./pages/Categorias.jsx";
 import Contacto from "./pages/Contacto.jsx";
 import Creditos from "./pages/Creditos.jsx";
 import Inicio from "./pages/Inicio.jsx";
 import Login from "./pages/Login.jsx";
 import NoEncontrada from "./pages/NoEncontrada.jsx";
 import Nosotros from "./pages/Nosotros.jsx";
+import Ofertas from "./pages/Ofertas.jsx";
 import Producto from "./pages/Producto.jsx";
 import Productos from "./pages/Productos.jsx";
 import Registro from "./pages/Registro.jsx";
-import Categorias from "./pages/admin/Categorias.jsx";
+import CategoriasAdmin from "./pages/admin/Categorias.jsx";
 import FormularioCategoria from "./pages/admin/FormularioCategoria.jsx";
 import FormularioProducto from "./pages/admin/FormularioProducto.jsx";
 import FormularioUsuario from "./pages/admin/FormularioUsuario.jsx";
@@ -44,6 +46,8 @@ export default function App() {
 							<Route index element={<Inicio />} />
 							<Route path="productos" element={<Productos />} />
 							<Route path="productos/:sku" element={<Producto />} />
+							<Route path="categorias" element={<Categorias />} />
+							<Route path="ofertas" element={<Ofertas />} />
 							<Route path="armado" element={<Armado />} />
 							<Route path="carrito" element={<Carrito />} />
 						</Route>
@@ -64,7 +68,7 @@ export default function App() {
 							<Route path="productos" element={protegida(ADMIN_Y_LOGISTICA, <ProductosAdmin />)} />
 							<Route path="productos/nuevo" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
 							<Route path="productos/:sku/editar" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
-							<Route path="categorias" element={protegida(SOLO_ADMIN, <Categorias />)} />
+							<Route path="categorias" element={protegida(SOLO_ADMIN, <CategoriasAdmin />)} />
 							<Route path="categorias/nueva" element={protegida(SOLO_ADMIN, <FormularioCategoria />)} />
 							<Route path="categorias/:codigo/editar" element={protegida(SOLO_ADMIN, <FormularioCategoria />)} />
 							<Route path="usuarios" element={protegida(SOLO_ADMIN, <Usuarios />)} />

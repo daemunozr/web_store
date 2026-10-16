@@ -73,6 +73,13 @@ export const reglas = {
 		return numero < minimo ? `No puede ser menor que ${minimo}.` : "";
 	},
 
+	numeroMaximo: (maximo) => (valor) => {
+		if (String(valor ?? "").trim() === "") return "";
+		const numero = Number(valor);
+		if (Number.isNaN(numero)) return "Debe ser un numero.";
+		return numero > maximo ? `No puede ser mayor que ${maximo}.` : "";
+	},
+
 	entero: () => (valor) => {
 		if (String(valor ?? "").trim() === "") return "";
 		const numero = Number(valor);

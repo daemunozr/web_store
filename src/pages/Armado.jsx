@@ -1,6 +1,7 @@
 import { useReducer, useState } from "react";
 import { Link } from "react-router";
 import EstadoVacio from "../components/EstadoVacio.jsx";
+import PrecioProducto from "../components/PrecioProducto.jsx";
 import { useCarrito } from "../context/carrito.js";
 import { categoriasDeArmado, nombreCategoria, producto as buscarProducto } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
@@ -12,7 +13,8 @@ import {
 	puedeAgregar,
 	recorridoCompleto,
 } from "../logic/armado.js";
-import { precio, precioOGratis } from "../utils/formato.js";
+import { precioVigente } from "../logic/precios.js";
+import { precio } from "../utils/formato.js";
 
 /* ---------------------------------------------------------- Selector de modo */
 function SelectorModo({ estado, despachar, total }) {
@@ -128,7 +130,9 @@ function OpcionComponente({ producto, marcado, onElegir }) {
 							{sinStock ? " (sin stock)" : ""}
 						</label>
 					</div>
-					<p className="precio mb-1">{precioOGratis(producto.precio)}</p>
+					<p className="precio mb-1">
+						<PrecioProducto producto={producto} />
+					</p>
 					<p className="small text-secondary mb-0">{producto.descripcion}</p>
 				</div>
 			</article>
@@ -239,7 +243,7 @@ function ResumenArmado({ estado, despachar }) {
 
 	if (!estado.modo || (!seleccion.length && !estado.agregado)) return null;
 
-	const total = seleccion.reduce((suma, eleccion) => suma + (buscarProducto(eleccion.sku)?.precio ?? 0), 0);
+	const total = seleccion.reduce((suma, eleccion) => suma + precioVigente(buscarProducto(eleccion.sku)), 0);
 
 	// Si falta stock de algun componente, el carrito avisa y el armado sigue en pantalla (RF-07 CA7).
 	const agregar = () => {
@@ -300,7 +304,9 @@ function ResumenArmado({ estado, despachar }) {
 								<span className="etiqueta-categoria d-block">{nombreCategoria(eleccion.categoria)}</span>
 								{producto.nombre}
 							</span>
-							<span className="text-nowrap">{precioOGratis(producto.precio)}</span>
+							<span className="text-nowrap">
+								<PrecioProducto producto={producto} />
+							</span>
 						</li>
 					);
 				})}

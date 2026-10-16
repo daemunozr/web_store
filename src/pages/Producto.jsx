@@ -2,9 +2,9 @@ import { Link, useParams } from "react-router";
 import BotonAgregar from "../components/BotonAgregar.jsx";
 import EstadoVacio from "../components/EstadoVacio.jsx";
 import ImagenProducto from "../components/ImagenProducto.jsx";
+import PrecioProducto from "../components/PrecioProducto.jsx";
 import { nombreCategoria, producto as buscarProducto } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
-import { precioOGratis } from "../utils/formato.js";
 import { recurso } from "../utils/recursos.js";
 
 /** Detalle de un producto con su video opcional y el boton de anadir (RF-04). */
@@ -57,7 +57,9 @@ export default function Producto() {
 				<div className="col-12 col-lg-6">
 					<p className="etiqueta-categoria mb-1">{categoria}</p>
 					<h1 className="h3">{producto.nombre}</h1>
-					<p className="precio">{precioOGratis(producto.precio)}</p>
+					<p className="precio">
+						<PrecioProducto producto={producto} />
+					</p>
 					<p>{producto.descripcion || "Este producto todavia no tiene descripcion."}</p>
 
 					<dl className="ficha-tecnica row small">

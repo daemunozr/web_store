@@ -3,13 +3,13 @@ import { Link, useSearchParams } from "react-router";
 import Alerta, { ZonaAviso } from "../../components/Alerta.jsx";
 import EstadoVacio from "../../components/EstadoVacio.jsx";
 import ModalConfirmacion from "../../components/ModalConfirmacion.jsx";
+import PrecioProducto from "../../components/PrecioProducto.jsx";
 import { useDatos } from "../../context/datos.js";
 import { useSesion } from "../../context/sesion.js";
 import { nombreCategoria } from "../../data/datos.js";
 import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { enStockCritico } from "../../logic/stock.js";
-import { precioOGratis } from "../../utils/formato.js";
 import { recurso } from "../../utils/recursos.js";
 
 /** Fila del listado; la columna de acciones existe solo si se puede editar. */
@@ -29,7 +29,9 @@ function FilaProducto({ producto, puedeEditar, onEliminar }) {
 				</Link>
 			</td>
 			<td>{nombreCategoria(producto.categoria)}</td>
-			<td className="text-end">{precioOGratis(producto.precio)}</td>
+			<td className="text-end">
+				<PrecioProducto producto={producto} />
+			</td>
 			<td className="text-end">{producto.stock}</td>
 			<td className="text-end">{producto.stockCritico === "" ? "—" : producto.stockCritico}</td>
 			<td>{critico && <span className="alerta-stock">Stock critico</span>}</td>

@@ -11,6 +11,7 @@
  */
 import { producto as productoDelCatalogo } from "../data/datos.js";
 import { unidades } from "../utils/formato.js";
+import { precioVigente } from "./precios.js";
 
 const numerar = (lineas) => lineas.map((linea, i) => ({ ...linea, linea: i + 1 }));
 
@@ -40,8 +41,9 @@ export function normalizar(lineas, buscar = productoDelCatalogo) {
 /* ------------------------------------------------------------------ Consultas */
 export const cantidadItems = (lineas) => lineas.reduce((total, linea) => total + linea.cantidad, 0);
 
+/** Precio vigente (con la oferta aplicada) por la cantidad de la linea. */
 export const subtotal = (linea, buscar = productoDelCatalogo) =>
-	(Number(buscar(linea.producto)?.precio) || 0) * linea.cantidad;
+	precioVigente(buscar(linea.producto)) * linea.cantidad;
 
 export const total = (lineas, buscar = productoDelCatalogo) =>
 	lineas.reduce((suma, linea) => suma + subtotal(linea, buscar), 0);

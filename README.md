@@ -33,7 +33,8 @@ npm run build      # salida en dist/
 npm run lint
 ```
 
-Rutas de la app: `/`, `/productos` (`?categoria=`), `/productos/:sku`, `/armado`,
+Rutas de la app: `/`, `/productos` (filtros en la URL: `?q=`, `categoria`, `min`, `max`,
+`oferta`, `stock`, `orden`), `/productos/:sku`, `/categorias`, `/ofertas`, `/armado`,
 `/carrito`, `/blogs`, `/blogs/:slug`, `/nosotros`, `/contacto`, `/registro`, `/login`,
 `/creditos` y el panel en `/admin` (`/admin/productos`, `/admin/categorias`,
 `/admin/usuarios`, `/admin/ordenes`, con `nuevo`/`nueva` y `:id/editar` en los
