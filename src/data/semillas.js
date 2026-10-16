@@ -417,13 +417,54 @@ export const usuarios = [
 ];
 
 /* ------------------------------------------------- Orden e Item de orden
-   Solo lectura en esta entrega (RF-12). El precio unitario se guarda en la
-   linea porque el precio del producto puede cambiar despues. */
+   Historial de compras de ejemplo; las compras nuevas las crea crearOrden. El
+   precio unitario se guarda en la linea porque el precio del producto puede
+   cambiar despues. La orden guarda una copia de los datos de envio y "cliente"
+   es "" cuando compro un invitado. "entrega" es DOMICILIO o RETIRO y el envio
+   es gratis desde $200.000 (ver logic/checkout.js). */
 export const ordenes = [
-	{ numero: "ORD-2026-0001", cliente: "123456785", fecha: "2026-09-12" },
-	{ numero: "ORD-2026-0002", cliente: "201234565", fecha: "2026-09-18" },
-	{ numero: "ORD-2026-0003", cliente: "98765433", fecha: "2026-09-23" },
-	{ numero: "ORD-2026-0004", cliente: "123456785", fecha: "2026-09-27" },
+	{
+		numero: "ORD-2026-0001", cliente: "123456785", fecha: "2026-09-12",
+		nombre: "Camila Soto Vera", correo: "camila@gmail.com",
+		direccion: "Irarrazaval 2550, Nunoa", comuna: "RM-04",
+		entrega: "DOMICILIO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0002", cliente: "201234565", fecha: "2026-09-18",
+		nombre: "Matias Rivas Gomez", correo: "matias@gmail.com",
+		direccion: "Barros Arana 890, Concepcion", comuna: "BI-01",
+		entrega: "DOMICILIO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0003", cliente: "98765433", fecha: "2026-09-23",
+		nombre: "Patricia Alvarez Diaz", correo: "patricia@profesor.duoc.cl",
+		direccion: "Alameda 1449, Santiago", comuna: "RM-01",
+		entrega: "RETIRO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0004", cliente: "123456785", fecha: "2026-09-27",
+		nombre: "Camila Soto Vera", correo: "camila@gmail.com",
+		direccion: "Irarrazaval 2550, Nunoa", comuna: "RM-04",
+		entrega: "DOMICILIO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0005", cliente: "201234565", fecha: "2026-10-03",
+		nombre: "Matias Rivas Gomez", correo: "matias@gmail.com",
+		direccion: "Barros Arana 890, Concepcion", comuna: "BI-01",
+		entrega: "DOMICILIO", costoEnvio: 4990, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0006", cliente: "98765433", fecha: "2026-10-09",
+		nombre: "Patricia Alvarez Diaz", correo: "patricia@profesor.duoc.cl",
+		direccion: "Alameda 1449, Santiago", comuna: "RM-01",
+		entrega: "RETIRO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
+	{
+		numero: "ORD-2026-0007", cliente: "", fecha: "2026-10-14",
+		nombre: "Sofia Contreras Pino", correo: "sofia.contreras@gmail.com",
+		direccion: "Los Leones 1200, Providencia", comuna: "RM-02",
+		entrega: "DOMICILIO", costoEnvio: 0, medioPago: "Tarjeta terminada en 4242",
+	},
 ];
 
 export const itemsOrden = [
@@ -440,6 +481,16 @@ export const itemsOrden = [
 
 	{ orden: "ORD-2026-0004", producto: "SSD-NVME-2TB", cantidad: 1, precioUnitario: 139990 },
 	{ orden: "ORD-2026-0004", producto: "COOL-AIO-240", cantidad: 1, precioUnitario: 79990 },
+
+	{ orden: "ORD-2026-0005", producto: "RAM-DDR4-16-3200", cantidad: 1, precioUnitario: 44990 },
+	{ orden: "ORD-2026-0005", producto: "PER-MOUSE-RGB", cantidad: 1, precioUnitario: 24990 },
+
+	// Precios con la oferta vigente al comprar (SSD -25 %, teclado -20 %).
+	{ orden: "ORD-2026-0006", producto: "SSD-NVME-1TB", cantidad: 1, precioUnitario: 67493 },
+	{ orden: "ORD-2026-0006", producto: "PER-KB-MECH", cantidad: 1, precioUnitario: 27992 },
+
+	{ orden: "ORD-2026-0007", producto: "GPU-RTX4060", cantidad: 1, precioUnitario: 359991 },
+	{ orden: "ORD-2026-0007", producto: "COOL-AIR-TOWER", cantidad: 1, precioUnitario: 34990 },
 ];
 
 /* ----------------------------------------------------------------- Blogs */

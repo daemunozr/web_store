@@ -35,10 +35,10 @@ npm run lint
 
 Rutas de la app: `/`, `/productos` (filtros en la URL: `?q=`, `categoria`, `min`, `max`,
 `oferta`, `stock`, `orden`), `/productos/:sku`, `/categorias`, `/ofertas`, `/armado`,
-`/carrito`, `/blogs`, `/blogs/:slug`, `/nosotros`, `/contacto`, `/registro`, `/login`,
-`/creditos` y el panel en `/admin` (`/admin/productos`, `/admin/categorias`,
-`/admin/usuarios`, `/admin/ordenes`, con `nuevo`/`nueva` y `:id/editar` en los
-mantenedores). Imágenes y video se sirven desde `public/resources/`.
+`/carrito`, `/checkout`, `/pago/correcto/:numero`, `/pago/error`, `/blogs`, `/blogs/:slug`,
+`/nosotros`, `/contacto`, `/registro`, `/login`, `/creditos` y el panel en `/admin`
+(`/admin/productos`, `/admin/categorias`, `/admin/usuarios`, `/admin/ordenes`, con
+`nuevo`/`nueva` y `:id/editar` en los mantenedores). Imágenes y video se sirven desde `public/resources/`.
 
 La capa de datos (`src/data/datos.js`) ofrece CRUD completo de productos, usuarios y
 categorías sobre una copia de trabajo en `sessionStorage`; `DatosProvider` la conecta
@@ -61,6 +61,12 @@ Las secciones 2 a 9 describen todavía el sitio de `legacy/`; se actualizan en e
 | Administrador           | `admin@duoc.cl`    | `admin1234`  |
 | Administrador logístico | `bodega@duoc.cl`   | `bodega123`  |
 | Cliente                 | `camila@gmail.com` | `cliente123` |
+
+Pago simulado en `/checkout` (no hay cobro real ni se guarda la tarjeta). Tarjetas de
+prueba: `4242 4242 4242 4242` aprueba, `4000 0000 0000 0002` la rechaza el emisor y
+`4000 0000 0000 9995` por fondos insuficientes. Cualquier vencimiento futuro (MM/AA) y
+un CVV de 3 o 4 dígitos. Se puede comprar sin sesión; con sesión, los datos se completan
+solos. Cada compra crea una orden con su boleta y descuenta el stock.
 
 ## 2. Stack y restricciones
 

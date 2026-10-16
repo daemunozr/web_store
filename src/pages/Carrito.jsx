@@ -154,10 +154,17 @@ export default function Carrito() {
 								<span className="total">{precio(total)}</span>
 							</dd>
 						</dl>
-						<p className="small text-secondary">
-							El pago en linea y la generacion de la orden quedan para una entrega posterior.
-						</p>
-						<Link className="btn btn-primary w-100" to="/productos">
+						<p className="small text-secondary">El costo de envio se calcula en el pago, segun la entrega.</p>
+						{lineas.length ? (
+							<Link className="btn btn-primary w-100 mb-2" to="/checkout">
+								Ir a pagar
+							</Link>
+						) : (
+							<button type="button" className="btn btn-primary w-100 mb-2" disabled>
+								Ir a pagar
+							</button>
+						)}
+						<Link className="btn btn-outline-primary w-100" to="/productos">
 							Seguir comprando
 						</Link>
 					</section>

@@ -5,8 +5,13 @@
  * lee del almacenamiento en cada consulta y se escribe completa en cada
  * cambio. Cerrar el navegador la descarta y la proxima lectura vuelve a la
  * semilla. Las reglas de negocio (unicidad, integridad) viven en data/datos.js.
+ *
+ * "id" es el campo que identifica a cada registro o, si la clave es compuesta,
+ * una funcion que la calcula a partir del registro.
  */
 export function crearColeccion({ clave, semilla, id }) {
+	const identificador = typeof id === "function" ? id : (registro) => registro[id];
+
 	function listar() {
 		try {
 			const guardado = window.sessionStorage.getItem(clave);
@@ -29,14 +34,16 @@ export function crearColeccion({ clave, semilla, id }) {
 		return lista;
 	}
 
-	const obtener = (valor) => listar().find((registro) => registro[id] === valor);
+	const obtener = (valor) => listar().find((registro) => identificador(registro) === valor);
 
 	return {
 		listar,
 		obtener,
 		existe: (valor) => Boolean(obtener(valor)),
 		insertar: (registro) => guardar([...listar(), registro]),
-		reemplazar: (valor, registro) => guardar(listar().map((actual) => (actual[id] === valor ? registro : actual))),
-		quitar: (valor) => guardar(listar().filter((registro) => registro[id] !== valor)),
+		insertarVarios: (registros) => guardar([...listar(), ...registros]),
+		reemplazar: (valor, registro) =>
+			guardar(listar().map((actual) => (identificador(actual) === valor ? registro : actual))),
+		quitar: (valor) => guardar(listar().filter((registro) => identificador(registro) !== valor)),
 	};
 }

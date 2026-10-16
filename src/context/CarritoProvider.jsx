@@ -65,6 +65,7 @@ export default function CarritoProvider({ children }) {
 				aplicar((actuales) => reglas.cambiarCantidad(actuales, numero, cantidad)),
 			eliminarLinea: (numero) => aplicar((actuales) => reglas.eliminarLinea(actuales, numero)),
 			eliminarArmado: (agrupador) => aplicar((actuales) => reglas.eliminarArmado(actuales, agrupador)),
+			vaciar: () => aplicar(() => reglas.vaciar()),
 		}),
 		[lineas, aplicar],
 	);

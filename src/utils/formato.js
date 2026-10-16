@@ -20,5 +20,11 @@ export function fecha(iso) {
 	return `${dia}-${mes}-${ano}`;
 }
 
+/** Fecha de hoy (o de "ahora") en hora local como AAAA-MM-DD. toISOString() usa UTC y cambiaria de dia de noche. */
+export function fechaLocal(ahora = new Date()) {
+	const dos = (n) => String(n).padStart(2, "0");
+	return `${ahora.getFullYear()}-${dos(ahora.getMonth() + 1)}-${dos(ahora.getDate())}`;
+}
+
 /** "1 unidad" o "N unidades". */
 export const unidades = (n) => `${n} ${n === 1 ? "unidad" : "unidades"}`;

@@ -33,6 +33,24 @@ export function runValido(valor) {
 	return digitoVerificador(run.slice(0, -1)) === run.slice(-1);
 }
 
+/* --------------------------------------------------------------- Tarjeta */
+/** Algoritmo de Luhn: el digito de control de los numeros de tarjeta. */
+export function luhnValido(numero) {
+	const digitos = String(numero).replace(/\D/g, "");
+	if (!digitos) return false;
+
+	let suma = 0;
+	[...digitos].reverse().forEach((digito, i) => {
+		let valor = Number(digito);
+		if (i % 2 === 1) {
+			valor *= 2;
+			if (valor > 9) valor -= 9;
+		}
+		suma += valor;
+	});
+	return suma % 10 === 0;
+}
+
 /* ---------------------------------------------------------------- Reglas */
 export const reglas = {
 	requerido: (mensaje = "Este campo es obligatorio.") => (valor) =>
@@ -71,6 +89,37 @@ export const reglas = {
 		const numero = Number(valor);
 		if (Number.isNaN(numero)) return "Debe ser un numero.";
 		return numero < minimo ? `No puede ser menor que ${minimo}.` : "";
+	},
+
+	/** Numero de tarjeta: de 13 a 19 digitos (se admiten espacios) con digito de control valido. */
+	tarjeta: () => (valor) => {
+		const texto = String(valor ?? "").trim();
+		if (texto === "") return "";
+		if (!/^[\d ]+$/.test(texto)) return "Escribe solo numeros, sin guiones ni letras.";
+		const digitos = texto.replace(/ /g, "");
+		if (digitos.length < 13 || digitos.length > 19) return "El numero debe tener entre 13 y 19 digitos.";
+		return luhnValido(digitos) ? "" : "El numero de la tarjeta no es valido: revisa los digitos.";
+	},
+
+	/** Vencimiento MM/AA, con mes de 01 a 12 y no anterior al mes de "ahora" (hoy por defecto). */
+	vencimiento: (ahora) => (valor) => {
+		const texto = String(valor ?? "").trim();
+		if (texto === "") return "";
+		const partes = /^(\d{2})\/(\d{2})$/.exec(texto);
+		if (!partes) return "Usa el formato MM/AA. Ejemplo: 08/29.";
+		const mes = Number(partes[1]);
+		if (mes < 1 || mes > 12) return "El mes debe estar entre 01 y 12.";
+
+		const referencia = ahora ?? new Date();
+		const vence = (2000 + Number(partes[2])) * 12 + mes;
+		const actual = referencia.getFullYear() * 12 + referencia.getMonth() + 1;
+		return vence < actual ? "La tarjeta esta vencida." : "";
+	},
+
+	/** Codigo de seguridad de la tarjeta: 3 o 4 digitos. */
+	cvv: () => (valor) => {
+		const texto = String(valor ?? "").trim();
+		return texto === "" || /^\d{3,4}$/.test(texto) ? "" : "El codigo de seguridad tiene 3 o 4 digitos.";
 	},
 
 	numeroMaximo: (maximo) => (valor) => {

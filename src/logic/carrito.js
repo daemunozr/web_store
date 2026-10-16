@@ -156,4 +156,7 @@ export function cambiarCantidad(lineas, numero, cantidad, buscar = productoDelCa
 
 export const eliminarLinea = (lineas, numero) => numerar(lineas.filter((linea) => linea.linea !== numero));
 
+/** Carrito sin lineas (tras pagar la compra). */
+export const vaciar = () => [];
+
 export const eliminarArmado = (lineas, agrupador) => numerar(lineas.filter((linea) => linea.armado !== agrupador));

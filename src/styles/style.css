@@ -16,6 +16,7 @@
     10. Blogs y Nosotros
     11. Panel de administracion
     12. Ajustes responsivos
+    13. Impresion de la boleta
    ========================================================================== */
 
 /* -------------------------------------------------------------------------
@@ -559,6 +560,17 @@ img {
 	font-weight: 700;
 }
 
+/* Boleta: comprobante de una orden (pago correcto y panel). */
+.boleta {
+	background-color: var(--superficie);
+	border: 1px solid var(--borde);
+	border-radius: 1rem;
+}
+
+.boleta .encabezado-boleta {
+	border-bottom: 1px dashed var(--borde);
+}
+
 /* -------------------------------------------------------------------------
    9. Formularios y validaciones
    ------------------------------------------------------------------------- */
@@ -756,5 +768,40 @@ img {
 @media (max-width: 1199.98px) {
 	.campo-busqueda {
 		width: 100%;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   13. Impresion de la boleta
+   Sin menu, pie, avisos ni botones, y en blanco y negro para ahorrar tinta.
+   ------------------------------------------------------------------------- */
+@media print {
+	.barra-utilidad,
+	.navbar,
+	.pie-sitio,
+	.toast-container,
+	.no-imprimir,
+	.menu-admin,
+	.barra-categorias {
+		display: none !important;
+	}
+
+	body,
+	.boleta {
+		background: #ffffff !important;
+		color: #000000 !important;
+	}
+
+	.boleta {
+		border: 0;
+		padding: 0 !important;
+	}
+
+	.boleta *,
+	.boleta .precio,
+	.boleta .text-secondary {
+		background: transparent !important;
+		border-color: #999999 !important;
+		color: #000000 !important;
 	}
 }

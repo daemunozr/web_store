@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useDatos } from "../../context/datos.js";
-import { ordenes, roles, totalOrden } from "../../data/datos.js";
+import { roles, totalOrden } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { enStockCritico } from "../../logic/stock.js";
 import { precio } from "../../utils/formato.js";
@@ -26,7 +26,7 @@ const ACCESOS = [
 	},
 	{
 		titulo: "Ordenes",
-		texto: "Consultar las ordenes simuladas y su detalle en modo de solo lectura.",
+		texto: "Consultar las ordenes de compra y su boleta en modo de solo lectura.",
 		ruta: "/admin/ordenes",
 		boton: "Abrir ordenes",
 	},
@@ -48,14 +48,14 @@ function Indicador({ titulo, valor, nota }) {
 /** Home del panel: estado de los datos y accesos a los mantenedores (RNF-08 CA5). */
 export default function Resumen() {
 	useTitulo("Panel — Ensambla.me");
-	const { productos, usuarios, categorias } = useDatos();
+	const { productos, usuarios, categorias, ordenes } = useDatos();
 	const vendido = ordenes.reduce((total, orden) => total + totalOrden(orden.numero), 0);
 
 	const indicadores = [
 		{ titulo: "Productos en catalogo", valor: productos.length, nota: `${categorias.length} categorias` },
 		{ titulo: "En stock critico", valor: productos.filter(enStockCritico).length, nota: "Requieren reposicion" },
 		{ titulo: "Usuarios registrados", valor: usuarios.length, nota: `${roles.length} roles` },
-		{ titulo: "Ordenes simuladas", valor: ordenes.length, nota: `${precio(vendido)} en total` },
+		{ titulo: "Ordenes", valor: ordenes.length, nota: `${precio(vendido)} en total` },
 	];
 
 	return (

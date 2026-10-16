@@ -1,21 +1,31 @@
 /*
  * Fuente de datos simulada del sistema: lectura y CRUD.
  *
- * Productos, usuarios y categorias son colecciones con copia de trabajo en
- * sessionStorage (data/coleccion.js), sembradas desde data/semillas.js; el
- * resto de las relaciones son de solo lectura. Las operaciones de escritura
+ * Productos, usuarios, categorias y ordenes (con sus items) son colecciones con
+ * copia de trabajo en sessionStorage (data/coleccion.js), sembradas desde
+ * data/semillas.js; el resto de las relaciones son de solo lectura. Las operaciones de escritura
  * aplican las reglas de negocio y devuelven { ok, registro, mensaje }: con
  * ok en false no cambian nada. La interfaz las usa a traves de
  * context/DatosProvider, que vuelve a renderizar tras cada cambio.
  */
+import { consolidar, costoEnvio, entregaDe, faltantes } from "../logic/checkout.js";
+import { siguienteNumero, subtotalItems } from "../logic/ordenes.js";
+import { fechaLocal } from "../utils/formato.js";
 import { crearColeccion } from "./coleccion.js";
 import * as semillas from "./semillas.js";
 
-export const { compatibilidad, regiones, comunas, roles, ordenes, itemsOrden, blogs } = semillas;
+export const { compatibilidad, regiones, comunas, roles, blogs } = semillas;
 
 const tablaProductos = crearColeccion({ clave: "productos", semilla: semillas.productos, id: "sku" });
 const tablaUsuarios = crearColeccion({ clave: "usuarios", semilla: semillas.usuarios, id: "run" });
 const tablaCategorias = crearColeccion({ clave: "categorias", semilla: semillas.categorias, id: "codigo" });
+const tablaOrdenes = crearColeccion({ clave: "ordenes", semilla: semillas.ordenes, id: "numero" });
+// La clave de un item es compuesta: (orden, producto).
+const tablaItems = crearColeccion({
+	clave: "itemsOrden",
+	semilla: semillas.itemsOrden,
+	id: (item) => `${item.orden}|${item.producto}`,
+});
 
 const exito = (registro, mensaje) => ({ ok: true, registro, mensaje });
 const rechazo = (mensaje) => ({ ok: false, mensaje });
@@ -28,6 +38,8 @@ export const usuarios = tablaUsuarios.listar;
 export const usuario = tablaUsuarios.obtener;
 export const categorias = tablaCategorias.listar;
 export const categoria = tablaCategorias.obtener;
+export const ordenes = tablaOrdenes.listar;
+export const itemsOrden = tablaItems.listar;
 
 export const nombreCliente = (run) => {
 	const cliente = usuario(run);
@@ -50,12 +62,12 @@ export const categoriasDeArmado = () =>
 export const productosDe = (codigo) => productos().filter((p) => p.categoria === codigo);
 export const admisibles = (sku) => compatibilidad.filter((c) => c.producto === sku).map((c) => c.admisible);
 
-/* Ordenes (RF-12) */
-export const orden = (numero) => ordenes.find((o) => o.numero === numero);
-export const ordenesDe = (run) => ordenes.filter((o) => o.cliente === run);
-export const itemsDeOrden = (numero) => itemsOrden.filter((i) => i.orden === numero);
-export const totalOrden = (numero) =>
-	itemsDeOrden(numero).reduce((total, i) => total + i.cantidad * i.precioUnitario, 0);
+/* Ordenes (RF-12): el total incluye el costo de envio. */
+export const orden = tablaOrdenes.obtener;
+export const ordenesDe = (run) => ordenes().filter((o) => o.cliente === run);
+export const itemsDeOrden = (numero) => itemsOrden().filter((i) => i.orden === numero);
+export const subtotalOrden = (numero) => subtotalItems(itemsDeOrden(numero));
+export const totalOrden = (numero) => subtotalOrden(numero) + (orden(numero)?.costoEnvio ?? 0);
 
 /* ================================================================== Productos */
 export function crearProducto(nuevo) {
@@ -163,4 +175,45 @@ export function eliminarCategoria(codigo) {
 
 	tablaCategorias.quitar(codigo);
 	return exito(existente, `La categoria ${existente.nombre} se elimino.`);
+}
+
+/* ===================================================================== Ordenes */
+/**
+ * Registra una compra. comprador es { nombre, correo, direccion, comuna } y
+ * cliente es el RUN de quien compra, o "" si es un invitado. Se valida todo
+ * antes de escribir: con ok en false no cambia nada. Al registrarla descuenta
+ * el stock de cada producto.
+ */
+export function crearOrden({ cliente = "", comprador, entrega, medioPago, lineas }) {
+	if (!lineas?.length) return rechazo("No hay productos para comprar.");
+	if (!entregaDe(entrega)) return rechazo("Elige una opcion de entrega valida.");
+	if (cliente && !usuario(cliente)) return rechazo("La cuenta con la que compras ya no existe.");
+
+	const items = consolidar(lineas, producto);
+	const sinStock = faltantes(items, producto);
+	if (sinStock.length) return rechazo(`Sin stock suficiente: ${sinStock.join(", ")}.`);
+
+	const fecha = fechaLocal();
+	const numero = siguienteNumero(ordenes(), fecha);
+	const registro = {
+		numero,
+		cliente,
+		fecha,
+		nombre: comprador.nombre,
+		correo: comprador.correo.toLowerCase(),
+		direccion: comprador.direccion,
+		comuna: comprador.comuna,
+		entrega,
+		costoEnvio: costoEnvio(entrega, subtotalItems(items)),
+		medioPago,
+	};
+
+	tablaOrdenes.insertar(registro);
+	tablaItems.insertarVarios(items.map((item) => ({ orden: numero, ...item })));
+	items.forEach(({ producto: sku, cantidad }) => {
+		const existente = producto(sku);
+		tablaProductos.reemplazar(sku, { ...existente, stock: Number(existente.stock) - cantidad });
+	});
+
+	return exito(registro, `La orden ${numero} se registro correctamente.`);
 }

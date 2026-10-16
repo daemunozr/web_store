@@ -9,6 +9,7 @@ import Blog from "./pages/Blog.jsx";
 import Blogs from "./pages/Blogs.jsx";
 import Carrito from "./pages/Carrito.jsx";
 import Categorias from "./pages/Categorias.jsx";
+import Checkout from "./pages/Checkout.jsx";
 import Contacto from "./pages/Contacto.jsx";
 import Creditos from "./pages/Creditos.jsx";
 import Inicio from "./pages/Inicio.jsx";
@@ -16,6 +17,8 @@ import Login from "./pages/Login.jsx";
 import NoEncontrada from "./pages/NoEncontrada.jsx";
 import Nosotros from "./pages/Nosotros.jsx";
 import Ofertas from "./pages/Ofertas.jsx";
+import PagoCorrecto from "./pages/PagoCorrecto.jsx";
+import PagoError from "./pages/PagoError.jsx";
 import Producto from "./pages/Producto.jsx";
 import Productos from "./pages/Productos.jsx";
 import Registro from "./pages/Registro.jsx";
@@ -53,6 +56,9 @@ export default function App() {
 						</Route>
 
 						<Route element={<LayoutTienda />}>
+							<Route path="checkout" element={<Checkout />} />
+							<Route path="pago/correcto/:numero" element={<PagoCorrecto />} />
+							<Route path="pago/error" element={<PagoError />} />
 							<Route path="blogs" element={<Blogs />} />
 							<Route path="blogs/:slug" element={<Blog />} />
 							<Route path="nosotros" element={<Nosotros />} />

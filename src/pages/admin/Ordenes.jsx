@@ -1,20 +1,22 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
 import EstadoVacio from "../../components/EstadoVacio.jsx";
-import { itemsDeOrden, nombreCliente, ordenes, producto, totalOrden } from "../../data/datos.js";
+import { useDatos } from "../../context/datos.js";
+import { itemsDeOrden, nombreCliente, producto, totalOrden } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { fecha, precio } from "../../utils/formato.js";
 
 /** Listado de ordenes en solo lectura: cliente, fecha, productos y total (RF-12 CA2). */
 export default function Ordenes() {
 	useTitulo("Ordenes — Panel Ensambla.me");
+	const { ordenes } = useDatos();
 
 	return (
 		<main className="col-12 col-lg-9">
 			<p className="sobretitulo">Consulta</p>
 			<h1 className="h3">Ordenes</h1>
 			<p className="solo-lectura mb-3">
-				Vista de solo lectura. La creacion de ordenes a partir del carrito queda para una entrega posterior.
+				Vista de solo lectura. Las compras que se pagan en la tienda aparecen aqui al instante.
 			</p>
 
 			<div className="table-responsive">
@@ -38,9 +40,9 @@ export default function Ordenes() {
 										<code>{orden.numero}</code>
 									</td>
 									<td>
-										{nombreCliente(orden.cliente)}
+										{orden.cliente ? nombreCliente(orden.cliente) : orden.nombre}
 										<br />
-										<span className="small text-secondary">{orden.cliente}</span>
+										<span className="small text-secondary">{orden.cliente || "Invitado"}</span>
 									</td>
 									<td>{fecha(orden.fecha)}</td>
 									<td className="small">
@@ -57,7 +59,7 @@ export default function Ordenes() {
 											className="btn btn-sm btn-outline-primary"
 											to={`/admin/ordenes/${encodeURIComponent(orden.numero)}`}
 										>
-											Ver detalle
+											Ver boleta
 										</Link>
 									</td>
 								</tr>

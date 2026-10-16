@@ -28,6 +28,8 @@ export default function DatosProvider({ children }) {
 			productos: datos.productos(),
 			usuarios: datos.usuarios(),
 			categorias: datos.categorias(),
+			ordenes: datos.ordenes(),
+			itemsOrden: datos.itemsOrden(),
 			crearProducto: conAviso(datos.crearProducto),
 			actualizarProducto: conAviso(datos.actualizarProducto),
 			eliminarProducto: conAviso(datos.eliminarProducto),
@@ -37,6 +39,7 @@ export default function DatosProvider({ children }) {
 			crearCategoria: conAviso(datos.crearCategoria),
 			actualizarCategoria: conAviso(datos.actualizarCategoria),
 			eliminarCategoria: conAviso(datos.eliminarCategoria),
+			crearOrden: conAviso(datos.crearOrden),
 		}),
 		[version, conAviso],
 	);
