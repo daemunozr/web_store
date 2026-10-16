@@ -1,54 +1,38 @@
 /*
- * Acceso a los datos del sistema.
+ * Fuente de datos simulada del sistema: lectura y CRUD.
  *
- * Los mantenedores (RF-10, RF-11) y el registro (RF-01) deben poder crear
- * registros que sirvan despues para iniciar sesion, por lo que productos y
- * usuarios se leen y escriben mediante una copia de trabajo en sessionStorage
- * sembrada desde data/semillas.js. Cerrar el navegador pierde las altas de
- * prueba, pero no el carrito, que vive en localStorage (context/CarritoContext).
+ * Productos, usuarios y categorias son colecciones con copia de trabajo en
+ * sessionStorage (data/coleccion.js), sembradas desde data/semillas.js; el
+ * resto de las relaciones son de solo lectura. Las operaciones de escritura
+ * aplican las reglas de negocio y devuelven { ok, registro, mensaje }: con
+ * ok en false no cambian nada. La interfaz las usa a traves de
+ * context/DatosProvider, que vuelve a renderizar tras cada cambio.
  */
+import { crearColeccion } from "./coleccion.js";
 import * as semillas from "./semillas.js";
 
-export const { categorias, compatibilidad, regiones, comunas, roles, ordenes, itemsOrden, blogs } = semillas;
+export const { compatibilidad, regiones, comunas, roles, ordenes, itemsOrden, blogs } = semillas;
 
-const CLAVES = { productos: "productos", usuarios: "usuarios" };
+const tablaProductos = crearColeccion({ clave: "productos", semilla: semillas.productos, id: "sku" });
+const tablaUsuarios = crearColeccion({ clave: "usuarios", semilla: semillas.usuarios, id: "run" });
+const tablaCategorias = crearColeccion({ clave: "categorias", semilla: semillas.categorias, id: "codigo" });
 
-function leerCopia(clave, semilla) {
-	try {
-		const guardado = window.sessionStorage.getItem(clave);
-		if (guardado) {
-			const lista = JSON.parse(guardado);
-			if (Array.isArray(lista)) return lista;
-		}
-	} catch (error) {
-		console.error(`datos: contenido invalido en "${clave}", se vuelve a los datos de prueba`, error);
-	}
-	return structuredClone(semilla);
-}
+const exito = (registro, mensaje) => ({ ok: true, registro, mensaje });
+const rechazo = (mensaje) => ({ ok: false, mensaje });
+const plural = (n, singular, varios) => `${n} ${n === 1 ? singular : varios}`;
 
-function guardarCopia(clave, lista) {
-	try {
-		window.sessionStorage.setItem(clave, JSON.stringify(lista));
-	} catch (error) {
-		console.error(`datos: no se pudo guardar "${clave}"`, error);
-	}
-	return lista;
-}
+/* ====================================================================== Lectura */
+export const productos = tablaProductos.listar;
+export const producto = tablaProductos.obtener;
+export const usuarios = tablaUsuarios.listar;
+export const usuario = tablaUsuarios.obtener;
+export const categorias = tablaCategorias.listar;
+export const categoria = tablaCategorias.obtener;
 
-/* ------------------------------------------- Productos y usuarios vigentes */
-export const productos = () => leerCopia(CLAVES.productos, semillas.productos);
-export const guardarProductos = (lista) => guardarCopia(CLAVES.productos, lista);
-export const usuarios = () => leerCopia(CLAVES.usuarios, semillas.usuarios);
-export const guardarUsuarios = (lista) => guardarCopia(CLAVES.usuarios, lista);
-
-/* ------------------------------------------------------ Consultas de apoyo */
-export const producto = (sku) => productos().find((p) => p.sku === sku);
-export const usuario = (run) => usuarios().find((u) => u.run === run);
 export const nombreCliente = (run) => {
 	const cliente = usuario(run);
 	return cliente ? `${cliente.nombre} ${cliente.apellidos}` : run;
 };
-export const categoria = (codigo) => categorias.find((c) => c.codigo === codigo);
 export const nombreCategoria = (codigo) => categoria(codigo)?.nombre ?? codigo;
 export const nombreRol = (codigo) => roles.find((r) => r.codigo === codigo)?.nombre ?? codigo;
 export const comuna = (codigo) => comunas.find((c) => c.codigo === codigo);
@@ -58,13 +42,125 @@ export const nombreRegionDeComuna = (codigo) =>
 	regiones.find((r) => r.codigo === comuna(codigo)?.region)?.nombre ?? "";
 export const blog = (slug) => blogs.find((b) => b.slug === slug);
 
-/* ------------------------------------------------ Asistente de armado (RF-07) */
-export const categoriasDeArmado = () => categorias.filter((c) => c.orden).sort((a, b) => a.orden - b.orden);
+/* Asistente de armado (RF-07): solo las categorias con posicion en el recorrido. */
+export const categoriasDeArmado = () =>
+	categorias()
+		.filter((c) => c.orden)
+		.sort((a, b) => a.orden - b.orden);
 export const productosDe = (codigo) => productos().filter((p) => p.categoria === codigo);
 export const admisibles = (sku) => compatibilidad.filter((c) => c.producto === sku).map((c) => c.admisible);
 
-/* ------------------------------------------------------------ Ordenes (RF-12) */
+/* Ordenes (RF-12) */
 export const orden = (numero) => ordenes.find((o) => o.numero === numero);
+export const ordenesDe = (run) => ordenes.filter((o) => o.cliente === run);
 export const itemsDeOrden = (numero) => itemsOrden.filter((i) => i.orden === numero);
 export const totalOrden = (numero) =>
 	itemsDeOrden(numero).reduce((total, i) => total + i.cantidad * i.precioUnitario, 0);
+
+/* ================================================================== Productos */
+export function crearProducto(nuevo) {
+	if (tablaProductos.existe(nuevo.sku)) return rechazo(`Ya existe un producto con el codigo ${nuevo.sku}.`);
+	tablaProductos.insertar(nuevo);
+	return exito(nuevo, `El producto ${nuevo.sku} se creo correctamente.`);
+}
+
+/** El SKU identifica al producto y no cambia al editarlo. */
+export function actualizarProducto(sku, datos) {
+	if (!tablaProductos.existe(sku)) return rechazo(`No existe un producto con el codigo ${sku}.`);
+	const registro = { ...datos, sku };
+	tablaProductos.reemplazar(sku, registro);
+	return exito(registro, `El producto ${sku} se guardo correctamente.`);
+}
+
+/**
+ * Las ordenes conservan sus lineas (con el precio al comprar) aunque el
+ * producto ya no este en el catalogo, y el carrito descarta la linea al leerse.
+ */
+export function eliminarProducto(sku) {
+	const existente = producto(sku);
+	if (!existente) return rechazo(`No existe un producto con el codigo ${sku}.`);
+	tablaProductos.quitar(sku);
+	return exito(existente, `El producto ${sku} (${existente.nombre}) se elimino.`);
+}
+
+/* =================================================================== Usuarios */
+const correoEnUso = (correo, salvoRun = null) =>
+	usuarios().some((u) => u.correo.toLowerCase() === correo.toLowerCase() && u.run !== salvoRun);
+
+/** El RUN es la clave de Usuario y el correo es credencial: ambos son unicos. */
+export function crearUsuario(nuevo) {
+	const registro = { ...nuevo, run: nuevo.run.toUpperCase(), correo: nuevo.correo.toLowerCase() };
+	if (tablaUsuarios.existe(registro.run)) return rechazo(`Ya existe un usuario con RUN ${registro.run}.`);
+	if (correoEnUso(registro.correo)) return rechazo(`El correo ${registro.correo} ya esta usado por otro usuario.`);
+	tablaUsuarios.insertar(registro);
+	return exito(registro, `El usuario con RUN ${registro.run} se creo correctamente.`);
+}
+
+export function actualizarUsuario(run, datos) {
+	if (!tablaUsuarios.existe(run)) return rechazo(`No existe un usuario con RUN ${run}.`);
+	const registro = { ...datos, run, correo: datos.correo.toLowerCase() };
+	if (correoEnUso(registro.correo, run)) return rechazo(`El correo ${registro.correo} ya esta usado por otro usuario.`);
+	tablaUsuarios.reemplazar(run, registro);
+	return exito(registro, `El usuario con RUN ${run} se guardo correctamente.`);
+}
+
+/**
+ * No se elimina la cuenta con la sesion iniciada ni un usuario con ordenes,
+ * que lo referencian como cliente (Orden.cliente).
+ */
+export function eliminarUsuario(run, runSesion = null) {
+	const existente = usuario(run);
+	if (!existente) return rechazo(`No existe un usuario con RUN ${run}.`);
+	if (run === runSesion) return rechazo("No puedes eliminar tu propia cuenta mientras tienes la sesion iniciada.");
+
+	const suyas = ordenesDe(run).length;
+	if (suyas) {
+		return rechazo(
+			`No se puede eliminar a ${existente.nombre} ${existente.apellidos}: tiene ${plural(suyas, "orden", "ordenes")} a su nombre.`,
+		);
+	}
+
+	tablaUsuarios.quitar(run);
+	return exito(existente, `El usuario ${existente.nombre} ${existente.apellidos} (RUN ${run}) se elimino.`);
+}
+
+/* ================================================================= Categorias */
+export function crearCategoria(nueva) {
+	if (tablaCategorias.existe(nueva.codigo)) return rechazo(`Ya existe una categoria con el codigo ${nueva.codigo}.`);
+	// Las categorias nuevas no participan del asistente: su recorrido depende de
+	// la tabla de compatibilidad, que no se mantiene desde el panel.
+	const registro = { codigo: nueva.codigo, nombre: nueva.nombre };
+	tablaCategorias.insertar(registro);
+	return exito(registro, `La categoria ${registro.nombre} se creo correctamente.`);
+}
+
+/** Solo cambia el nombre: el codigo es la clave y el orden lo fija el asistente. */
+export function actualizarCategoria(codigo, datos) {
+	const existente = categoria(codigo);
+	if (!existente) return rechazo(`No existe una categoria con el codigo ${codigo}.`);
+	const registro = { ...existente, nombre: datos.nombre };
+	tablaCategorias.reemplazar(codigo, registro);
+	return exito(registro, `La categoria ${registro.nombre} se guardo correctamente.`);
+}
+
+/**
+ * No se elimina una categoria con productos (Producto.categoria la referencia)
+ * ni una del asistente: el modo equipo completo exige una opcion en cada paso.
+ */
+export function eliminarCategoria(codigo) {
+	const existente = categoria(codigo);
+	if (!existente) return rechazo(`No existe una categoria con el codigo ${codigo}.`);
+	if (existente.orden) {
+		return rechazo(`La categoria ${existente.nombre} es el paso ${existente.orden} del asistente de armado y no se puede eliminar.`);
+	}
+
+	const suyos = productosDe(codigo).length;
+	if (suyos) {
+		return rechazo(
+			`No se puede eliminar ${existente.nombre}: tiene ${plural(suyos, "producto", "productos")}. Cambialos de categoria o eliminalos antes.`,
+		);
+	}
+
+	tablaCategorias.quitar(codigo);
+	return exito(existente, `La categoria ${existente.nombre} se elimino.`);
+}

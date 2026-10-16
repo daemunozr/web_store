@@ -1,15 +1,16 @@
 import { useSearchParams } from "react-router";
 import RejillaProductos from "../components/RejillaProductos.jsx";
-import { categoria as buscarCategoria, productos, productosDe } from "../data/datos.js";
+import { useDatos } from "../context/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 
 /** Listado completo del catalogo o de una categoria (?categoria=) (RF-03). */
 export default function Productos() {
 	useTitulo("Productos — Ensambla.me");
+	const { productos, categorias } = useDatos();
 	const [parametros] = useSearchParams();
 	const codigo = parametros.get("categoria") ?? "";
-	const categoria = codigo ? buscarCategoria(codigo) : null;
-	const lista = categoria ? productosDe(categoria.codigo) : productos();
+	const categoria = codigo ? categorias.find((c) => c.codigo === codigo) : null;
+	const lista = categoria ? productos.filter((p) => p.categoria === categoria.codigo) : productos;
 
 	return (
 		<main className="col-12 col-lg-9">

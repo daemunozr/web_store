@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import RutaProtegida from "./components/RutaProtegida.jsx";
 import { LayoutAdmin, LayoutTienda } from "./components/layout/Layouts.jsx";
 import CarritoProvider from "./context/CarritoProvider.jsx";
+import DatosProvider from "./context/DatosProvider.jsx";
 import SesionProvider from "./context/SesionProvider.jsx";
 import Armado from "./pages/Armado.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -16,6 +17,8 @@ import Nosotros from "./pages/Nosotros.jsx";
 import Producto from "./pages/Producto.jsx";
 import Productos from "./pages/Productos.jsx";
 import Registro from "./pages/Registro.jsx";
+import Categorias from "./pages/admin/Categorias.jsx";
+import FormularioCategoria from "./pages/admin/FormularioCategoria.jsx";
 import FormularioProducto from "./pages/admin/FormularioProducto.jsx";
 import FormularioUsuario from "./pages/admin/FormularioUsuario.jsx";
 import Orden from "./pages/admin/Orden.jsx";
@@ -32,42 +35,47 @@ const protegida = (roles, vista) => <RutaProtegida roles={roles}>{vista}</RutaPr
 
 export default function App() {
 	return (
-		<SesionProvider>
-			<CarritoProvider>
-				<Routes>
-					{/* Vistas de tienda con la barra lateral de categorias (RNF-08 CA3). */}
-					<Route element={<LayoutTienda conAside />}>
-						<Route index element={<Inicio />} />
-						<Route path="productos" element={<Productos />} />
-						<Route path="productos/:sku" element={<Producto />} />
-						<Route path="armado" element={<Armado />} />
-						<Route path="carrito" element={<Carrito />} />
-					</Route>
+		<DatosProvider>
+			<SesionProvider>
+				<CarritoProvider>
+					<Routes>
+						{/* Vistas de tienda con la barra lateral de categorias (RNF-08 CA3). */}
+						<Route element={<LayoutTienda conAside />}>
+							<Route index element={<Inicio />} />
+							<Route path="productos" element={<Productos />} />
+							<Route path="productos/:sku" element={<Producto />} />
+							<Route path="armado" element={<Armado />} />
+							<Route path="carrito" element={<Carrito />} />
+						</Route>
 
-					<Route element={<LayoutTienda />}>
-						<Route path="blogs" element={<Blogs />} />
-						<Route path="blogs/:slug" element={<Blog />} />
-						<Route path="nosotros" element={<Nosotros />} />
-						<Route path="contacto" element={<Contacto />} />
-						<Route path="registro" element={<Registro />} />
-						<Route path="login" element={<Login />} />
-						<Route path="creditos" element={<Creditos />} />
-						<Route path="*" element={<NoEncontrada />} />
-					</Route>
+						<Route element={<LayoutTienda />}>
+							<Route path="blogs" element={<Blogs />} />
+							<Route path="blogs/:slug" element={<Blog />} />
+							<Route path="nosotros" element={<Nosotros />} />
+							<Route path="contacto" element={<Contacto />} />
+							<Route path="registro" element={<Registro />} />
+							<Route path="login" element={<Login />} />
+							<Route path="creditos" element={<Creditos />} />
+							<Route path="*" element={<NoEncontrada />} />
+						</Route>
 
-					<Route path="admin" element={<LayoutAdmin />}>
-						<Route index element={protegida(SOLO_ADMIN, <Resumen />)} />
-						<Route path="productos" element={protegida(ADMIN_Y_LOGISTICA, <ProductosAdmin />)} />
-						<Route path="productos/nuevo" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
-						<Route path="productos/:sku/editar" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
-						<Route path="usuarios" element={protegida(SOLO_ADMIN, <Usuarios />)} />
-						<Route path="usuarios/nuevo" element={protegida(SOLO_ADMIN, <FormularioUsuario />)} />
-						<Route path="usuarios/:run/editar" element={protegida(SOLO_ADMIN, <FormularioUsuario />)} />
-						<Route path="ordenes" element={protegida(ADMIN_Y_LOGISTICA, <Ordenes />)} />
-						<Route path="ordenes/:numero" element={protegida(ADMIN_Y_LOGISTICA, <Orden />)} />
-					</Route>
-				</Routes>
-			</CarritoProvider>
-		</SesionProvider>
+						<Route path="admin" element={<LayoutAdmin />}>
+							<Route index element={protegida(SOLO_ADMIN, <Resumen />)} />
+							<Route path="productos" element={protegida(ADMIN_Y_LOGISTICA, <ProductosAdmin />)} />
+							<Route path="productos/nuevo" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
+							<Route path="productos/:sku/editar" element={protegida(SOLO_ADMIN, <FormularioProducto />)} />
+							<Route path="categorias" element={protegida(SOLO_ADMIN, <Categorias />)} />
+							<Route path="categorias/nueva" element={protegida(SOLO_ADMIN, <FormularioCategoria />)} />
+							<Route path="categorias/:codigo/editar" element={protegida(SOLO_ADMIN, <FormularioCategoria />)} />
+							<Route path="usuarios" element={protegida(SOLO_ADMIN, <Usuarios />)} />
+							<Route path="usuarios/nuevo" element={protegida(SOLO_ADMIN, <FormularioUsuario />)} />
+							<Route path="usuarios/:run/editar" element={protegida(SOLO_ADMIN, <FormularioUsuario />)} />
+							<Route path="ordenes" element={protegida(ADMIN_Y_LOGISTICA, <Ordenes />)} />
+							<Route path="ordenes/:numero" element={protegida(ADMIN_Y_LOGISTICA, <Orden />)} />
+						</Route>
+					</Routes>
+				</CarritoProvider>
+			</SesionProvider>
+		</DatosProvider>
 	);
 }

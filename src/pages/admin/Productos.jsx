@@ -1,15 +1,19 @@
+import { useCallback } from "react";
 import { Link, useSearchParams } from "react-router";
-import Alerta from "../../components/Alerta.jsx";
+import Alerta, { ZonaAviso } from "../../components/Alerta.jsx";
 import EstadoVacio from "../../components/EstadoVacio.jsx";
+import ModalConfirmacion from "../../components/ModalConfirmacion.jsx";
+import { useDatos } from "../../context/datos.js";
 import { useSesion } from "../../context/sesion.js";
-import { nombreCategoria, productos } from "../../data/datos.js";
+import { nombreCategoria } from "../../data/datos.js";
+import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { enStockCritico } from "../../logic/stock.js";
 import { precioOGratis } from "../../utils/formato.js";
 import { recurso } from "../../utils/recursos.js";
 
 /** Fila del listado; la columna de acciones existe solo si se puede editar. */
-function FilaProducto({ producto, puedeEditar }) {
+function FilaProducto({ producto, puedeEditar, onEliminar }) {
 	const critico = enStockCritico(producto);
 	const sku = encodeURIComponent(producto.sku);
 
@@ -30,10 +34,13 @@ function FilaProducto({ producto, puedeEditar }) {
 			<td className="text-end">{producto.stockCritico === "" ? "—" : producto.stockCritico}</td>
 			<td>{critico && <span className="alerta-stock">Stock critico</span>}</td>
 			{puedeEditar && (
-				<td className="text-end">
+				<td className="text-end text-nowrap">
 					<Link className="btn btn-sm btn-outline-primary" to={`/admin/productos/${sku}/editar`}>
 						Editar
-					</Link>
+					</Link>{" "}
+					<button type="button" className="btn btn-sm btn-outline-danger" onClick={() => onEliminar(producto)}>
+						Eliminar
+					</button>
 				</td>
 			)}
 		</tr>
@@ -41,16 +48,18 @@ function FilaProducto({ producto, puedeEditar }) {
 }
 
 /**
- * Listado de productos (RF-10 CA1 y CA4). El rol Administrador logistico lo ve
- * en solo lectura, sin crear ni editar (RF-12 CA1).
+ * Listado de productos (RF-10): crear, editar y eliminar, con alerta de stock
+ * critico. El rol Administrador logistico lo ve en solo lectura (RF-12 CA1).
  */
 export default function Productos() {
 	useTitulo("Productos — Panel Ensambla.me");
 	const { sesion } = useSesion();
+	const { productos, eliminarProducto } = useDatos();
 	const [parametros] = useSearchParams();
 	const puedeEditar = sesion?.rol === "ADMIN";
-	const lista = productos();
 	const guardado = parametros.get("guardado");
+
+	const eliminacion = useEliminacion(useCallback((producto) => eliminarProducto(producto.sku), [eliminarProducto]));
 
 	return (
 		<main className="col-12 col-lg-9">
@@ -59,7 +68,7 @@ export default function Productos() {
 					<p className="sobretitulo">Mantenedor</p>
 					<h1 className="h3 mb-0">Productos</h1>
 					<p className="solo-lectura mb-0">
-						{lista.length} productos en el catalogo.{puedeEditar ? "" : " Vista de solo lectura."}
+						{productos.length} productos en el catalogo.{puedeEditar ? "" : " Vista de solo lectura."}
 					</p>
 				</div>
 				{puedeEditar && (
@@ -69,16 +78,20 @@ export default function Productos() {
 				)}
 			</div>
 
-			<div aria-live="polite">
-				{guardado && (
-					<Alerta>
-						El producto <strong>{guardado}</strong> se guardo correctamente.
-					</Alerta>
-				)}
-			</div>
+			{eliminacion.aviso ? (
+				<ZonaAviso aviso={eliminacion.aviso} />
+			) : (
+				<div aria-live="polite">
+					{guardado && (
+						<Alerta>
+							El producto <strong>{guardado}</strong> se guardo correctamente.
+						</Alerta>
+					)}
+				</div>
+			)}
 
 			<div className="table-responsive">
-				{lista.length ? (
+				{productos.length ? (
 					<table className="table table-hover tabla-admin align-middle">
 						<caption className="visually-hidden">Listado de productos del catalogo</caption>
 						<thead>
@@ -95,8 +108,13 @@ export default function Productos() {
 							</tr>
 						</thead>
 						<tbody>
-							{lista.map((producto) => (
-								<FilaProducto key={producto.sku} producto={producto} puedeEditar={puedeEditar} />
+							{productos.map((producto) => (
+								<FilaProducto
+									key={producto.sku}
+									producto={producto}
+									puedeEditar={puedeEditar}
+									onEliminar={eliminacion.pedir}
+								/>
 							))}
 						</tbody>
 					</table>
@@ -106,6 +124,19 @@ export default function Productos() {
 					</EstadoVacio>
 				)}
 			</div>
+
+			<ModalConfirmacion
+				abierto={Boolean(eliminacion.pendiente)}
+				titulo="Eliminar producto"
+				onConfirmar={eliminacion.confirmar}
+				onCancelar={eliminacion.cancelar}
+			>
+				<p>
+					Se eliminara <strong>{eliminacion.pendiente?.nombre}</strong> ({eliminacion.pendiente?.sku}) del
+					catalogo. Las ordenes que lo incluyen conservan su detalle.
+				</p>
+				<p className="mb-0">Esta accion no se puede deshacer.</p>
+			</ModalConfirmacion>
 		</main>
 	);
 }

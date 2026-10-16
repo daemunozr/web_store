@@ -4,7 +4,7 @@ import { ZonaAviso } from "../components/Alerta.jsx";
 import Campo from "../components/Campo.jsx";
 import CampoCorreo from "../components/CampoCorreo.jsx";
 import SelectRegionComuna from "../components/SelectRegionComuna.jsx";
-import { guardarUsuarios, usuarios } from "../data/datos.js";
+import { useDatos } from "../context/datos.js";
 import { useFormulario } from "../hooks/useFormulario.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { reglas } from "../utils/validaciones.js";
@@ -35,39 +35,29 @@ const DEFINICION = {
 /** Registro de un nuevo cliente. El rol no se escoge aqui: siempre es Cliente (RF-01). */
 export default function Registro() {
 	useTitulo("Registro — Ensambla.me");
+	const { crearUsuario } = useDatos();
 	const formulario = useFormulario(INICIAL, DEFINICION);
 	const { registrar, estado, errores, enviar, reiniciar } = formulario;
 	const [aviso, setAviso] = useState(null);
 
 	const alEnviar = (datos) => {
-		const lista = usuarios();
-		const run = datos.run.toUpperCase();
-		const correo = datos.correo.toLowerCase();
-
-		// El RUN es la clave de la relacion Usuario y el correo es credencial.
-		if (lista.some((u) => u.run === run)) {
-			setAviso({ tipo: "danger", contenido: "Ya existe una cuenta registrada con ese RUN." });
+		// La unicidad del RUN y del correo la aplica la capa de datos.
+		const resultado = crearUsuario({
+			run: datos.run,
+			nombre: datos.nombre,
+			apellidos: datos.apellidos,
+			correo: datos.correo,
+			contrasena: datos.contrasena,
+			fechaNacimiento: datos.fechaNacimiento || "",
+			comuna: datos.comuna,
+			direccion: datos.direccion,
+			tipoUsuario: "CLIENTE",
+		});
+		if (!resultado.ok) {
+			setAviso({ tipo: "danger", contenido: resultado.mensaje });
 			return;
 		}
-		if (lista.some((u) => u.correo.toLowerCase() === correo)) {
-			setAviso({ tipo: "danger", contenido: "Ya existe una cuenta registrada con ese correo." });
-			return;
-		}
-
-		guardarUsuarios([
-			...lista,
-			{
-				run,
-				nombre: datos.nombre,
-				apellidos: datos.apellidos,
-				correo,
-				contrasena: datos.contrasena,
-				fechaNacimiento: datos.fechaNacimiento || "",
-				comuna: datos.comuna,
-				direccion: datos.direccion,
-				tipoUsuario: "CLIENTE",
-			},
-		]);
+		const { correo } = resultado.registro;
 
 		setAviso({
 			tipo: "success",

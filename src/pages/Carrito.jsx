@@ -111,10 +111,7 @@ function GrupoArmado({ agrupador, suyas, lineas }) {
 /** Contenido del carrito, armados agrupados y total (RF-06). */
 export default function Carrito() {
 	useTitulo("Carrito — Ensambla.me");
-	const { lineas, total, refrescar } = useCarrito();
-
-	// El stock pudo cambiar desde el mantenedor: se ajusta al entrar (RF-06 CA4).
-	useEffect(refrescar, []); // eslint-disable-line react-hooks/exhaustive-deps
+	const { lineas, total } = useCarrito();
 
 	const { sueltas, armados } = agrupar(lineas);
 

@@ -4,7 +4,8 @@ import { ZonaAviso } from "../../components/Alerta.jsx";
 import Campo from "../../components/Campo.jsx";
 import CampoCorreo from "../../components/CampoCorreo.jsx";
 import SelectRegionComuna from "../../components/SelectRegionComuna.jsx";
-import { comuna, guardarUsuarios, roles, usuario as buscarUsuario, usuarios } from "../../data/datos.js";
+import { useDatos } from "../../context/datos.js";
+import { comuna, roles, usuario as buscarUsuario } from "../../data/datos.js";
 import { useFormulario } from "../../hooks/useFormulario.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { reglas } from "../../utils/validaciones.js";
@@ -45,6 +46,7 @@ const valoresDe = (existente) => ({
 
 function Formulario({ run }) {
 	const navegar = useNavigate();
+	const { crearUsuario, actualizarUsuario } = useDatos();
 	const existente = run ? buscarUsuario(run) : null;
 	const formulario = useFormulario(existente ? valoresDe(existente) : VACIO, DEFINICION);
 	const { registrar, estado, errores, enviar } = formulario;
@@ -54,24 +56,11 @@ function Formulario({ run }) {
 	useTitulo(existente ? "Editar usuario — Panel Ensambla.me" : "Ficha de usuario — Panel Ensambla.me");
 
 	const alEnviar = (datos) => {
-		const lista = usuarios();
-		const identificador = datos.run.toUpperCase();
-		const correo = datos.correo.toLowerCase();
-
-		if (!existente && lista.some((u) => u.run === identificador)) {
-			setAviso({ tipo: "danger", contenido: `Ya existe un usuario con RUN ${identificador}.` });
-			return;
-		}
-		if (lista.some((u) => u.correo.toLowerCase() === correo && u.run !== identificador)) {
-			setAviso({ tipo: "danger", contenido: `El correo ${correo} ya esta usado por otro usuario.` });
-			return;
-		}
-
-		const guardado = {
-			run: identificador,
+		const registro = {
+			run: datos.run,
 			nombre: datos.nombre,
 			apellidos: datos.apellidos,
-			correo,
+			correo: datos.correo,
 			contrasena: datos.contrasena,
 			fechaNacimiento: datos.fechaNacimiento || "",
 			comuna: datos.comuna,
@@ -79,9 +68,13 @@ function Formulario({ run }) {
 			tipoUsuario: datos.tipoUsuario,
 		};
 
-		const posicion = lista.findIndex((u) => u.run === identificador);
-		guardarUsuarios(posicion === -1 ? [...lista, guardado] : lista.map((u, i) => (i === posicion ? guardado : u)));
-		navegar(`/admin/usuarios?guardado=${encodeURIComponent(identificador)}`);
+		// La capa de datos rechaza un RUN repetido y un correo usado por otro usuario.
+		const resultado = existente ? actualizarUsuario(existente.run, registro) : crearUsuario(registro);
+		if (!resultado.ok) {
+			setAviso({ tipo: "danger", contenido: resultado.mensaje });
+			return;
+		}
+		navegar(`/admin/usuarios?guardado=${encodeURIComponent(resultado.registro.run)}`);
 	};
 
 	const props = (nombre) => ({ error: errores[nombre], estado: estado(nombre), ...registrar(nombre) });

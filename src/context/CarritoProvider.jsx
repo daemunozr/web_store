@@ -7,9 +7,21 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import Toasts from "../components/Toasts.jsx";
 import * as reglas from "../logic/carrito.js";
 import { CarritoContext, guardarCarrito, leerCarrito } from "./carrito.js";
+import { useDatos } from "./datos.js";
 
 export default function CarritoProvider({ children }) {
-	const [lineas, setLineas] = useState(leerCarrito);
+	const [guardadas, setLineas] = useState(leerCarrito);
+	const { productos } = useDatos();
+
+	/*
+	 * Las lineas se ajustan al catalogo vigente cada vez que este cambia: si un
+	 * producto se elimina o baja su stock desde el panel, el carrito lo refleja
+	 * al instante (RF-06 CA4), sin esperar a la proxima operacion.
+	 */
+	const lineas = useMemo(
+		() => reglas.normalizar(guardadas, (sku) => productos.find((p) => p.sku === sku)),
+		[guardadas, productos],
+	);
 	const [avisos, setAvisos] = useState([]);
 	const siguienteAviso = useRef(1);
 
@@ -44,7 +56,6 @@ export default function CarritoProvider({ children }) {
 			lineas,
 			cantidad: reglas.cantidadItems(lineas),
 			total: reglas.total(lineas),
-			refrescar: () => setLineas(leerCarrito()),
 			agregar: (sku, cantidad = 1) => aplicar((actuales) => reglas.agregarProducto(actuales, sku, cantidad)),
 			agregarArmado: (skus) =>
 				aplicar((actuales) =>

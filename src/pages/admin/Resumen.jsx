@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import { categorias, ordenes, productos, roles, totalOrden, usuarios } from "../../data/datos.js";
+import { useDatos } from "../../context/datos.js";
+import { ordenes, roles, totalOrden } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { enStockCritico } from "../../logic/stock.js";
 import { precio } from "../../utils/formato.js";
@@ -10,6 +11,12 @@ const ACCESOS = [
 		texto: "Listar, crear y editar los productos del catalogo, con alerta de bajo inventario.",
 		ruta: "/admin/productos",
 		boton: "Abrir productos",
+	},
+	{
+		titulo: "Mantenedor de Categorias",
+		texto: "Crear, renombrar y eliminar las categorias del catalogo.",
+		ruta: "/admin/categorias",
+		boton: "Abrir categorias",
 	},
 	{
 		titulo: "Mantenedor de Usuarios",
@@ -41,13 +48,13 @@ function Indicador({ titulo, valor, nota }) {
 /** Home del panel: estado de los datos y accesos a los mantenedores (RNF-08 CA5). */
 export default function Resumen() {
 	useTitulo("Panel — Ensambla.me");
-	const lista = productos();
+	const { productos, usuarios, categorias } = useDatos();
 	const vendido = ordenes.reduce((total, orden) => total + totalOrden(orden.numero), 0);
 
 	const indicadores = [
-		{ titulo: "Productos en catalogo", valor: lista.length, nota: `${categorias.length} categorias` },
-		{ titulo: "En stock critico", valor: lista.filter(enStockCritico).length, nota: "Requieren reposicion" },
-		{ titulo: "Usuarios registrados", valor: usuarios().length, nota: `${roles.length} roles` },
+		{ titulo: "Productos en catalogo", valor: productos.length, nota: `${categorias.length} categorias` },
+		{ titulo: "En stock critico", valor: productos.filter(enStockCritico).length, nota: "Requieren reposicion" },
+		{ titulo: "Usuarios registrados", valor: usuarios.length, nota: `${roles.length} roles` },
 		{ titulo: "Ordenes simuladas", valor: ordenes.length, nota: `${precio(vendido)} en total` },
 	];
 
@@ -66,7 +73,7 @@ export default function Resumen() {
 				))}
 			</div>
 
-			<div className="row row-cols-1 row-cols-md-3 g-3">
+			<div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
 				{ACCESOS.map((acceso) => (
 					<div className="col" key={acceso.ruta}>
 						<article className="card h-100">

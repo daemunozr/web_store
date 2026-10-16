@@ -35,9 +35,13 @@ npm run lint
 
 Rutas de la app: `/`, `/productos` (`?categoria=`), `/productos/:sku`, `/armado`,
 `/carrito`, `/blogs`, `/blogs/:slug`, `/nosotros`, `/contacto`, `/registro`, `/login`,
-`/creditos` y el panel en `/admin` (`/admin/productos`, `/admin/usuarios`,
-`/admin/ordenes`, con `nuevo` y `:id/editar` en los mantenedores). Imágenes y video se
-sirven desde `public/resources/`.
+`/creditos` y el panel en `/admin` (`/admin/productos`, `/admin/categorias`,
+`/admin/usuarios`, `/admin/ordenes`, con `nuevo`/`nueva` y `:id/editar` en los
+mantenedores). Imágenes y video se sirven desde `public/resources/`.
+
+La capa de datos (`src/data/datos.js`) ofrece CRUD completo de productos, usuarios y
+categorías sobre una copia de trabajo en `sessionStorage`; `DatosProvider` la conecta
+con los componentes para que cada cambio se vea sin recargar.
 
 El sitio de la Entrega I (HTML, CSS y JS sin framework) se conserva en `legacy/` como
 referencia mientras dura la migración; `legacy/resources` es un enlace simbólico a

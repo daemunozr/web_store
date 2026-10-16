@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import RejillaProductos from "../components/RejillaProductos.jsx";
-import { productos, producto } from "../data/datos.js";
+import { useDatos } from "../context/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { recurso } from "../utils/recursos.js";
 
@@ -26,9 +26,10 @@ const PASOS = [
 export default function Inicio() {
 	useTitulo("Ensambla.me — Arma tu PC gamer pieza por pieza");
 
-	const destacados = DESTACADOS.map(producto).filter(Boolean);
+	const { productos } = useDatos();
+	const destacados = DESTACADOS.map((sku) => productos.find((p) => p.sku === sku)).filter(Boolean);
 	// Si los SKU destacados ya no existen, se muestran los primeros del catalogo.
-	const lista = destacados.length ? destacados : productos().slice(0, 6);
+	const lista = destacados.length ? destacados : productos.slice(0, 6);
 	const video = recurso("resources/video/ensamblame.mp4");
 
 	return (

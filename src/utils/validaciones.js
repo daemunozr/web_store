@@ -81,6 +81,12 @@ export const reglas = {
 	},
 
 	seleccion: (mensaje = "Selecciona una opcion.") => (valor) => (String(valor ?? "") === "" ? mensaje : ""),
+
+	/** Formato libre: el valor (si no esta vacio) debe calzar completo con la expresion. */
+	patron: (expresion, mensaje) => (valor) => {
+		const texto = String(valor ?? "").trim();
+		return texto === "" || expresion.test(texto) ? "" : mensaje;
+	},
 };
 
 /** Primer error de la lista de reglas para un valor, o "" si las pasa todas. */

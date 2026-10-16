@@ -4,6 +4,7 @@ import { useSesion } from "../../context/sesion.js";
 const OPCIONES_PANEL = [
 	{ texto: "Resumen", ruta: "/admin", roles: ["ADMIN"] },
 	{ texto: "Productos", ruta: "/admin/productos", roles: ["ADMIN", "LOGISTICA"] },
+	{ texto: "Categorias", ruta: "/admin/categorias", roles: ["ADMIN"] },
 	{ texto: "Usuarios", ruta: "/admin/usuarios", roles: ["ADMIN"] },
 	{ texto: "Ordenes", ruta: "/admin/ordenes", roles: ["ADMIN", "LOGISTICA"] },
 ];

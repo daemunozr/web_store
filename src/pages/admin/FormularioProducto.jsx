@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { ZonaAviso } from "../../components/Alerta.jsx";
 import Campo from "../../components/Campo.jsx";
-import { categorias, guardarProductos, producto as buscarProducto, productos } from "../../data/datos.js";
+import { useDatos } from "../../context/datos.js";
+import { producto as buscarProducto } from "../../data/datos.js";
 import { useFormulario } from "../../hooks/useFormulario.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { reglas } from "../../utils/validaciones.js";
@@ -35,6 +36,7 @@ const valoresDe = (existente) =>
 
 function Formulario({ sku }) {
 	const navegar = useNavigate();
+	const { categorias, crearProducto, actualizarProducto } = useDatos();
 	const existente = sku ? buscarProducto(sku) : null;
 	const formulario = useFormulario(existente ? valoresDe(existente) : VACIO, DEFINICION);
 	const { registrar, estado, errores, enviar } = formulario;
@@ -44,13 +46,7 @@ function Formulario({ sku }) {
 	useTitulo(existente ? `Editar ${existente.nombre} — Panel Ensambla.me` : "Ficha de producto — Panel Ensambla.me");
 
 	const alEnviar = (datos) => {
-		const lista = productos();
-		if (!existente && lista.some((p) => p.sku === datos.sku)) {
-			setAviso({ tipo: "danger", contenido: `Ya existe un producto con el codigo ${datos.sku}.` });
-			return;
-		}
-
-		const guardado = {
+		const registro = {
 			sku: datos.sku,
 			nombre: datos.nombre,
 			descripcion: datos.descripcion,
@@ -62,9 +58,13 @@ function Formulario({ sku }) {
 			video: datos.video,
 		};
 
-		const posicion = lista.findIndex((p) => p.sku === guardado.sku);
-		guardarProductos(posicion === -1 ? [...lista, guardado] : lista.map((p, i) => (i === posicion ? guardado : p)));
-		navegar(`/admin/productos?guardado=${encodeURIComponent(guardado.sku)}`);
+		// La capa de datos rechaza un SKU repetido al crear.
+		const resultado = existente ? actualizarProducto(existente.sku, registro) : crearProducto(registro);
+		if (!resultado.ok) {
+			setAviso({ tipo: "danger", contenido: resultado.mensaje });
+			return;
+		}
+		navegar(`/admin/productos?guardado=${encodeURIComponent(registro.sku)}`);
 	};
 
 	const props = (nombre) => ({ error: errores[nombre], estado: estado(nombre), ...registrar(nombre) });
@@ -74,8 +74,8 @@ function Formulario({ sku }) {
 			<p className="sobretitulo">Mantenedor de productos</p>
 			<h1 className="h3">{existente ? `Editar ${existente.nombre}` : "Nuevo producto"}</h1>
 			<p className="text-secondary mb-4">
-				Los campos marcados con <span className="obligatorio" aria-hidden="true">*</span> son obligatorios. Esta
-				vista no ofrece la accion Eliminar, que queda fuera del alcance de esta entrega.
+				Los campos marcados con <span className="obligatorio" aria-hidden="true">*</span> son obligatorios. Para
+				eliminar un producto usa el boton Eliminar del listado.
 			</p>
 
 			<section className="tarjeta-formulario p-4">
