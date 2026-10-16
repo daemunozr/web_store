@@ -1,0 +1,206 @@
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+import { ZonaAviso } from "../../components/Alerta.jsx";
+import Campo from "../../components/Campo.jsx";
+import { categorias, guardarProductos, producto as buscarProducto, productos } from "../../data/datos.js";
+import { useFormulario } from "../../hooks/useFormulario.js";
+import { useTitulo } from "../../hooks/useTitulo.js";
+import { reglas } from "../../utils/validaciones.js";
+
+const VACIO = {
+	sku: "",
+	nombre: "",
+	descripcion: "",
+	precio: "",
+	stock: "",
+	stockCritico: "",
+	categoria: "",
+	imagen: "",
+	video: "",
+};
+
+const DEFINICION = {
+	sku: [reglas.requerido(), reglas.minimo(3)],
+	nombre: [reglas.requerido(), reglas.maximo(100)],
+	descripcion: [reglas.maximo(500)],
+	precio: [reglas.requerido(), reglas.numeroMinimo(0)],
+	stock: [reglas.requerido(), reglas.numeroMinimo(0), reglas.entero()],
+	stockCritico: [reglas.numeroMinimo(0), reglas.entero()],
+	categoria: [reglas.seleccion("Selecciona la categoria del producto.")],
+};
+
+/** Valores del formulario a partir de un producto existente (los numeros como texto). */
+const valoresDe = (existente) =>
+	Object.fromEntries(Object.keys(VACIO).map((campo) => [campo, String(existente[campo] ?? "")]));
+
+function Formulario({ sku }) {
+	const navegar = useNavigate();
+	const existente = sku ? buscarProducto(sku) : null;
+	const formulario = useFormulario(existente ? valoresDe(existente) : VACIO, DEFINICION);
+	const { registrar, estado, errores, enviar } = formulario;
+	const [aviso, setAviso] = useState(
+		sku && !existente ? { tipo: "danger", contenido: `No existe un producto con el codigo ${sku}.` } : null,
+	);
+	useTitulo(existente ? `Editar ${existente.nombre} — Panel Ensambla.me` : "Ficha de producto — Panel Ensambla.me");
+
+	const alEnviar = (datos) => {
+		const lista = productos();
+		if (!existente && lista.some((p) => p.sku === datos.sku)) {
+			setAviso({ tipo: "danger", contenido: `Ya existe un producto con el codigo ${datos.sku}.` });
+			return;
+		}
+
+		const guardado = {
+			sku: datos.sku,
+			nombre: datos.nombre,
+			descripcion: datos.descripcion,
+			precio: Number(datos.precio),
+			stock: Number(datos.stock),
+			stockCritico: datos.stockCritico === "" ? "" : Number(datos.stockCritico),
+			categoria: datos.categoria,
+			imagen: datos.imagen,
+			video: datos.video,
+		};
+
+		const posicion = lista.findIndex((p) => p.sku === guardado.sku);
+		guardarProductos(posicion === -1 ? [...lista, guardado] : lista.map((p, i) => (i === posicion ? guardado : p)));
+		navegar(`/admin/productos?guardado=${encodeURIComponent(guardado.sku)}`);
+	};
+
+	const props = (nombre) => ({ error: errores[nombre], estado: estado(nombre), ...registrar(nombre) });
+
+	return (
+		<main className="col-12 col-lg-9">
+			<p className="sobretitulo">Mantenedor de productos</p>
+			<h1 className="h3">{existente ? `Editar ${existente.nombre}` : "Nuevo producto"}</h1>
+			<p className="text-secondary mb-4">
+				Los campos marcados con <span className="obligatorio" aria-hidden="true">*</span> son obligatorios. Esta
+				vista no ofrece la accion Eliminar, que queda fuera del alcance de esta entrega.
+			</p>
+
+			<section className="tarjeta-formulario p-4">
+				<ZonaAviso aviso={aviso} />
+
+				<form noValidate onSubmit={enviar(alEnviar)}>
+					<div className="row g-3">
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-sku"
+							etiqueta="Codigo de producto (SKU)"
+							obligatorio
+							autoComplete="off"
+							readOnly={Boolean(existente)}
+							sugerencia="Texto unico, al menos 3 caracteres. Ejemplo: GPU-RTX4060."
+							{...props("sku")}
+						/>
+						<Campo
+							className="col-12 col-md-8"
+							id="producto-nombre"
+							etiqueta="Nombre"
+							obligatorio
+							maxLength={100}
+							autoComplete="off"
+							sugerencia="Hasta 100 caracteres."
+							{...props("nombre")}
+						/>
+						<Campo
+							como="textarea"
+							className="col-12"
+							id="producto-descripcion"
+							etiqueta="Descripcion"
+							rows={3}
+							maxLength={500}
+							autoComplete="off"
+							sugerencia="Opcional, hasta 500 caracteres. Se muestra en el detalle del producto."
+							{...props("descripcion")}
+						/>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-precio"
+							etiqueta="Precio"
+							obligatorio
+							type="number"
+							min="0"
+							step="0.01"
+							autoComplete="off"
+							sugerencia="Pesos chilenos, admite decimales. Un precio 0 es un producto gratuito."
+							{...props("precio")}
+						/>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-stock"
+							etiqueta="Stock"
+							obligatorio
+							type="number"
+							min="0"
+							step="1"
+							autoComplete="off"
+							sugerencia="Unidades en inventario, solo numeros enteros."
+							{...props("stock")}
+						/>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-stock-critico"
+							etiqueta="Stock critico"
+							type="number"
+							min="0"
+							step="1"
+							autoComplete="off"
+							sugerencia="Opcional. Bajo este umbral el listado muestra una alerta."
+							{...props("stockCritico")}
+						/>
+						<Campo
+							como="select"
+							className="col-12 col-md-4"
+							id="producto-categoria"
+							etiqueta="Categoria"
+							obligatorio
+							autoComplete="off"
+							sugerencia="Categorias del catalogo."
+							{...props("categoria")}
+						>
+							<option value="">Selecciona una categoria</option>
+							{categorias.map((categoria) => (
+								<option key={categoria.codigo} value={categoria.codigo}>
+									{categoria.nombre}
+								</option>
+							))}
+						</Campo>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-imagen"
+							etiqueta="Imagen"
+							autoComplete="off"
+							sugerencia="Opcional. Ruta relativa a public/, por ejemplo resources/img/productos/GPU-RTX4060.webp."
+							{...registrar("imagen")}
+						/>
+						<Campo
+							className="col-12 col-md-4"
+							id="producto-video"
+							etiqueta="Video"
+							autoComplete="off"
+							sugerencia="Opcional. Se muestra embebido en el detalle del producto."
+							{...registrar("video")}
+						/>
+					</div>
+
+					<div className="d-flex flex-wrap gap-2 mt-4">
+						<button type="submit" className="btn btn-primary">
+							Guardar producto
+						</button>
+						<Link className="btn btn-outline-primary" to="/admin/productos">
+							Volver al listado
+						</Link>
+					</div>
+				</form>
+			</section>
+		</main>
+	);
+}
+
+/** Creacion (/admin/productos/nuevo) y edicion (/admin/productos/:sku/editar) de productos (RF-10). */
+export default function FormularioProducto() {
+	const { sku = "" } = useParams();
+	// key: al pasar de un producto a otro el formulario parte de cero.
+	return <Formulario key={sku} sku={sku} />;
+}

@@ -33,9 +33,16 @@ npm run build      # salida en dist/
 npm run lint
 ```
 
+Rutas de la app: `/`, `/productos` (`?categoria=`), `/productos/:sku`, `/armado`,
+`/carrito`, `/blogs`, `/blogs/:slug`, `/nosotros`, `/contacto`, `/registro`, `/login`,
+`/creditos` y el panel en `/admin` (`/admin/productos`, `/admin/usuarios`,
+`/admin/ordenes`, con `nuevo` y `:id/editar` en los mantenedores). Imágenes y video se
+sirven desde `public/resources/`.
+
 El sitio de la Entrega I (HTML, CSS y JS sin framework) se conserva en `legacy/` como
-referencia mientras dura la migración. Requiere un servidor HTTP: con `file://` no carga
-las secciones que se traen con `fetch()`.
+referencia mientras dura la migración; `legacy/resources` es un enlace simbólico a
+`public/resources`. Requiere un servidor HTTP: con `file://` no carga las secciones que
+se traen con `fetch()`.
 
 ```
 python3 -m http.server 8000   # desde la raíz del repo

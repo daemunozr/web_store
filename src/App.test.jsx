@@ -11,10 +11,15 @@ function renderizarEn(ruta) {
 }
 
 describe("App", () => {
+	beforeEach(() => {
+		window.sessionStorage.clear();
+		window.localStorage.clear();
+	});
+
 	it("muestra el inicio en la ruta /", () => {
 		renderizarEn("/");
 
-		expect(screen.getByRole("heading", { level: 1, name: "Ensambla.me" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 1, name: /Arma tu PC gamer/ })).toBeInTheDocument();
 		expect(screen.queryByText("Pagina no encontrada")).not.toBeInTheDocument();
 	});
 
