@@ -47,6 +47,11 @@ export default function PagoCorrecto() {
 				<Link className="btn btn-primary" to="/productos">
 					Seguir comprando
 				</Link>
+				{sesion && orden.cliente === sesion.run && (
+					<Link className="btn btn-outline-primary" to="/mis-compras">
+						Ver mis compras
+					</Link>
+				)}
 				<Link className="btn btn-outline-primary" to="/">
 					Volver al inicio
 				</Link>

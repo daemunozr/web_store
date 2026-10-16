@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import Indicador from "../../components/Indicador.jsx";
 import { useDatos } from "../../context/datos.js";
 import { roles, totalOrden } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
@@ -11,6 +12,12 @@ const ACCESOS = [
 		texto: "Listar, crear y editar los productos del catalogo, con alerta de bajo inventario.",
 		ruta: "/admin/productos",
 		boton: "Abrir productos",
+	},
+	{
+		titulo: "Productos criticos",
+		texto: "Productos con stock bajo o igual a su umbral, del mas urgente al menos.",
+		ruta: "/admin/productos/criticos",
+		boton: "Ver criticos",
 	},
 	{
 		titulo: "Mantenedor de Categorias",
@@ -30,20 +37,13 @@ const ACCESOS = [
 		ruta: "/admin/ordenes",
 		boton: "Abrir ordenes",
 	},
+	{
+		titulo: "Reportes",
+		texto: "Ventas por mes, categoria, producto y cliente, mas el inventario valorizado.",
+		ruta: "/admin/reportes",
+		boton: "Abrir reportes",
+	},
 ];
-
-/** Indicador del resumen: titulo, cifra y nota. */
-function Indicador({ titulo, valor, nota }) {
-	return (
-		<div className="col">
-			<article className="tarjeta-indicador h-100 p-3">
-				<p className="etiqueta-categoria mb-1">{titulo}</p>
-				<p className="cifra mb-1">{valor}</p>
-				<p className="small text-secondary mb-0">{nota}</p>
-			</article>
-		</div>
-	);
-}
 
 /** Home del panel: estado de los datos y accesos a los mantenedores (RNF-08 CA5). */
 export default function Resumen() {

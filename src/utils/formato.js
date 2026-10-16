@@ -26,5 +26,12 @@ export function fechaLocal(ahora = new Date()) {
 	return `${ahora.getFullYear()}-${dos(ahora.getMonth() + 1)}-${dos(ahora.getDate())}`;
 }
 
+/** Mes de una fecha "AAAA-MM" en palabras: "2026-09" -> "septiembre de 2026". */
+export function mesLegible(mes) {
+	const [ano, numero] = String(mes).split("-").map(Number);
+	if (!ano || !numero) return String(mes);
+	return new Intl.DateTimeFormat("es-CL", { month: "long", year: "numeric" }).format(new Date(ano, numero - 1, 1));
+}
+
 /** "1 unidad" o "N unidades". */
 export const unidades = (n) => `${n} ${n === 1 ? "unidad" : "unidades"}`;

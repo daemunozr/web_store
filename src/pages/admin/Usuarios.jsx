@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import Alerta, { ZonaAviso } from "../../components/Alerta.jsx";
+import CajaBusqueda from "../../components/CajaBusqueda.jsx";
 import EstadoVacio from "../../components/EstadoVacio.jsx";
 import ModalConfirmacion from "../../components/ModalConfirmacion.jsx";
 import { useDatos } from "../../context/datos.js";
@@ -8,6 +9,7 @@ import { useSesion } from "../../context/sesion.js";
 import { nombreComuna, nombreRegionDeComuna, nombreRol } from "../../data/datos.js";
 import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
+import { coincide } from "../../logic/busqueda.js";
 
 /** Listado de usuarios con acceso a crear, editar y eliminar (RF-11). */
 export default function Usuarios() {
@@ -16,6 +18,10 @@ export default function Usuarios() {
 	const { usuarios, eliminarUsuario } = useDatos();
 	const [parametros] = useSearchParams();
 	const guardado = parametros.get("guardado");
+	const [busqueda, setBusqueda] = useState("");
+	const visibles = usuarios.filter((u) =>
+		coincide(busqueda, u.run, u.nombre, u.apellidos, u.correo, nombreRol(u.tipoUsuario), nombreComuna(u.comuna)),
+	);
 
 	// La capa de datos rechaza la propia cuenta y a los usuarios con ordenes.
 	const eliminacion = useEliminacion(
@@ -46,8 +52,17 @@ export default function Usuarios() {
 				</div>
 			)}
 
+			<CajaBusqueda
+				id="busqueda-usuarios"
+				placeholder="RUN, nombre, correo, tipo o comuna"
+				valor={busqueda}
+				onCambio={setBusqueda}
+				mostrados={visibles.length}
+				total={usuarios.length}
+			/>
+
 			<div className="table-responsive">
-				{usuarios.length ? (
+				{visibles.length ? (
 					<table className="table table-hover tabla-admin align-middle">
 						<caption className="visually-hidden">Listado de usuarios del sistema</caption>
 						<thead>
@@ -61,7 +76,7 @@ export default function Usuarios() {
 							</tr>
 						</thead>
 						<tbody>
-							{usuarios.map((usuario) => {
+							{visibles.map((usuario) => {
 								const propia = usuario.run === sesion?.run;
 								return (
 									<tr key={usuario.run}>
@@ -78,6 +93,12 @@ export default function Usuarios() {
 											{nombreComuna(usuario.comuna)}, {nombreRegionDeComuna(usuario.comuna)}
 										</td>
 										<td className="text-end text-nowrap">
+											<Link
+												className="btn btn-sm btn-outline-secondary"
+												to={`/admin/usuarios/${encodeURIComponent(usuario.run)}`}
+											>
+												Ver
+											</Link>{" "}
 											<Link
 												className="btn btn-sm btn-outline-primary"
 												to={`/admin/usuarios/${encodeURIComponent(usuario.run)}/editar`}
@@ -101,7 +122,9 @@ export default function Usuarios() {
 					</table>
 				) : (
 					<EstadoVacio>
-						<p className="mb-0">No hay usuarios cargados.</p>
+						<p className="mb-0">
+							{usuarios.length ? "Ningun usuario coincide con la busqueda." : "No hay usuarios cargados."}
+						</p>
 					</EstadoVacio>
 				)}
 			</div>

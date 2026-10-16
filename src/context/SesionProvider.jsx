@@ -45,6 +45,24 @@ export default function SesionProvider({ children }) {
 		setSesion(null);
 	}, []);
 
-	const valor = useMemo(() => ({ sesion, iniciar, cerrar }), [sesion, iniciar, cerrar]);
+	/**
+	 * Refleja en la sesion los datos que el usuario cambio en su perfil (nombre,
+	 * apellidos y correo). Nunca toca el RUN ni el rol.
+	 */
+	const actualizar = useCallback(
+		({ nombre, apellidos, correo }) => {
+			if (!sesion) return;
+			const nueva = { ...sesion, nombre, apellidos, correo };
+			try {
+				window.sessionStorage.setItem(CLAVE_SESION, JSON.stringify(nueva));
+			} catch (error) {
+				console.error("sesion: no se pudo guardar la sesion", error);
+			}
+			setSesion(nueva);
+		},
+		[sesion],
+	);
+
+	const valor = useMemo(() => ({ sesion, iniciar, cerrar, actualizar }), [sesion, iniciar, cerrar, actualizar]);
 	return <SesionContext.Provider value={valor}>{children}</SesionContext.Provider>;
 }

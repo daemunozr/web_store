@@ -1,15 +1,27 @@
-import { Fragment } from "react";
-import { Link } from "react-router";
-import EstadoVacio from "../../components/EstadoVacio.jsx";
+import { useState } from "react";
+import CajaBusqueda from "../../components/CajaBusqueda.jsx";
+import TablaOrdenes from "../../components/TablaOrdenes.jsx";
 import { useDatos } from "../../context/datos.js";
-import { itemsDeOrden, nombreCliente, producto, totalOrden } from "../../data/datos.js";
+import { itemsDeOrden, producto } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
-import { fecha, precio } from "../../utils/formato.js";
+import { coincide } from "../../logic/busqueda.js";
 
-/** Listado de ordenes en solo lectura: cliente, fecha, productos y total (RF-12 CA2). */
+/** Listado de ordenes en solo lectura: cliente, fecha, productos y total (RF-12 CA2), con busqueda. */
 export default function Ordenes() {
 	useTitulo("Ordenes — Panel Ensambla.me");
 	const { ordenes } = useDatos();
+	const [busqueda, setBusqueda] = useState("");
+
+	const visibles = ordenes.filter((orden) =>
+		coincide(
+			busqueda,
+			orden.numero,
+			orden.cliente,
+			orden.nombre,
+			orden.correo,
+			...itemsDeOrden(orden.numero).map((item) => `${item.producto} ${producto(item.producto)?.nombre ?? ""}`),
+		),
+	);
 
 	return (
 		<main className="col-12 col-lg-9">
@@ -19,59 +31,21 @@ export default function Ordenes() {
 				Vista de solo lectura. Las compras que se pagan en la tienda aparecen aqui al instante.
 			</p>
 
-			<div className="table-responsive">
-				{ordenes.length ? (
-					<table className="table table-hover tabla-admin align-middle">
-						<caption className="visually-hidden">Listado de ordenes de compra</caption>
-						<thead>
-							<tr>
-								<th scope="col">Orden</th>
-								<th scope="col">Cliente</th>
-								<th scope="col">Fecha</th>
-								<th scope="col">Productos</th>
-								<th scope="col" className="text-end">Total</th>
-								<th scope="col" className="text-end">Detalle</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ordenes.map((orden) => (
-								<tr key={orden.numero}>
-									<td>
-										<code>{orden.numero}</code>
-									</td>
-									<td>
-										{orden.cliente ? nombreCliente(orden.cliente) : orden.nombre}
-										<br />
-										<span className="small text-secondary">{orden.cliente || "Invitado"}</span>
-									</td>
-									<td>{fecha(orden.fecha)}</td>
-									<td className="small">
-										{itemsDeOrden(orden.numero).map((item, i) => (
-											<Fragment key={item.producto}>
-												{i > 0 && <br />}
-												{producto(item.producto)?.nombre ?? item.producto} (x{item.cantidad})
-											</Fragment>
-										))}
-									</td>
-									<td className="text-end">{precio(totalOrden(orden.numero))}</td>
-									<td className="text-end">
-										<Link
-											className="btn btn-sm btn-outline-primary"
-											to={`/admin/ordenes/${encodeURIComponent(orden.numero)}`}
-										>
-											Ver boleta
-										</Link>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				) : (
-					<EstadoVacio>
-						<p className="mb-0">No hay ordenes registradas.</p>
-					</EstadoVacio>
-				)}
-			</div>
+			<CajaBusqueda
+				id="busqueda-ordenes"
+				placeholder="Numero, cliente, correo o producto"
+				valor={busqueda}
+				onCambio={setBusqueda}
+				mostrados={visibles.length}
+				total={ordenes.length}
+			/>
+
+			<TablaOrdenes
+				ordenes={visibles}
+				conCliente
+				rutaDetalle={(numero) => `/admin/ordenes/${encodeURIComponent(numero)}`}
+				mensajeVacio={ordenes.length ? "Ninguna orden coincide con la busqueda." : "No hay ordenes registradas."}
+			/>
 		</main>
 	);
 }

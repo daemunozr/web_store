@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import Alerta, { ZonaAviso } from "../../components/Alerta.jsx";
+import CajaBusqueda from "../../components/CajaBusqueda.jsx";
 import EstadoVacio from "../../components/EstadoVacio.jsx";
 import ModalConfirmacion from "../../components/ModalConfirmacion.jsx";
 import PrecioProducto from "../../components/PrecioProducto.jsx";
@@ -9,6 +10,7 @@ import { useSesion } from "../../context/sesion.js";
 import { nombreCategoria } from "../../data/datos.js";
 import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
+import { coincide } from "../../logic/busqueda.js";
 import { enStockCritico } from "../../logic/stock.js";
 import { recurso } from "../../utils/recursos.js";
 
@@ -60,6 +62,8 @@ export default function Productos() {
 	const [parametros] = useSearchParams();
 	const puedeEditar = sesion?.rol === "ADMIN";
 	const guardado = parametros.get("guardado");
+	const [busqueda, setBusqueda] = useState("");
+	const visibles = productos.filter((p) => coincide(busqueda, p.sku, p.nombre, nombreCategoria(p.categoria)));
 
 	const eliminacion = useEliminacion(useCallback((producto) => eliminarProducto(producto.sku), [eliminarProducto]));
 
@@ -73,11 +77,21 @@ export default function Productos() {
 						{productos.length} productos en el catalogo.{puedeEditar ? "" : " Vista de solo lectura."}
 					</p>
 				</div>
-				{puedeEditar && (
-					<Link className="btn btn-primary" to="/admin/productos/nuevo">
-						Nuevo producto
+				<div className="d-flex flex-wrap gap-2">
+					<Link className="btn btn-outline-primary" to="/admin/productos/criticos">
+						Productos criticos
 					</Link>
-				)}
+					{puedeEditar && (
+						<Link className="btn btn-outline-primary" to="/admin/reportes">
+							Reportes
+						</Link>
+					)}
+					{puedeEditar && (
+						<Link className="btn btn-primary" to="/admin/productos/nuevo">
+							Nuevo producto
+						</Link>
+					)}
+				</div>
 			</div>
 
 			{eliminacion.aviso ? (
@@ -92,8 +106,17 @@ export default function Productos() {
 				</div>
 			)}
 
+			<CajaBusqueda
+				id="busqueda-productos"
+				placeholder="Codigo, nombre o categoria"
+				valor={busqueda}
+				onCambio={setBusqueda}
+				mostrados={visibles.length}
+				total={productos.length}
+			/>
+
 			<div className="table-responsive">
-				{productos.length ? (
+				{visibles.length ? (
 					<table className="table table-hover tabla-admin align-middle">
 						<caption className="visually-hidden">Listado de productos del catalogo</caption>
 						<thead>
@@ -110,7 +133,7 @@ export default function Productos() {
 							</tr>
 						</thead>
 						<tbody>
-							{productos.map((producto) => (
+							{visibles.map((producto) => (
 								<FilaProducto
 									key={producto.sku}
 									producto={producto}
@@ -122,7 +145,9 @@ export default function Productos() {
 					</table>
 				) : (
 					<EstadoVacio>
-						<p className="mb-0">No hay productos cargados.</p>
+						<p className="mb-0">
+							{productos.length ? "Ningun producto coincide con la busqueda." : "No hay productos cargados."}
+						</p>
 					</EstadoVacio>
 				)}
 			</div>

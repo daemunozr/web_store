@@ -36,9 +36,11 @@ npm run lint
 Rutas de la app: `/`, `/productos` (filtros en la URL: `?q=`, `categoria`, `min`, `max`,
 `oferta`, `stock`, `orden`), `/productos/:sku`, `/categorias`, `/ofertas`, `/armado`,
 `/carrito`, `/checkout`, `/pago/correcto/:numero`, `/pago/error`, `/blogs`, `/blogs/:slug`,
-`/nosotros`, `/contacto`, `/registro`, `/login`, `/creditos` y el panel en `/admin`
-(`/admin/productos`, `/admin/categorias`, `/admin/usuarios`, `/admin/ordenes`, con
-`nuevo`/`nueva` y `:id/editar` en los mantenedores). Imágenes y video se sirven desde `public/resources/`.
+`/nosotros`, `/contacto`, `/registro`, `/login`, `/creditos`, `/perfil` y `/mis-compras`
+(`/mis-compras/:numero`, con sesión) y el panel en `/admin` (`/admin/productos`,
+`/admin/productos/criticos`, `/admin/categorias`, `/admin/usuarios`, `/admin/ordenes`,
+`/admin/reportes` y `/admin/perfil`, con `nuevo`/`nueva`, `:id/editar` y la ficha
+`/admin/usuarios/:run` en los mantenedores). Imágenes y video se sirven desde `public/resources/`.
 
 La capa de datos (`src/data/datos.js`) ofrece CRUD completo de productos, usuarios y
 categorías sobre una copia de trabajo en `sessionStorage`; `DatosProvider` la conecta

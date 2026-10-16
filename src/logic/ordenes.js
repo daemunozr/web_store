@@ -39,3 +39,9 @@ export function puedeVerOrden(orden, sesion) {
 	if (!orden.cliente) return true;
 	return Boolean(sesion) && sesion.run === orden.cliente;
 }
+
+/** Copia de las ordenes de la mas reciente a la mas antigua (fecha y, a igualdad, numero). */
+export const masRecientesPrimero = (ordenes) =>
+	[...ordenes].sort(
+		(a, b) => b.fecha.localeCompare(a.fecha) || b.numero.localeCompare(a.numero, undefined, { numeric: true }),
+	);
