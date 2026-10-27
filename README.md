@@ -674,7 +674,8 @@ Anexo 1 de la Evaluación 2:
 - Los precios incluyen IVA; la boleta desglosa el neto y el 19 %.
 - Se agrega el mantenedor de categorías, los productos críticos y los reportes como
   parte del panel de administración.
-- El sitio de la Entrega I se conserva en `legacy/` como referencia.
+- El sitio de la Entrega I se conserva en `legacy/` como referencia. Todo lo que hacía
+  existe en React: ver la auditoría en [`docs/paridad-react.md`](docs/paridad-react.md).
 
 ## 10. Pruebas
 
@@ -695,8 +696,8 @@ Las pruebas viven junto al archivo que prueban (`logic/carrito.js` →
 | `data/`                 | CRUD, reglas de integridad y `crearOrden` con el reloj simulado                       |
 | `context/`, `hooks/`    | Proveedores y hooks con `renderHook`; almacenamiento corrupto o bloqueado             |
 | `components/`           | Props, renderizado condicional, estado y eventos                                      |
-| `pages/`                | Flujos: inicio de sesión, catálogo, carrito, checkout, panel de productos            |
+| `pages/`                | Todas las vistas de la tienda y del panel: flujos de compra y cuenta, armado, mantenedores y reportes |
 
-Resultado del 26-10-2026: 46 archivos y 470 pruebas, todas en verde; cobertura de 73,63 %
-en sentencias, 62,77 % en ramas, 71,90 % en funciones y 72,65 % en líneas. El detalle, la
+Resultado del 26-10-2026: 81 archivos y 739 pruebas, todas en verde; cobertura de 98,92 %
+en sentencias, 94,49 % en ramas, 98,62 % en funciones y 99,51 % en líneas. El detalle, la
 estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).

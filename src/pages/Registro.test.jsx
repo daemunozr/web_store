@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { usuarios } from "../data/datos.js";
+import { usuario, usuarios } from "../data/datos.js";
 import { limpiarAlmacenamiento, renderConProviders } from "../testUtils.jsx";
 import Registro from "./Registro.jsx";
 
@@ -58,5 +58,62 @@ describe("Registro", () => {
 		await userEvent.type(screen.getByLabelText(/^Contrasena/), "abc");
 
 		expect(screen.getByText("La contrasena debe tener entre 4 y 10 caracteres.")).toBeInTheDocument();
+	});
+	describe("envio", () => {
+		const campo = (etiqueta) => screen.getByLabelText(new RegExp(`^${etiqueta}`));
+
+		async function llenar({ run = "111111111", correo = "ana@gmail.com" } = {}) {
+			await userEvent.type(campo("RUN"), run);
+			await userEvent.type(campo("Nombre"), "Ana");
+			await userEvent.type(campo("Apellidos"), "Pinto Diaz");
+			await userEvent.type(campo("Correo"), correo);
+			await userEvent.type(campo("Contrasena"), "ana1234");
+			await userEvent.selectOptions(campo("Region"), "RM");
+			await userEvent.selectOptions(campo("Comuna"), "RM-01");
+			await userEvent.type(campo("Direccion"), "Calle 123");
+		}
+
+		it("un formulario valido crea al usuario como Cliente y confirma con el enlace al inicio de sesion (RF-01 CA7)", async () => {
+			renderConProviders(<Registro />);
+			await llenar();
+
+			await userEvent.click(screen.getByRole("button", { name: "Crear mi cuenta" }));
+
+			expect(usuario("111111111")).toMatchObject({ nombre: "Ana", tipoUsuario: "CLIENTE", correo: "ana@gmail.com" });
+			expect(screen.getByRole("alert")).toHaveTextContent("Cuenta creada para Ana Pinto Diaz. Ya puedes iniciar sesion con ana@gmail.com.");
+			expect(screen.getByRole("link", { name: "iniciar sesion" })).toHaveAttribute("href", "/login");
+		});
+
+		it("tras crear la cuenta el formulario queda limpio", async () => {
+			renderConProviders(<Registro />);
+			await llenar();
+
+			await userEvent.click(screen.getByRole("button", { name: "Crear mi cuenta" }));
+
+			expect(campo("RUN")).toHaveValue("");
+			expect(campo("Nombre")).toHaveValue("");
+		});
+
+		it("un RUN ya registrado se rechaza y no se crea otro usuario (RF-01 CA7)", async () => {
+			renderConProviders(<Registro />);
+			const antes = usuarios().length;
+			await llenar({ run: "123456785", correo: "otra@gmail.com" });
+
+			await userEvent.click(screen.getByRole("button", { name: "Crear mi cuenta" }));
+
+			expect(screen.getByRole("alert")).toHaveClass("alert-danger");
+			expect(screen.getByRole("alert")).toHaveTextContent("Ya existe un usuario con RUN 123456785.");
+			expect(usuarios()).toHaveLength(antes);
+		});
+
+		it("un correo ya registrado se rechaza (RF-01 CA7)", async () => {
+			renderConProviders(<Registro />);
+			await llenar({ correo: "camila@gmail.com" });
+
+			await userEvent.click(screen.getByRole("button", { name: "Crear mi cuenta" }));
+
+			expect(screen.getByRole("alert")).toHaveTextContent("ya esta usado por otro usuario");
+			expect(usuario("111111111")).toBeUndefined();
+		});
 	});
 });

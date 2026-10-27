@@ -2,10 +2,10 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Route, Routes } from "react-router";
 import { producto, productos } from "../../data/datos.js";
-import { SESION_ADMIN, limpiarAlmacenamiento, renderConProviders } from "../../testUtils.jsx";
+import { SESION_ADMIN, SESION_LOGISTICA, limpiarAlmacenamiento, renderConProviders } from "../../testUtils.jsx";
 import ProductosAdmin from "./Productos.jsx";
 
-const LOGISTICA = { ...SESION_ADMIN, rol: "LOGISTICA", nombre: "Bodega" };
+const LOGISTICA = SESION_LOGISTICA;
 
 function montar(sesion = SESION_ADMIN, ruta = "/admin/productos") {
 	return renderConProviders(

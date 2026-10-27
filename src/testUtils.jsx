@@ -11,6 +11,10 @@ import SesionProvider from "./context/SesionProvider.jsx";
 
 export const SESION_ADMIN = { run: "11111111K", nombre: "Admin", apellidos: "Prueba", correo: "admin@duoc.cl", rol: "ADMIN" };
 export const SESION_CLIENTE = { run: "22222222K", nombre: "Cliente", apellidos: "Prueba", correo: "cliente@gmail.com", rol: "CLIENTE" };
+export const SESION_LOGISTICA = { run: "33333333K", nombre: "Bodega", apellidos: "Prueba", correo: "bodega@duoc.cl", rol: "LOGISTICA" };
+
+/** Sesion de un usuario de la semilla (por su RUN), como la dejaria el inicio de sesion. */
+export const sesionDe = ({ run, nombre, apellidos, correo, tipoUsuario }) => ({ run, nombre, apellidos, correo, rol: tipoUsuario });
 
 /** Deja el almacenamiento como en una visita nueva: sin sesion, carrito ni copia de trabajo de los datos. */
 export function limpiarAlmacenamiento() {
