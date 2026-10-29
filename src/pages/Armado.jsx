@@ -166,7 +166,7 @@ function PasoActual({ estado, despachar, categorias }) {
 			</h2>
 			{estado.indice > 0 && anterior?.sku && (
 				<p className="small text-secondary">
-					Filtrado segun tu eleccion anterior: <strong>{buscarProducto(anterior.sku)?.nombre ?? ""}</strong>.
+					Filtrado segun tu eleccion anterior: <strong>{buscarProducto(anterior.sku).nombre}</strong>.
 				</p>
 			)}
 
@@ -275,10 +275,6 @@ function ResumenArmado({ estado, despachar }) {
 					</button>
 				)}
 			</div>
-		);
-	} else if (completo) {
-		acciones = (
-			<p className="small text-secondary mb-0">Vuelve atras y escoge al menos un componente para agregarlo al carrito.</p>
 		);
 	} else {
 		acciones = (

@@ -632,12 +632,14 @@ GPU → periféricos. Modos *completo* y *módulos*. El filtrado sale de la tabl
 **RNF-09 Calidad y pruebas** · `src/**/*.test.js(x)`, `vite.config.js`
 1. Las pruebas unitarias se escriben con Vitest y Testing Library, junto al archivo que
    prueban, y `npm run test:run` las pasa todas.
-2. Son diez pruebas, una por elemento: siete componentes, el hook `useFormulario` y las
-   páginas `Carrito` y `Checkout`. Cubren renderizado, renderizado condicional, props, estado
-   y eventos.
-3. Usan mocks (`vi.fn` y `vi.mock` de la pasarela de pago en `Checkout`).
-4. `npm run coverage` genera el informe de cobertura v8. El documento
-   [`docs/cobertura-testing.md`](docs/cobertura-testing.md) registra el alcance y los
+2. Son 804 pruebas en 89 archivos: lógica y utilidades, datos, contextos, hooks,
+   componentes, todas las vistas de la tienda y del panel, y un par de archivos con casos
+   límite. Cubren renderizado, renderizado condicional, props, estado y eventos.
+3. Usan mocks (`vi.fn`, `vi.spyOn` y `vi.mock` de la pasarela de pago en `Checkout` y de la
+   lista de blogs).
+4. `npm run coverage` genera el informe de cobertura v8, que llega al 100 % de sentencias,
+   ramas, funciones y líneas de `src/`. El documento
+   [`cobertura-testing.md`](cobertura-testing.md) registra el alcance y los
    resultados.
 
 ## 8. Fuera de alcance
@@ -671,8 +673,7 @@ Anexo 1 de la Evaluación 2:
 - Se agrega el mantenedor de categorías, los productos críticos y los reportes como
   parte del panel de administración.
 - El sitio de la Entrega I (HTML, CSS y JS sin framework) se eliminó del repositorio; su
-  historial sigue en git. Todo lo que hacía existe en React: ver la auditoría en
-  [`docs/paridad-react.md`](docs/paridad-react.md).
+  historial sigue en git. Todo lo que hacía existe en React.
 
 ## 10. Pruebas
 
@@ -687,23 +688,23 @@ Las pruebas viven junto al archivo que prueban (`components/Campo.jsx` →
 `App.jsx` dentro de un `MemoryRouter`, y `src/setupTests.js` carga los comparadores de
 `jest-dom`.
 
-| Prueba                      | Tipo                    |
-|-----------------------------|-------------------------|
-| `Alerta`                    | Props                   |
-| `Campo`                     | Renderizado condicional |
-| `ModalConfirmacion`         | Eventos                 |
-| `CajaBusqueda`              | Estado                  |
-| `FiltrosCatalogo`           | Eventos                 |
-| `TarjetaProducto`           | Renderizado             |
-| `Boleta`                    | Renderizado             |
-| `hooks/useFormulario`       | Estado                  |
-| `pages/Carrito`             | Estado y eventos        |
-| `pages/Checkout.mocks`      | Mock de módulo (`vi.mock`) |
+| Grupo                                   | Archivos | Pruebas |
+|-----------------------------------------|---------:|--------:|
+| Lógica y utilidades (`logic/`, `utils/`) |       13 |     223 |
+| Datos, contextos y hooks                 |       11 |     115 |
+| Componentes (incluido `layout/`)         |       27 |     147 |
+| Páginas, panel y flujos                  |       36 |     277 |
+| Casos límite (`ramas*.test.jsx`)         |        2 |      42 |
+| **Total**                                |   **89** | **804** |
 
-Resultado del 29-10-2026: 10 archivos y 10 pruebas, todas en verde; cobertura global de
-34,83 % en sentencias, 22,38 % en ramas, 36,34 % en funciones y 36,00 % en líneas. El detalle,
-la estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).
-El diseño responsivo se revisó a 375, 768 y 1280 px: ver [`docs/responsividad.md`](docs/responsividad.md).
+`pages/Checkout.mocks.test.jsx` y `pages/Blogs.vacio.test.jsx` usan `vi.mock` para reemplazar
+la pasarela de pago y la lista de blogs.
+
+Resultado del 29-10-2026: 89 archivos y 804 pruebas, todas en verde; cobertura de 100 % en
+sentencias, ramas, funciones y líneas de `src/` (se excluyen `main.jsx`, `semillas.js` y
+`creditos.js`). El detalle, la estrategia, el inventario por archivo y los ajustes de código
+que hicieron falta están en [`cobertura-testing.md`](cobertura-testing.md).
+El diseño responsivo se revisó a mano a 375, 768 y 1280 px.
 Las pruebas del backend (JUnit 5 y Mockito) son aparte: `cd backend && mvn test` (sección 11).
 
 ## 11. Backend (API REST)

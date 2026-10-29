@@ -79,22 +79,6 @@ export default function Nosotros() {
 							</div>
 						</article>
 					</div>
-					<div className="col">
-						<article className="card tarjeta-persona h-100">
-							<div className="card-body d-flex gap-3">
-								<p className="inicial mb-0" aria-hidden="true">DU</p>
-								<div>
-									<h3 className="h6 mb-1">Escuela de Informatica y Telecomunicaciones</h3>
-									<p className="etiqueta-categoria mb-2">Duoc UC &middot; Desarrollo Fullstack II (DSY1104)</p>
-									<p className="small mb-0">
-										Este sitio es el proyecto de la asignatura. Se desarrolla de forma individual,
-										modalidad autorizada por el docente, y en entregas posteriores incorporara
-										backend, base de datos y pasarela de pago.
-									</p>
-								</div>
-							</div>
-						</article>
-					</div>
 				</div>
 			</section>
 		</main>

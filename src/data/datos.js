@@ -40,6 +40,7 @@ export const categorias = tablaCategorias.listar;
 export const categoria = tablaCategorias.obtener;
 export const ordenes = tablaOrdenes.listar;
 export const itemsOrden = tablaItems.listar;
+export const itemOrden = tablaItems.obtener;
 
 export const nombreCliente = (run) => {
 	const cliente = usuario(run);
