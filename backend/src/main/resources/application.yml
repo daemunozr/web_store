@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: ensamblame-backend
+
+  # Conexion a MariaDB (contenedor de docker-compose.yml). Cada valor se puede
+  # cambiar con una variable de entorno; los que van despues de ":" son los de
+  # desarrollo y coinciden con los del docker-compose.yml.
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:ensamblame}
+    username: ${DB_USER:ensamblame}
+    password: ${DB_PASSWORD:ensamblame_dev}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # update: crea las tablas si no existen y agrega columnas nuevas (solo desarrollo).
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false
+
+server:
+  port: 8080
+
+app:
+  cors:
+    # Origen del frontend (Vite) autorizado para llamar a la API.
+    origen: http://localhost:5173

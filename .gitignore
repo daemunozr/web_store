@@ -20,3 +20,6 @@ dist/
 # Archivos de vitest
 coverage/
 
+
+# Backend (Maven)
+target/

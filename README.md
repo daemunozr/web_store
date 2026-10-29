@@ -57,6 +57,10 @@ python3 -m http.server 8000   # desde la raíz del repo
 # http://localhost:8000/legacy/pages/index.html
 ```
 
+En `backend/` hay una API REST aparte (Spring Boot, Java 21 y MariaDB en Docker) con categorías,
+productos y usuarios. La aplicación React **no la usa**: sigue con los datos simulados de
+`src/data/`. Cómo ejecutarla: [`backend/README.md`](backend/README.md).
+
 
 | Rol                     | Correo             | Contraseña   |
 |-------------------------|--------------------|--------------|

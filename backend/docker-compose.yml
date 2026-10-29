@@ -1,0 +1,31 @@
+# MariaDB para desarrollo. Las credenciales son de desarrollo y coinciden con
+# los valores por defecto de src/main/resources/application.yml.
+#
+#   docker compose up -d      levanta la base
+#   docker compose down       la detiene (los datos quedan en el volumen)
+#   docker compose down -v    la detiene y borra los datos
+services:
+  mariadb:
+    image: mariadb:11.8
+    container_name: ensamblame-mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root_dev
+      MARIADB_DATABASE: ensamblame
+      MARIADB_USER: ensamblame
+      MARIADB_PASSWORD: ensamblame_dev
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mariadb_data:
