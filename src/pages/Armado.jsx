@@ -112,7 +112,7 @@ function OpcionComponente({ producto, marcado, onElegir }) {
 
 	return (
 		<div className="col">
-			<article className="card opcion-componente">
+			<article className={`card opcion-componente${sinStock ? " opcion-sin-stock" : ""}`}>
 				<div className="card-body">
 					<div className="form-check">
 						<input
@@ -125,7 +125,8 @@ function OpcionComponente({ producto, marcado, onElegir }) {
 							disabled={sinStock}
 							onChange={() => onElegir(producto.sku)}
 						/>
-						<label className="form-check-label fw-semibold" htmlFor={id}>
+						{/* stretched-link extiende la etiqueta a toda la tarjeta: un clic en cualquier parte marca la opcion. */}
+						<label className="form-check-label fw-semibold stretched-link" htmlFor={id}>
 							{producto.nombre}
 							{sinStock ? " (sin stock)" : ""}
 						</label>

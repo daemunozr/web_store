@@ -4,6 +4,11 @@ Auditoría del 26-10-2026. Objetivo: comprobar que todo lo que hacía el sitio H
 Entrega I existe en la aplicación React. Resultado: **no hay brechas**; todo lo del legacy
 tiene su equivalente en `src/`, y la aplicación React agrega lo de la Entrega II.
 
+Estado actual: la carpeta `legacy/` se eliminó del repositorio el 28-10-2026 (commit
+`743fd63`). Esta auditoría se hizo cuando todavía existía, y las rutas `legacy/…` de las tablas
+son las del sitio tal como estaba en ese momento. Para consultarlo, `git show 743fd63^:legacy/<ruta>`
+(por ejemplo `legacy/scripts/datos.js`) o `git checkout 743fd63^ -- legacy`.
+
 Leyenda: ✅ equivalente · ⚠️ diferencia justificada.
 
 ## Método
@@ -78,6 +83,6 @@ Diferencias intencionales (Entrega II):
 
 ## Qué sigue en HTML/JS puro
 
-Solo `legacy/` (sitio de la Entrega I, excluido de ESLint y del empaquetado). Ningún archivo
-de `src/` lo importa ni lo referencia. Se conserva por decisión del proyecto como referencia;
-retirarlo no afecta a la aplicación (el sitio queda en el historial de git).
+Nada. El sitio de la Entrega I (`legacy/`) se eliminó del repositorio en el commit `743fd63`
+(28-10-2026) y su historial sigue en git. Ningún archivo de `src/` lo importaba ni lo
+referenciaba, así que retirarlo no afectó a la aplicación.

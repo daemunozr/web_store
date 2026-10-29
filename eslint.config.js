@@ -5,8 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-	// legacy/ es el sitio de la Entrega I (scripts clasicos, sin modulos).
-	globalIgnores(["dist", "coverage", "legacy"]),
+	globalIgnores(["dist", "coverage"]),
 	{
 		files: ["**/*.{js,jsx}"],
 		extends: [js.configs.recommended, reactHooks.configs.flat.recommended, reactRefresh.configs.vite],

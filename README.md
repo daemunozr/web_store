@@ -3,7 +3,7 @@
 Tienda online de componentes de PC con asistente de armado guiado por compatibilidad.
 Frontend React + Vite y, aparte, un backend simple en Spring Boot con MariaDB (sección 11).
 Duoc UC · DSY1104 Desarrollo Fullstack II · Entrega II.
-ERS rev. 3.0 (26-10-2026), Daniel Muñoz. La versión formal IEEE 830 está en
+ERS rev. 3.1 (29-10-2026), Daniel Muñoz. La versión formal IEEE 830 está en
 `ERS - Ensambla.me.docx`.
 
 ## Índice
@@ -48,16 +48,6 @@ Rutas de la app: `/`, `/productos` (filtros en la URL: `?q=`, `categoria`, `min`
 La capa de datos (`src/data/datos.js`) ofrece CRUD completo de productos, usuarios y
 categorías, y la creación de órdenes, sobre una copia de trabajo en `sessionStorage`;
 `DatosProvider` la conecta con los componentes para que cada cambio se vea sin recargar.
-
-El sitio de la Entrega I (HTML, CSS y JS sin framework) se conserva en `legacy/` como
-referencia; `legacy/resources` es un enlace simbólico a
-`public/resources`. Requiere un servidor HTTP: con `file://` no carga las secciones que
-se traen con `fetch()`.
-
-```
-python3 -m http.server 8000   # desde la raíz del repo
-# http://localhost:8000/legacy/pages/index.html
-```
 
 En `backend/` hay una API REST aparte (Spring Boot, Java 21 y MariaDB en Docker) con categorías,
 productos y usuarios. La aplicación React **no la usa**: sigue con los datos simulados de
@@ -680,8 +670,9 @@ Anexo 1 de la Evaluación 2:
 - Los precios incluyen IVA; la boleta desglosa el neto y el 19 %.
 - Se agrega el mantenedor de categorías, los productos críticos y los reportes como
   parte del panel de administración.
-- El sitio de la Entrega I se conserva en `legacy/` como referencia. Todo lo que hacía
-  existe en React: ver la auditoría en [`docs/paridad-react.md`](docs/paridad-react.md).
+- El sitio de la Entrega I (HTML, CSS y JS sin framework) se eliminó del repositorio; su
+  historial sigue en git. Todo lo que hacía existe en React: ver la auditoría en
+  [`docs/paridad-react.md`](docs/paridad-react.md).
 
 ## 10. Pruebas
 
