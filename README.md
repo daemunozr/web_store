@@ -642,10 +642,10 @@ GPU → periféricos. Modos *completo* y *módulos*. El filtrado sale de la tabl
 **RNF-09 Calidad y pruebas** · `src/**/*.test.js(x)`, `vite.config.js`
 1. Las pruebas unitarias se escriben con Vitest y Testing Library, junto al archivo que
    prueban, y `npm run test:run` las pasa todas.
-2. Cubren renderizado, renderizado condicional, props, estado y eventos de los componentes,
-   además de las reglas de `logic/`, `utils/` y `data/`, los hooks y los contextos.
-3. Usan mocks (`vi.fn`, `vi.spyOn`, reloj simulado) para el almacenamiento, la consola y la
-   fecha.
+2. Son diez pruebas, una por elemento: siete componentes, el hook `useFormulario` y las
+   páginas `Carrito` y `Checkout`. Cubren renderizado, renderizado condicional, props, estado
+   y eventos.
+3. Usan mocks (`vi.fn` y `vi.mock` de la pasarela de pago en `Checkout`).
 4. `npm run coverage` genera el informe de cobertura v8. El documento
    [`docs/cobertura-testing.md`](docs/cobertura-testing.md) registra el alcance y los
    resultados.
@@ -691,23 +691,27 @@ npm test           # modo watch
 npm run coverage   # tabla en consola + coverage/index.html
 ```
 
-Las pruebas viven junto al archivo que prueban (`logic/carrito.js` →
-`logic/carrito.test.js`). `src/testUtils.jsx` monta una vista con los mismos proveedores de
+Las pruebas viven junto al archivo que prueban (`components/Campo.jsx` →
+`components/Campo.test.jsx`). `src/testUtils.jsx` monta una vista con los mismos proveedores de
 `App.jsx` dentro de un `MemoryRouter`, y `src/setupTests.js` carga los comparadores de
 `jest-dom`.
 
-| Capa                    | Qué se prueba                                                                         |
-|-------------------------|---------------------------------------------------------------------------------------|
-| `logic/`, `utils/`      | Reglas puras con un catálogo de prueba inyectado                                      |
-| `data/`                 | CRUD, reglas de integridad y `crearOrden` con el reloj simulado                       |
-| `context/`, `hooks/`    | Proveedores (con un componente de prueba y temporizadores simulados) y hooks con `renderHook`; almacenamiento corrupto o bloqueado |
-| `components/`           | Props, renderizado condicional, estado y eventos                                      |
-| `pages/`                | Todas las vistas de la tienda y del panel: flujos de compra y cuenta, armado, mantenedores y reportes |
+| Prueba                      | Tipo                    |
+|-----------------------------|-------------------------|
+| `Alerta`                    | Props                   |
+| `Campo`                     | Renderizado condicional |
+| `ModalConfirmacion`         | Eventos                 |
+| `CajaBusqueda`              | Estado                  |
+| `FiltrosCatalogo`           | Eventos                 |
+| `TarjetaProducto`           | Renderizado             |
+| `Boleta`                    | Renderizado             |
+| `hooks/useFormulario`       | Estado                  |
+| `pages/Carrito`             | Estado y eventos        |
+| `pages/Checkout.mocks`      | Mock de módulo (`vi.mock`) |
 
-Resultado del 28-10-2026: 86 archivos y 766 pruebas, todas en verde; cobertura de 99,46 %
-en sentencias, 94,77 % en ramas, 99,80 % en funciones y 99,67 % en líneas (con umbrales mínimos
-en `vite.config.js`). El detalle, la
-estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).
+Resultado del 29-10-2026: 10 archivos y 10 pruebas, todas en verde; cobertura global de
+34,83 % en sentencias, 22,38 % en ramas, 36,34 % en funciones y 36,00 % en líneas. El detalle,
+la estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).
 El diseño responsivo se revisó a 375, 768 y 1280 px: ver [`docs/responsividad.md`](docs/responsividad.md).
 Las pruebas del backend (JUnit 5 y Mockito) son aparte: `cd backend && mvn test` (sección 11).
 

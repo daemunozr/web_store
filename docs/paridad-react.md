@@ -70,12 +70,11 @@ Diferencias intencionales (Entrega II):
 - **Lo que el legacy tenía y React no copia tal cual:** la composición por `fetch()` de
   fragmentos HTML (`includes.js`) y los `window.Datos`, `window.Carrito` y `window.Armado`
   globales, que reemplazan los contextos y hooks de React. No hay pérdida de función.
-- **Riesgo restante:** ninguno de cobertura. Después de la auditoría se agregaron pruebas a
-  todas las vistas que no las tenían (Armado, Perfil, MisCompras, MiCompra, PagoCorrecto,
-  PagoError, todo `pages/admin/`, las tablas, la boleta y el menú): 760 pruebas, 99,32 % de
-  sentencias (ver [`cobertura-testing.md`](cobertura-testing.md)). El diseño responsivo se
-  revisó a 375, 768 y 1280 px ([`responsividad.md`](responsividad.md)); siguen siendo
-  manuales el aspecto visual y la impresión.
+- **Riesgo restante:** la cobertura automatizada es parcial. Hay 10 pruebas en 10 archivos
+  (componentes, `useFormulario`, `Carrito` y `Checkout`) y 34,83 % de sentencias (ver
+  [`cobertura-testing.md`](cobertura-testing.md)). El resto de las vistas, incluido el panel de
+  administración, se revisó a mano. El diseño responsivo se revisó a 375, 768 y 1280 px
+  ([`responsividad.md`](responsividad.md)); siguen siendo manuales el aspecto visual y la impresión.
 
 ## Qué sigue en HTML/JS puro
 

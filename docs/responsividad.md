@@ -40,11 +40,9 @@ horizontal en los tres anchos.
 
 ## Lo que automatizan las pruebas
 
-`src/responsivo.test.jsx` (5 pruebas) comprueba que el marcado conserva los mecanismos
-responsivos: el menú con `navbar-expand-xl` y su botón de colapso, la rejilla con
-`row-cols-1 row-cols-sm-2 row-cols-lg-3` y las tablas de órdenes y de la boleta dentro de
-`.table-responsive`. jsdom no calcula el diseño ni el ancho de pantalla, de modo que estas
-pruebas no reemplazan la revisión de arriba: avisan si alguien quita una de esas clases.
+Ninguna prueba automatizada comprueba hoy el diseño responsivo: la suite se limita a diez
+archivos de prueba (ver [`cobertura-testing.md`](cobertura-testing.md)) y jsdom no calcula el
+diseño ni el ancho de pantalla. La revisión de arriba es manual.
 
 ## Límites
 
