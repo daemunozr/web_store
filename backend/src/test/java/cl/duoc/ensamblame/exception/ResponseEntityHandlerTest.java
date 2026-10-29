@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import cl.duoc.ensamblame.dto.response.ErrorResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 class ResponseEntityHandlerTest {
 
@@ -46,6 +49,17 @@ class ResponseEntityHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, respuesta.getStatusCode());
         assertEquals("RUN invalido.", cuerpoDe(respuesta).mensaje());
+    }
+
+    @Test
+    void unaRutaInexistenteResponde404ConElFormatoDeError() {
+        ResponseEntity<Object> respuesta = handler.handleNoResourceFoundException(
+                new NoResourceFoundException(HttpMethod.GET, "/api/nada", "api/nada"),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, null);
+
+        assertEquals(HttpStatus.NOT_FOUND, respuesta.getStatusCode());
+        assertEquals(404, cuerpoDe(respuesta).estado());
+        assertEquals("No existe la ruta /api/nada.", cuerpoDe(respuesta).mensaje());
     }
 
     @Test

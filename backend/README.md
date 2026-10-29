@@ -76,7 +76,7 @@ Todos los errores tienen el mismo formato (`ErrorResponse`):
 | Código | Cuándo |
 |---|---|
 | 400 | Falla una validación del `Request`, el JSON está mal formado o el dígito verificador del RUN no coincide |
-| 404 | El registro no existe (o la categoría indicada en un producto no existe) |
+| 404 | El registro no existe, la categoría indicada en un producto no existe o la ruta no existe |
 | 409 | Código, SKU, RUN o correo repetido; categoría con productos |
 | 500 | Error inesperado (el detalle solo queda en el log del servidor) |
 
@@ -106,4 +106,4 @@ y contraseña de 4 a 10 caracteres.
   sesión, tokens ni control de acceso por rol: cualquiera que llegue a la API puede usar todos los endpoints.
 - `ddl-auto: update` crea y modifica las tablas solo en desarrollo; no hay scripts de migración.
 - Faltan las órdenes, la compatibilidad de componentes y los blogs del modelo completo.
-- Las pruebas (29) son unitarias, con Mockito y MockMvc (el controlador junto a `ResponseEntityHandler`); no hay pruebas que levanten la base de datos.
+- Las pruebas (30) son unitarias, con Mockito y MockMvc (el controlador junto a `ResponseEntityHandler`); no hay pruebas que levanten la base de datos.
