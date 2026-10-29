@@ -1,6 +1,7 @@
 import { creditos } from "../data/creditos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 
+/** Atribucion exigida por las licencias Creative Commons de las fotos de productos. */
 export default function Creditos() {
 	useTitulo("Creditos de imagenes — Ensambla.me");
 	const exactas = creditos.filter((credito) => credito.exacto).length;

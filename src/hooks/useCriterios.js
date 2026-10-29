@@ -1,3 +1,7 @@
+/*
+ * Criterios de busqueda y filtro del catalogo, guardados en la URL.
+ * aplicar recibe valores de formulario y reemplaza todos los criterios.
+ */
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
 import { aParametros, leerCriterios } from "../logic/catalogo.js";

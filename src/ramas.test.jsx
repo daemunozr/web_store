@@ -1,3 +1,7 @@
+/*
+ * Ramas de respaldo que las demas pruebas no alcanzan: valores ausentes,
+ * empates de ordenamiento y fallos del almacenamiento del navegador.
+ */
 import { act, fireEvent, render, renderHook, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";

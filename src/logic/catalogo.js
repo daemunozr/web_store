@@ -1,3 +1,10 @@
+/*
+ * Filtros y orden del catalogo de la tienda, sin DOM ni almacenamiento.
+ *
+ * Los criterios viajan en la URL (?q=&categoria=&min=&max=&oferta=1&stock=1&orden=):
+ * asi el enlace se comparte y el boton Atras recupera el filtro anterior.
+ * Cuando se filtra por precio se usa el precio vigente, con la oferta aplicada.
+ */
 import { nombreCategoria } from "../data/datos.js";
 import { coincide } from "./busqueda.js";
 import { enOferta, porcentajeDescuento, precioVigente } from "./precios.js";
@@ -10,6 +17,11 @@ export const ORDENES = [
 	{ valor: "descuento", texto: "Mayor descuento" },
 ];
 
+/**
+ * Criterios a partir de los parametros de la URL. Lo invalido (precio negativo
+ * o no numerico, orden desconocido) se ignora. ordenInicial es el orden cuando
+ * la URL no trae uno.
+ */
 export function leerCriterios(parametros, ordenInicial = "") {
 	const numero = (clave) => {
 		const texto = (parametros.get(clave) ?? "").trim();
@@ -30,6 +42,7 @@ export function leerCriterios(parametros, ordenInicial = "") {
 	};
 }
 
+/** Parametros de URL a partir de valores de formulario: omite lo vacio y escribe true como "1". */
 export function aParametros(valores) {
 	const parametros = new URLSearchParams();
 	Object.entries(valores).forEach(([clave, valor]) => {
@@ -39,11 +52,17 @@ export function aParametros(valores) {
 	return parametros;
 }
 
+/** Hay algun criterio de busqueda o de filtro activo (el orden no cuenta). */
 export const hayFiltros = (criterios) =>
 	Boolean(criterios.q || criterios.categoria || criterios.oferta || criterios.stock) ||
 	criterios.min !== null ||
 	criterios.max !== null;
 
+/**
+ * Productos que cumplen todos los criterios. El texto se busca en nombre, SKU,
+ * descripcion y nombre de la categoria. Recibe como ultimo parametro como
+ * obtener el nombre de una categoria, para poder probarla con las propias.
+ */
 export function filtrar(productos, criterios, nombreDeCategoria = nombreCategoria) {
 	return productos.filter((producto) => {
 		if (criterios.categoria && producto.categoria !== criterios.categoria) return false;
@@ -64,6 +83,7 @@ export function filtrar(productos, criterios, nombreDeCategoria = nombreCategori
 	});
 }
 
+/** Copia ordenada; con un orden desconocido o vacio conserva el orden del catalogo. */
 export function ordenar(productos, orden) {
 	const copia = [...productos];
 	switch (orden) {

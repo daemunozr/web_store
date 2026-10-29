@@ -14,6 +14,7 @@ import { coincide } from "../../logic/busqueda.js";
 import { enStockCritico } from "../../logic/stock.js";
 import { recurso } from "../../utils/recursos.js";
 
+/** Fila del listado; la columna de acciones existe solo si se puede editar. */
 function FilaProducto({ producto, puedeEditar, onEliminar }) {
 	const critico = enStockCritico(producto);
 	const sku = encodeURIComponent(producto.sku);
@@ -50,6 +51,10 @@ function FilaProducto({ producto, puedeEditar, onEliminar }) {
 	);
 }
 
+/**
+ * Listado de productos (RF-10): crear, editar y eliminar, con alerta de stock
+ * critico. El rol Administrador logistico lo ve en solo lectura (RF-12 CA1).
+ */
 export default function Productos() {
 	useTitulo("Productos — Panel Ensambla.me");
 	const { sesion } = useSesion();

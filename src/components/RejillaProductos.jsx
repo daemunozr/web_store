@@ -1,6 +1,10 @@
 import EstadoVacio from "./EstadoVacio.jsx";
 import TarjetaProducto from "./TarjetaProducto.jsx";
 
+/**
+ * Rejilla de tarjetas generada desde los datos (RF-03 CA1). Sin productos
+ * muestra un aviso en lugar de un area en blanco (RF-03 CA3).
+ */
 export default function RejillaProductos({ productos, mensajeVacio, nivel = 3 }) {
 	if (!productos.length) {
 		return (

@@ -1,3 +1,11 @@
+/*
+ * Estado y validacion en tiempo real de un formulario (RNF-02 CA4).
+ *
+ * Cada campo se valida al escribir (o al cambiar, en select y fecha) y al
+ * perder el foco, igual que el resto del sitio: el error aparece junto al
+ * campo antes de pulsar el boton de envio. Al enviar se validan todos y se
+ * enfoca el primero invalido.
+ */
 import { useCallback, useState } from "react";
 import { validar, validarValor } from "../utils/validaciones.js";
 
@@ -10,8 +18,10 @@ export function useFormulario(inicial, definicion) {
 		[definicion],
 	);
 
+	/** Cambia valores sin pasar por un evento (por ejemplo, al recargar comunas). */
 	const asignar = useCallback((cambios) => setValores((actuales) => ({ ...actuales, ...cambios })), []);
 
+	/** Props de un control: name, value, onChange, onBlur y aria-invalid. */
 	const registrar = (nombre) => ({
 		name: nombre,
 		value: valores[nombre] ?? "",
@@ -25,12 +35,17 @@ export function useFormulario(inicial, definicion) {
 		},
 	});
 
+	/**
+	 * Estado visual del campo: "" si no se ha validado, "is-invalid" con error o
+	 * "is-valid" si paso y tiene contenido.
+	 */
 	const estado = (nombre) => {
 		if (!(nombre in errores)) return "";
 		if (errores[nombre]) return "is-invalid";
 		return String(valores[nombre] ?? "").trim() !== "" ? "is-valid" : "";
 	};
 
+	/** Manejador de submit: llama a alEnviar con los valores recortados si todo es valido. */
 	const enviar = (alEnviar) => (evento) => {
 		evento.preventDefault();
 		const formulario = evento.currentTarget;
@@ -49,6 +64,7 @@ export function useFormulario(inicial, definicion) {
 		alEnviar(datos);
 	};
 
+	/** Vuelve al estado inicial y limpia los estados de validacion. */
 	const reiniciar = useCallback((nuevos = inicial) => {
 		setValores(nuevos);
 		setErrores({});

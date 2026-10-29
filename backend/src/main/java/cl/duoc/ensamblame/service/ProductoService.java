@@ -22,6 +22,7 @@ public class ProductoService {
         this.categoriaRepository = categoriaRepository;
     }
 
+    /** Sin filtros devuelve todos; con "categoria" o con "q" (texto en nombre o SKU) filtra. */
     public List<ProductoResponse> listar(String categoria, String q) {
         List<Producto> productos;
         if (categoria != null && !categoria.isBlank()) {
@@ -50,6 +51,7 @@ public class ProductoService {
         return aResponse(productoRepository.save(producto));
     }
 
+    /** El SKU identifica al producto y no cambia: se ignora el del cuerpo. */
     public ProductoResponse actualizar(String sku, ProductoRequest request) {
         Producto producto = buscar(sku);
         Categoria categoria = buscarCategoria(request.categoria());
@@ -71,6 +73,7 @@ public class ProductoService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe la categoria " + codigo + "."));
     }
 
+    // Pasa los datos del request a la entidad (todo menos el SKU).
     private void copiarDatos(Producto producto, ProductoRequest request, Categoria categoria) {
         producto.setNombre(request.nombre());
         producto.setDescripcion(request.descripcion());

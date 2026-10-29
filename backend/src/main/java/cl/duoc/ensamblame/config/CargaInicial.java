@@ -15,6 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Carga datos de ejemplo al arrancar, solo si las tablas estan vacias. Son un subconjunto de
+ * los datos de prueba del frontend (src/data/semillas.js).
+ */
 @Configuration
 public class CargaInicial {
 

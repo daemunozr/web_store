@@ -10,7 +10,7 @@ describe("MisCompras", () => {
 	beforeEach(limpiarAlmacenamiento);
 
 	it("lista solo las compras de la cuenta, de la mas reciente a la mas antigua (RF-24 CA1)", () => {
-		montar("123456785");
+		montar("123456785"); // Camila: ORD-2026-0001 y ORD-2026-0004
 
 		const filas = screen.getAllByRole("row").slice(1);
 		expect(filas).toHaveLength(2);

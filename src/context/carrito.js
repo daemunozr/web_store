@@ -1,3 +1,10 @@
+/*
+ * Carrito de compras compartido por toda la app (RF-05, RF-06, RF-14 CA2).
+ *
+ * Se guarda en localStorage bajo la unica clave "carrito". Un contenido
+ * invalido o corrupto deja el carrito vacio en lugar de interrumpir la
+ * ejecucion (RNF-03 CA4). Las reglas viven en logic/carrito.js.
+ */
 import { createContext, useContext } from "react";
 import { normalizar } from "../logic/carrito.js";
 
@@ -11,6 +18,7 @@ export function leerCarrito() {
 		return guardado ? normalizar(JSON.parse(guardado)) : [];
 	} catch (error) {
 		console.error("carrito: contenido invalido en localStorage, el carrito parte vacio", error);
+		// Se descarta el contenido ilegible para no repetir el error en cada lectura.
 		try {
 			window.localStorage.removeItem(CLAVE_CARRITO);
 		} catch (fallo) {

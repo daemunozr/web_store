@@ -31,7 +31,7 @@ import {
 	usuarios,
 } from "./datos.js";
 
-const CLIENTE = "123456785";
+const CLIENTE = "123456785"; // Camila: cliente con ordenes en la semilla.
 
 const productoNuevo = (cambios = {}) => ({
 	sku: "NUEVO-1",

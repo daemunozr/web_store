@@ -1,3 +1,8 @@
+/*
+ * Proveedor del carrito de compras (RF-05, RF-06, RF-14 CA2). La lectura y
+ * escritura en localStorage y el hook useCarrito viven en context/carrito.js;
+ * las reglas, en logic/carrito.js.
+ */
 import { useCallback, useMemo, useRef, useState } from "react";
 import Toasts from "../components/Toasts.jsx";
 import * as reglas from "../logic/carrito.js";
@@ -8,6 +13,11 @@ export default function CarritoProvider({ children }) {
 	const [guardadas, setLineas] = useState(leerCarrito);
 	const { productos } = useDatos();
 
+	/*
+	 * Las lineas se ajustan al catalogo vigente cada vez que este cambia: si un
+	 * producto se elimina o baja su stock desde el panel, el carrito lo refleja
+	 * al instante (RF-06 CA4), sin esperar a la proxima operacion.
+	 */
 	const lineas = useMemo(
 		() => reglas.normalizar(guardadas, (sku) => productos.find((p) => p.sku === sku)),
 		[guardadas, productos],
@@ -15,6 +25,7 @@ export default function CarritoProvider({ children }) {
 	const [avisos, setAvisos] = useState([]);
 	const siguienteAviso = useRef(1);
 
+	/** Confirmacion visual de cada operacion (RF-05 CA3); se cierra sola a los 3 s. */
 	const avisar = useCallback((texto) => {
 		if (!texto) return;
 		const id = siguienteAviso.current++;
@@ -24,6 +35,10 @@ export default function CarritoProvider({ children }) {
 
 	const cerrarAviso = useCallback((id) => setAvisos((actuales) => actuales.filter((aviso) => aviso.id !== id)), []);
 
+	/**
+	 * Aplica una operacion sobre el carrito vigente: se relee y normaliza antes,
+	 * porque el stock pudo cambiar desde el mantenedor de productos.
+	 */
 	const aplicar = useCallback(
 		(operacion) => {
 			const resultado = operacion(leerCarrito());

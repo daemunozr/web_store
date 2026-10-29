@@ -80,6 +80,7 @@ describe("filtrar", () => {
 	});
 
 	it("filtra por el precio vigente, no por el de lista", () => {
+		// CPU-1 cuesta 200000 de lista pero 100000 con la oferta.
 		expect(skus(filtrar(productos, criterios({ max: 100000 }), nombreDeCategoria))).toEqual(["CPU-1", "RAM-1"]);
 		expect(skus(filtrar(productos, criterios({ min: 90000, max: 150000 }), nombreDeCategoria))).toEqual(["CPU-1"]);
 	});

@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 
+/** Producto del catalogo. Cada producto pertenece a una categoria. */
 @Entity
 @Table(name = "productos")
 public class Producto {
@@ -25,11 +26,13 @@ public class Producto {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal precio;
 
+    // Porcentaje de oferta de 0 a 90; null o 0 significa sin oferta.
     private Integer descuento;
 
     @Column(nullable = false)
     private Integer stock;
 
+    // Umbral de la alerta de bajo inventario; null si no hay alerta.
     private Integer stockCritico;
 
     private String imagen;

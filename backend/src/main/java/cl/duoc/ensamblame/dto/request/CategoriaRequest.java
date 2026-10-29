@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/** Datos para crear o editar una categoria. */
 public record CategoriaRequest(
 
         @NotBlank(message = "El codigo es obligatorio.")

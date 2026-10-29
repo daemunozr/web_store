@@ -32,6 +32,7 @@ const DEFINICION = {
 	direccion: [reglas.requerido(), reglas.maximo(300)],
 };
 
+/** Registro de un nuevo cliente. El rol no se escoge aqui: siempre es Cliente (RF-01). */
 export default function Registro() {
 	useTitulo("Registro — Ensambla.me");
 	const { crearUsuario } = useDatos();
@@ -40,6 +41,7 @@ export default function Registro() {
 	const [aviso, setAviso] = useState(null);
 
 	const alEnviar = (datos) => {
+		// La unicidad del RUN y del correo la aplica la capa de datos.
 		const resultado = crearUsuario({
 			run: datos.run,
 			nombre: datos.nombre,

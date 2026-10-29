@@ -1,5 +1,6 @@
 import { fecha, fechaLocal, mesLegible, precio, precioOGratis, unidades } from "./formato.js";
 
+// Intl separa el simbolo del monto con un espacio no separable; se normaliza para comparar.
 const normalizar = (texto) => texto.replace(/\s/g, " ");
 
 describe("precio", () => {

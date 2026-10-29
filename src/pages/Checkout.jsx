@@ -35,6 +35,7 @@ const VACIO = {
 	cvv: "",
 };
 
+// Datos de contacto y envio: siempre se piden.
 const DATOS_DE_ENVIO = {
 	nombre: [reglas.requerido(), reglas.maximo(50)],
 	apellidos: [reglas.requerido(), reglas.maximo(100)],
@@ -44,12 +45,18 @@ const DATOS_DE_ENVIO = {
 	direccion: [reglas.requerido(), reglas.maximo(300)],
 };
 
+// Tarjeta: solo si hay algo que pagar.
 const DATOS_DE_PAGO = {
 	tarjeta: [reglas.requerido(), reglas.tarjeta()],
 	vencimiento: [reglas.requerido(), reglas.vencimiento()],
 	cvv: [reglas.requerido(), reglas.cvv()],
 };
 
+/**
+ * Valores con que parte el formulario, por prioridad: los datos de envio de un
+ * intento anterior (la tarjeta nunca se conserva), los de la cuenta con la
+ * sesion iniciada, o vacio.
+ */
 function valoresIniciales(estado, sesion) {
 	if (estado?.datos) return { ...VACIO, ...estado.datos };
 
@@ -79,6 +86,8 @@ function Formulario({ lineas, subtotal, onTerminar }) {
 
 	const envio = costoEnvio(entrega, subtotal);
 	const total = subtotal + envio;
+	// Un pedido sin costo (productos gratis y retiro en tienda) no pide tarjeta. Se decide con la
+	// entrega y no con valores del formulario, para no depender del propio formulario.
 	const requierePago = total > 0;
 	const definicion = useMemo(
 		() => (requierePago ? { ...DATOS_DE_ENVIO, ...DATOS_DE_PAGO } : DATOS_DE_ENVIO),
@@ -90,6 +99,7 @@ function Formulario({ lineas, subtotal, onTerminar }) {
 	const items = consolidar(lineas, buscarProducto);
 
 	const alEnviar = (datos) => {
+		// Se comprueba el stock antes de cobrar: despues de aprobar el pago ya no se puede rechazar.
 		const sinStock = faltantes(items, buscarProducto);
 		if (sinStock.length) {
 			setAviso({
@@ -103,6 +113,7 @@ function Formulario({ lineas, subtotal, onTerminar }) {
 		if (requierePago) {
 			const pago = autorizarPago({ numero: datos.tarjeta, monto: total });
 			if (!pago.aprobado) {
+				// Solo los datos de envio viajan al reintento; la tarjeta no se conserva.
 				const datosDeEnvio = {
 					nombre: datos.nombre,
 					apellidos: datos.apellidos,
@@ -135,6 +146,7 @@ function Formulario({ lineas, subtotal, onTerminar }) {
 			return;
 		}
 
+		// Los tres cambios van juntos: la vista muestra "procesando" y no un carrito vacio.
 		onTerminar();
 		vaciar();
 		navegar(`/pago/correcto/${encodeURIComponent(resultado.registro.numero)}`);
@@ -323,6 +335,7 @@ function Formulario({ lineas, subtotal, onTerminar }) {
 	);
 }
 
+/** Pago de la compra: datos de envio, entrega y tarjeta, con el carrito como resumen. */
 export default function Checkout() {
 	useTitulo("Checkout — Ensambla.me");
 	const { lineas, total } = useCarrito();

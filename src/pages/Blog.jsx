@@ -5,6 +5,7 @@ import { useTitulo } from "../hooks/useTitulo.js";
 import { fecha } from "../utils/formato.js";
 import { recurso } from "../utils/recursos.js";
 
+/** Detalle de un articulo: imagen, titulo y descripcion larga (RF-09 CA2). */
 export default function Blog() {
 	const { slug = "" } = useParams();
 	const articulo = blog(slug);

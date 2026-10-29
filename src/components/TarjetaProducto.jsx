@@ -5,6 +5,7 @@ import PrecioProducto from "./PrecioProducto.jsx";
 import { nombreCategoria } from "../data/datos.js";
 import { precioVigente } from "../logic/precios.js";
 
+/** Tarjeta de un producto del catalogo: imagen, nombre, precio y boton (RF-03). */
 export default function TarjetaProducto({ producto, nivel = 3 }) {
 	const enlace = `/productos/${encodeURIComponent(producto.sku)}`;
 	const Titulo = `h${nivel}`;

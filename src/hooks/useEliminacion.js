@@ -1,3 +1,8 @@
+/*
+ * Flujo de eliminacion de los mantenedores: pedir (abre la confirmacion),
+ * confirmar (ejecuta la operacion) o cancelar. El resultado queda como aviso
+ * de exito o de rechazo para la zona aria-live del listado.
+ */
 import { useCallback, useState } from "react";
 
 export function useEliminacion(eliminar) {

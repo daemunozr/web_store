@@ -3,9 +3,14 @@ import userEvent from "@testing-library/user-event";
 import { limpiarAlmacenamiento, renderConProviders } from "../testUtils.jsx";
 import { useCarrito } from "./carrito.js";
 
+// Productos de la semilla: el mouse tiene stock de sobra y la tarjeta grafica solo 2 unidades.
 const MOUSE = "PER-MOUSE-RGB";
 const TARJETA_GRAFICA = "GPU-RTX4090";
 
+/**
+ * Componente de prueba: muestra el estado del carrito y un boton por cada
+ * operacion del proveedor, para llamarlas como lo haria una vista.
+ */
 function PruebaCarrito() {
 	const carrito = useCarrito();
 
@@ -96,6 +101,7 @@ describe("CarritoProvider", () => {
 		vi.setSystemTime(new Date("2031-05-10T12:00:00"));
 		renderConProviders(<PruebaCarrito />);
 
+		// Con el reloj falso, userEvent no puede esperar con temporizadores: se hace clic con fireEvent.
 		act(() => screen.getByRole("button", { name: "agregar armado" }).click());
 
 		const guardado = JSON.parse(window.localStorage.getItem("carrito"));

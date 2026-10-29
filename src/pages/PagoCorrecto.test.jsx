@@ -36,6 +36,7 @@ describe("PagoCorrecto", () => {
 	});
 
 	it("el personal ve la orden de un invitado, sin «Ver mis compras»", () => {
+		// ORD-2026-0007 es de un invitado ("cliente" vacio): nadie es su dueno.
 		montar("ORD-2026-0007", sesionDe(usuario("190110222")));
 
 		expect(screen.getByRole("heading", { level: 1, name: "Pago correcto" })).toBeInTheDocument();

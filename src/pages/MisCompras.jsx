@@ -7,6 +7,7 @@ import { totalOrden } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { precio } from "../utils/formato.js";
 
+/** Historial de compras de quien tiene la sesion iniciada, con el acceso a cada boleta. */
 export default function MisCompras() {
 	useTitulo("Mis compras — Ensambla.me");
 	const { sesion } = useSesion();

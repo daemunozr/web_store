@@ -1,5 +1,10 @@
 import { useEffect, useId, useRef } from "react";
 
+/**
+ * Dialogo de confirmacion con el aspecto del modal de Bootstrap, controlado
+ * por React (sin el JS de Bootstrap ni window.confirm). Al abrirse enfoca
+ * "Cancelar"; Escape o un clic en el fondo lo cierran sin confirmar.
+ */
 export default function ModalConfirmacion({
 	abierto,
 	titulo,

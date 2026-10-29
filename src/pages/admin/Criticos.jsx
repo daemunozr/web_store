@@ -7,6 +7,7 @@ import { useTitulo } from "../../hooks/useTitulo.js";
 import { faltante, productosCriticos } from "../../logic/stock.js";
 import { recurso } from "../../utils/recursos.js";
 
+/** Productos en stock critico, del mas urgente al menos. Quien puede editar productos ve el acceso a su ficha. */
 export default function Criticos() {
 	useTitulo("Productos criticos — Panel Ensambla.me");
 	const { sesion } = useSesion();

@@ -13,6 +13,7 @@ const montar = () =>
 		</Routes>,
 		{ ruta: "/admin", sesion: SESION_ADMIN },
 	);
+// El titulo de un indicador es un <p>; los accesos usan <h2> (y repiten algunos nombres).
 const indicador = (titulo) => screen.getByText(titulo, { selector: "p" }).closest("article");
 
 describe("admin / Resumen", () => {

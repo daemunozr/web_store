@@ -1,6 +1,12 @@
 import Campo from "./Campo.jsx";
 import { comunasDe, regiones } from "../data/datos.js";
 
+/**
+ * Selects de region y comuna: al cambiar la region se recargan solo sus
+ * comunas y se descarta la comuna anterior (RF-01 CA5).
+ *
+ * formulario es el objeto de useFormulario; prefijo arma los id de los campos.
+ */
 export default function SelectRegionComuna({ formulario, prefijo, className = "col-12 col-md-4" }) {
 	const { registrar, estado, errores, asignar, valores } = formulario;
 	const region = registrar("region");

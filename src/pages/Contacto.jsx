@@ -14,6 +14,7 @@ const DEFINICION = {
 	comentario: [reglas.requerido(), reglas.maximo(500)],
 };
 
+/** Formulario de contacto: mensaje interno a la empresa (RF-08). */
 export default function Contacto() {
 	useTitulo("Contacto — Ensambla.me");
 	const formulario = useFormulario(INICIAL, DEFINICION);

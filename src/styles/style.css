@@ -1,3 +1,27 @@
+/* ==========================================================================
+   Ensambla.me — hoja de estilos propia y unica del proyecto (RNF-05 CA2).
+   Se carga DESPUES de Bootstrap para ajustar y sobrescribir sus variables.
+   Ninguna vista define estilos con atributos style ni bloques <style>.
+
+   Indice
+     1. Variables de marca y ajustes de Bootstrap
+     2. Base y utilidades propias
+     3. Encabezado, navegacion y pie
+     4. Barra lateral de categorias
+     5. Portada (hero) y tarjetas de producto
+     6. Detalle de producto
+     7. Asistente de armado
+     8. Carrito
+     9. Formularios y validaciones
+    10. Blogs y Nosotros
+    11. Panel de administracion
+    12. Ajustes responsivos
+    13. Impresion de la boleta
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   1. Variables de marca y ajustes de Bootstrap
+   ------------------------------------------------------------------------- */
 :root {
 	--marca: #7c5cff;
 	--marca-clara: #a28bff;
@@ -13,6 +37,7 @@
 	--alerta: #f0a33c;
 }
 
+/* Bootstrap 5.3 toma estas variables para colores, fondos y bordes. */
 :root,
 [data-bs-theme="dark"] {
 	--bs-body-bg: var(--fondo);
@@ -33,6 +58,7 @@
 	--bs-code-color: var(--acento);
 }
 
+/* Los botones de Bootstrap llevan sus propias variables por componente. */
 .btn-primary {
 	--bs-btn-bg: var(--marca);
 	--bs-btn-border-color: var(--marca);
@@ -75,6 +101,9 @@
 	--bs-btn-hover-color: #06231b;
 }
 
+/* -------------------------------------------------------------------------
+   2. Base y utilidades propias
+   ------------------------------------------------------------------------- */
 body {
 	display: flex;
 	flex-direction: column;
@@ -110,15 +139,18 @@ img {
 	--bs-table-hover-color: var(--texto);
 }
 
+/* Contiene los .visually-hidden (position: absolute) de la tabla: sin esto escapan del scroll y ensanchan la pagina. */
 .table-responsive {
 	position: relative;
 }
 
+/* Titulo de seccion con una barra de marca a la izquierda. */
 .titulo-seccion {
 	padding-left: 0.75rem;
 	border-left: 4px solid var(--marca);
 }
 
+/* Etiqueta pequena en mayusculas para antetitulos. */
 .sobretitulo {
 	color: var(--acento);
 	font-size: 0.75rem;
@@ -127,6 +159,7 @@ img {
 	text-transform: uppercase;
 }
 
+/* Caja para los avisos de lista vacia, carrito vacio o recurso no encontrado. */
 .estado-vacio {
 	padding: 2.5rem 1.5rem;
 	color: var(--texto-suave);
@@ -136,6 +169,7 @@ img {
 	border-radius: 0.75rem;
 }
 
+/* Imagen provisional cuando un producto no define el campo imagen. */
 .sin-imagen {
 	display: flex;
 	align-items: center;
@@ -160,6 +194,9 @@ img {
 	content: "Sin imagen";
 }
 
+/* -------------------------------------------------------------------------
+   3. Encabezado, navegacion y pie
+   ------------------------------------------------------------------------- */
 .barra-utilidad {
 	background-color: #090b10;
 	border-bottom: 1px solid var(--borde);
@@ -244,6 +281,9 @@ img {
 	color: var(--marca-clara);
 }
 
+/* -------------------------------------------------------------------------
+   4. Barra lateral de categorias
+   ------------------------------------------------------------------------- */
 .barra-categorias .list-group-item-action:hover,
 .barra-categorias .list-group-item-action:focus {
 	background-color: var(--superficie-alta);
@@ -267,6 +307,9 @@ img {
 	}
 }
 
+/* -------------------------------------------------------------------------
+   5. Portada (hero) y tarjetas de producto
+   ------------------------------------------------------------------------- */
 .portada {
 	padding: 2rem;
 	background-color: var(--superficie);
@@ -325,6 +368,7 @@ img {
 	color: var(--acento);
 }
 
+/* Oferta: precio de lista tachado e insignia con el porcentaje. */
 .precio-anterior {
 	color: var(--texto-suave);
 	font-size: 0.8125rem;
@@ -350,6 +394,9 @@ img {
 	text-transform: uppercase;
 }
 
+/* -------------------------------------------------------------------------
+   6. Detalle de producto
+   ------------------------------------------------------------------------- */
 .detalle-producto .imagen-detalle {
 	width: 100%;
 	aspect-ratio: 16 / 10;
@@ -381,6 +428,9 @@ img {
 	font-weight: 500;
 }
 
+/* -------------------------------------------------------------------------
+   7. Asistente de armado
+   ------------------------------------------------------------------------- */
 .pasos-armado {
 	display: flex;
 	flex-wrap: wrap;
@@ -478,6 +528,9 @@ img {
 	font-weight: 700;
 }
 
+/* -------------------------------------------------------------------------
+   8. Carrito
+   ------------------------------------------------------------------------- */
 .linea-carrito .imagen-linea {
 	width: 96px;
 	aspect-ratio: 1 / 1;
@@ -513,6 +566,7 @@ img {
 	font-weight: 700;
 }
 
+/* Boleta: comprobante de una orden (pago correcto y panel). */
 .boleta {
 	background-color: var(--superficie);
 	border: 1px solid var(--borde);
@@ -523,6 +577,9 @@ img {
 	border-bottom: 1px dashed var(--borde);
 }
 
+/* -------------------------------------------------------------------------
+   9. Formularios y validaciones
+   ------------------------------------------------------------------------- */
 .tarjeta-formulario {
 	background-color: var(--superficie);
 	border: 1px solid var(--borde);
@@ -548,6 +605,7 @@ img {
 	color: #6b7484;
 }
 
+/* Casillas y opciones sin marcar: borde visible sobre el fondo oscuro. */
 .form-check-input:not(:checked) {
 	background-color: var(--superficie-alta);
 	border-color: var(--texto-suave);
@@ -561,6 +619,7 @@ img {
 	color: var(--marca-clara);
 }
 
+/* Sugerencia de formato: visible antes de cualquier error (RNF-02 CA5). */
 .form-text {
 	color: var(--texto-suave);
 }
@@ -573,6 +632,9 @@ img {
 	z-index: 1090;
 }
 
+/* -------------------------------------------------------------------------
+   10. Blogs y Nosotros
+   ------------------------------------------------------------------------- */
 .tarjeta-blog .imagen-blog {
 	aspect-ratio: 16 / 9;
 	object-fit: cover;
@@ -618,6 +680,9 @@ img {
 	border-radius: 50%;
 }
 
+/* -------------------------------------------------------------------------
+   11. Panel de administracion
+   ------------------------------------------------------------------------- */
 .menu-admin {
 	position: sticky;
 	top: 1rem;
@@ -667,6 +732,7 @@ img {
 	border-radius: 0.375rem;
 }
 
+/* Barra de un reporte: <progress> nativo, sin estilos en linea. */
 .barra-reporte {
 	-webkit-appearance: none;
 	appearance: none;
@@ -712,6 +778,9 @@ img {
 	font-size: 0.8125rem;
 }
 
+/* -------------------------------------------------------------------------
+   12. Ajustes responsivos
+   ------------------------------------------------------------------------- */
 @media (max-width: 575.98px) {
 	.barra-utilidad .datos-contacto {
 		display: none;
@@ -732,12 +801,17 @@ img {
 	}
 }
 
+/* El menu se pliega bajo 1200 px: ahi la busqueda ocupa todo el ancho. */
 @media (max-width: 1199.98px) {
 	.campo-busqueda {
 		width: 100%;
 	}
 }
 
+/* -------------------------------------------------------------------------
+   13. Impresion de la boleta
+   Sin menu, pie, avisos ni botones, y en blanco y negro para ahorrar tinta.
+   ------------------------------------------------------------------------- */
 @media print {
 	.barra-utilidad,
 	.navbar,

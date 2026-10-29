@@ -9,14 +9,19 @@ import { useTitulo } from "../hooks/useTitulo.js";
 import { agrupar, disponible, subtotal } from "../logic/carrito.js";
 import { precio, unidades } from "../utils/formato.js";
 
+/** Una linea del carrito con su cantidad editable y el boton de eliminar (RF-06). */
 function LineaCarrito({ linea, lineas, nivel = 2 }) {
 	const { cambiarCantidad, eliminarLinea } = useCarrito();
 	const producto = buscarProducto(linea.producto);
 	const Titulo = `h${nivel}`;
+	// Tope de esta linea: el stock menos lo que ocupan las demas lineas del producto.
 	const tope = Math.max(linea.cantidad, disponible(lineas, producto.sku, linea.linea));
 	const idCantidad = `cantidad-${linea.linea}`;
 	const campo = useRef(null);
 
+	// Igual que en un formulario sin React, la cantidad se aplica en el evento
+	// "change" (al confirmar, salir del campo o usar las flechas) y no en cada
+	// tecla: asi se puede escribir "12" sin pasar por 1.
 	useEffect(() => {
 		const input = campo.current;
 		const alCambiar = () => cambiarCantidad(linea.linea, input.value);
@@ -24,6 +29,8 @@ function LineaCarrito({ linea, lineas, nivel = 2 }) {
 		return () => input.removeEventListener("change", alCambiar);
 	}, [linea.linea, cambiarCantidad]);
 
+	// Tras cada cambio (incluso si se ajusto al mismo tope) el campo muestra la
+	// cantidad real: cada operacion entrega un objeto de linea nuevo.
 	useEffect(() => {
 		campo.current.value = String(linea.cantidad);
 	}, [linea]);
@@ -74,6 +81,7 @@ function LineaCarrito({ linea, lineas, nivel = 2 }) {
 	);
 }
 
+/** Armado agregado como conjunto: detalle de componentes y precio sumado (RF-07 CA5). */
 function GrupoArmado({ agrupador, suyas, lineas }) {
 	const { eliminarArmado } = useCarrito();
 	const precioConjunto = suyas.reduce((suma, linea) => suma + subtotal(linea), 0);
@@ -103,6 +111,7 @@ function GrupoArmado({ agrupador, suyas, lineas }) {
 	);
 }
 
+/** Contenido del carrito, armados agrupados y total (RF-06). */
 export default function Carrito() {
 	useTitulo("Carrito — Ensambla.me");
 	const { lineas, total } = useCarrito();

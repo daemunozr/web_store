@@ -1,10 +1,17 @@
+/*
+ * Proveedor de datos: expone las listas y el CRUD de data/datos.js y vuelve a
+ * renderizar a sus consumidores tras cada cambio exitoso, para que la interfaz
+ * refleje los datos al instante sin recargar la pagina.
+ */
 import { useCallback, useMemo, useState } from "react";
 import * as datos from "../data/datos.js";
 import { DatosContext } from "./datos.js";
 
 export default function DatosProvider({ children }) {
+	// Cada operacion exitosa cambia la version; las listas se releen con ella.
 	const [version, setVersion] = useState(0);
 
+	/** Envuelve una operacion de escritura para que avise del cambio si resulta. */
 	const conAviso = useCallback(
 		(operacion) =>
 			(...argumentos) => {

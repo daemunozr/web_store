@@ -1,3 +1,10 @@
+/*
+ * Pruebas del diseno responsivo (Bootstrap).
+ *
+ * jsdom no calcula el diseno ni el ancho de pantalla, asi que aqui solo se
+ * comprueba que el marcado trae las clases de Bootstrap que adaptan la vista.
+ * La revision con anchos reales (375, 768 y 1280 px) esta en docs/responsividad.md.
+ */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";

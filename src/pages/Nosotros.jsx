@@ -1,5 +1,6 @@
 import { useTitulo } from "../hooks/useTitulo.js";
 
+/** Informacion institucional de la empresa y de quien desarrolla el sitio (RF-15). */
 export default function Nosotros() {
 	useTitulo("Nosotros — Ensambla.me");
 

@@ -6,6 +6,7 @@ import { itemsDeOrden, producto } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { coincide } from "../../logic/busqueda.js";
 
+/** Listado de ordenes en solo lectura: cliente, fecha, productos y total (RF-12 CA2), con busqueda. */
 export default function Ordenes() {
 	useTitulo("Ordenes — Panel Ensambla.me");
 	const { ordenes } = useDatos();

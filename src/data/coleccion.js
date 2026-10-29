@@ -1,3 +1,14 @@
+/*
+ * Coleccion de registros persistida en sessionStorage (base de datos simulada).
+ *
+ * Cada coleccion es una copia de trabajo sembrada desde data/semillas.js: se
+ * lee del almacenamiento en cada consulta y se escribe completa en cada
+ * cambio. Cerrar el navegador la descarta y la proxima lectura vuelve a la
+ * semilla. Las reglas de negocio (unicidad, integridad) viven en data/datos.js.
+ *
+ * "id" es el campo que identifica a cada registro o, si la clave es compuesta,
+ * una funcion que la calcula a partir del registro.
+ */
 export function crearColeccion({ clave, semilla, id }) {
 	const identificador = typeof id === "function" ? id : (registro) => registro[id];
 

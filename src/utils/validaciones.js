@@ -1,5 +1,16 @@
+/*
+ * Reglas de validacion de formularios (RF-01, RF-08, RF-10, RF-11, RNF-02).
+ *
+ * Cada regla recibe el valor del campo y devuelve "" si pasa o el mensaje de
+ * error. La sugerencia del formato esperado se muestra aparte, como form-text,
+ * y es distinta del mensaje de error (RNF-02 CA5).
+ */
+
+// Unicos dominios de correo aceptados por el sistema.
 export const DOMINIOS_PERMITIDOS = ["@duoc.cl", "@profesor.duoc.cl", "@gmail.com"];
 
+/* ------------------------------------------------------------------- RUN */
+/** Digito verificador de un RUN chileno por el metodo del modulo 11. */
 export function digitoVerificador(cuerpo) {
 	let suma = 0;
 	let factor = 2;
@@ -15,12 +26,15 @@ export function digitoVerificador(cuerpo) {
 	return String(resto);
 }
 
+/** Valida un RUN sin puntos ni guion, de 7 a 9 caracteres (RF-01 CA2). */
 export function runValido(valor) {
 	const run = String(valor).trim().toUpperCase();
 	if (!/^[0-9]{6,8}[0-9K]$/.test(run)) return false;
 	return digitoVerificador(run.slice(0, -1)) === run.slice(-1);
 }
 
+/* --------------------------------------------------------------- Tarjeta */
+/** Algoritmo de Luhn: el digito de control de los numeros de tarjeta. */
 export function luhnValido(numero) {
 	const digitos = String(numero).replace(/\D/g, "");
 	if (!digitos) return false;
@@ -37,6 +51,7 @@ export function luhnValido(numero) {
 	return suma % 10 === 0;
 }
 
+/* ---------------------------------------------------------------- Reglas */
 export const reglas = {
 	requerido: (mensaje = "Este campo es obligatorio.") => (valor) =>
 		String(valor ?? "").trim() === "" ? mensaje : "",
@@ -76,6 +91,7 @@ export const reglas = {
 		return numero < minimo ? `No puede ser menor que ${minimo}.` : "";
 	},
 
+	/** Numero de tarjeta: de 13 a 19 digitos (se admiten espacios) con digito de control valido. */
 	tarjeta: () => (valor) => {
 		const texto = String(valor ?? "").trim();
 		if (texto === "") return "";
@@ -85,6 +101,7 @@ export const reglas = {
 		return luhnValido(digitos) ? "" : "El numero de la tarjeta no es valido: revisa los digitos.";
 	},
 
+	/** Vencimiento MM/AA, con mes de 01 a 12 y no anterior al mes de "ahora" (hoy por defecto). */
 	vencimiento: (ahora) => (valor) => {
 		const texto = String(valor ?? "").trim();
 		if (texto === "") return "";
@@ -99,6 +116,7 @@ export const reglas = {
 		return vence < actual ? "La tarjeta esta vencida." : "";
 	},
 
+	/** Codigo de seguridad de la tarjeta: 3 o 4 digitos. */
 	cvv: () => (valor) => {
 		const texto = String(valor ?? "").trim();
 		return texto === "" || /^\d{3,4}$/.test(texto) ? "" : "El codigo de seguridad tiene 3 o 4 digitos.";
@@ -120,20 +138,27 @@ export const reglas = {
 
 	seleccion: (mensaje = "Selecciona una opcion.") => (valor) => (String(valor ?? "") === "" ? mensaje : ""),
 
+	/** Formato libre: el valor (si no esta vacio) debe calzar completo con la expresion. */
 	patron: (expresion, mensaje) => (valor) => {
 		const texto = String(valor ?? "").trim();
 		return texto === "" || expresion.test(texto) ? "" : mensaje;
 	},
 };
 
+/** Primer error de la lista de reglas para un valor, o "" si las pasa todas. */
 export const validarValor = (valor, listaDeReglas = []) =>
 	listaDeReglas.map((regla) => regla(valor)).find(Boolean) ?? "";
 
+/** Errores de todos los campos definidos: { campo: mensaje | "" }. */
 export const validar = (valores, definicion) =>
 	Object.fromEntries(
 		Object.entries(definicion).map(([campo, listaDeReglas]) => [campo, validarValor(valores[campo], listaDeReglas)]),
 	);
 
+/**
+ * Sugerencias de correo con los dominios permitidos, completando lo que el
+ * usuario ya escribio antes de la arroba (RF-01 CA8).
+ */
 export function sugerenciasDeCorreo(escrito) {
 	const local = String(escrito ?? "").trim().toLowerCase().split("@")[0];
 	return DOMINIOS_PERMITIDOS.map((dominio) => `${local || "tucorreo"}${dominio}`);

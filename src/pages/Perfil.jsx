@@ -27,6 +27,7 @@ const CONTRASENA = {
 };
 const CONTRASENA_VACIA = { actual: "", nueva: "", repetir: "" };
 
+/** Datos personales editables. RUN y tipo de usuario no se editan aqui: el rol solo lo asigna un administrador. */
 function DatosPersonales({ cuenta }) {
 	const { actualizarUsuario } = useDatos();
 	const { actualizar } = useSesion();
@@ -44,6 +45,7 @@ function DatosPersonales({ cuenta }) {
 	const [aviso, setAviso] = useState(null);
 
 	const alEnviar = (datos) => {
+		// Se parte de la cuenta guardada: asi se conservan la contrasena y el tipo de usuario.
 		const resultado = actualizarUsuario(cuenta.run, {
 			...cuenta,
 			nombre: datos.nombre,
@@ -135,6 +137,7 @@ function DatosPersonales({ cuenta }) {
 	);
 }
 
+/** Cambio de contrasena: pide la actual y repite la nueva. */
 function CambioContrasena({ cuenta }) {
 	const { actualizarUsuario } = useDatos();
 	const { registrar, estado, errores, enviar, reiniciar } = useFormulario(CONTRASENA_VACIA, CONTRASENA);
@@ -200,6 +203,7 @@ function CambioContrasena({ cuenta }) {
 	);
 }
 
+/** Perfil de quien tiene la sesion iniciada: sus datos y su contrasena. enPanel lo ubica dentro del panel. */
 export default function Perfil({ enPanel = false }) {
 	useTitulo(enPanel ? "Mi perfil — Panel Ensambla.me" : "Mi perfil — Ensambla.me");
 	const { sesion } = useSesion();
@@ -214,6 +218,7 @@ export default function Perfil({ enPanel = false }) {
 			{cuenta ? (
 				<div className="row g-4">
 					<div className="col-12 col-xl-7">
+						{/* key: si cambia la cuenta, el formulario parte de sus datos */}
 						<DatosPersonales key={cuenta.run} cuenta={cuenta} />
 					</div>
 					<div className="col-12 col-xl-5">

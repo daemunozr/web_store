@@ -6,6 +6,7 @@ import Carrito from "./Carrito.jsx";
 
 const linea = (numero, producto, cantidad, armado = null) => ({ linea: numero, producto, cantidad, armado });
 
+// El total del resumen, que es el unico elemento con la clase "total".
 const total = (contenedor) => contenedor.querySelector(".total");
 
 describe("Carrito", () => {

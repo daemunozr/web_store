@@ -7,6 +7,10 @@ import { useDatos } from "../../context/datos.js";
 import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 
+/**
+ * Mantenedor de categorias: listar, crear, renombrar y eliminar. La capa de
+ * datos impide eliminar una categoria con productos o una del asistente.
+ */
 export default function Categorias() {
 	useTitulo("Categorias — Panel Ensambla.me");
 	const { categorias, productos, eliminarCategoria } = useDatos();

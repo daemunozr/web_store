@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import EstadoVacio from "../components/EstadoVacio.jsx";
 import { useTitulo } from "../hooks/useTitulo.js";
 
+/** Ruta que no existe en el sitio. */
 export default function NoEncontrada() {
 	useTitulo("Pagina no encontrada — Ensambla.me");
 

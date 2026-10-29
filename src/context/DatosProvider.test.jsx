@@ -12,6 +12,10 @@ const productoNuevo = {
 	categoria: "cpu",
 };
 
+/**
+ * Componente de prueba: muestra cuantos productos hay y tiene un boton que
+ * crea un producto. El resultado de crearProducto se entrega a "alResultado".
+ */
 function PruebaDatos({ sku = productoNuevo.sku, alResultado }) {
 	const { productos, crearProducto } = useDatos();
 
@@ -45,6 +49,7 @@ describe("DatosProvider", () => {
 
 	it("crear un producto con un SKU repetido no cambia la lista y devuelve el error", async () => {
 		const alResultado = vi.fn();
+		// CPU-R5-7600 ya existe en la semilla.
 		renderConProviders(<PruebaDatos sku="CPU-R5-7600" alResultado={alResultado} />);
 		const antes = Number(screen.getByTestId("total").textContent);
 

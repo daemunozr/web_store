@@ -3,6 +3,11 @@ import { desgloseIva, subtotalItems } from "../logic/ordenes.js";
 import { nombreComuna, producto as buscarProducto } from "../data/datos.js";
 import { fecha, precio } from "../utils/formato.js";
 
+/**
+ * Boleta de una orden: comprador, despacho, detalle de productos y totales con
+ * el IVA incluido desglosado. Es un comprobante simulado, sin validez tributaria.
+ * orden es el registro de la orden e items sus lineas [{ producto, cantidad, precioUnitario }].
+ */
 export default function Boleta({ orden, items }) {
 	const subtotal = subtotalItems(items);
 	const total = subtotal + (orden.costoEnvio ?? 0);

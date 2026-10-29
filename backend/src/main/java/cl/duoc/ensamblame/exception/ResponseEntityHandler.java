@@ -19,11 +19,17 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+/**
+ * Convierte todas las excepciones en un ResponseEntity con un ErrorResponse, para que los
+ * controladores no necesiten try/catch. Extiende ResponseEntityExceptionHandler, que ya
+ * conoce las excepciones de Spring MVC; aqui se personalizan dos y se agregan las propias.
+ */
 @RestControllerAdvice
 public class ResponseEntityHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ResponseEntityHandler.class);
 
+    /** Fallo de @Valid en un request: 400 con el mensaje de cada campo. */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -34,12 +40,14 @@ public class ResponseEntityHandler extends ResponseEntityExceptionHandler {
         return crear(HttpStatus.BAD_REQUEST, "Hay campos invalidos.", errores);
     }
 
+    /** JSON mal formado o con un valor imposible (por ejemplo, un tipo de usuario inexistente): 400. */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return crear(HttpStatus.BAD_REQUEST, "El cuerpo de la solicitud no es valido.", null);
     }
 
+    /** Ruta que no existe (por ejemplo /api/nada): 404 con el mismo formato que los demas errores. */
     @Override
     protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -61,6 +69,7 @@ public class ResponseEntityHandler extends ResponseEntityExceptionHandler {
         return crear(HttpStatus.BAD_REQUEST, ex.getMessage(), null);
     }
 
+    /** Cualquier otro error: se registra en el log y el cliente solo recibe un mensaje general. */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleOtros(Exception ex) {
         log.error("Error no controlado", ex);

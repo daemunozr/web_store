@@ -15,6 +15,7 @@ const radios = () => screen.queryAllByRole("radio");
 const pasos = () => within(document.querySelector("ol.pasos-armado")).getAllByRole("listitem");
 const carrito = () => JSON.parse(window.localStorage.getItem("carrito") ?? "[]");
 
+/** Escoge un componente del paso actual (el primero con stock si no se indica) y continua. */
 async function elegir(sku) {
 	const opcion = sku ? screen.getByRole("radio", { name: nombreDe(sku) }) : radios().find((r) => !r.disabled);
 	await userEvent.click(opcion);
@@ -68,6 +69,7 @@ describe("Armado", () => {
 		const esperadas = admisibles("CPU-R5-7600").map(nombreDe).sort();
 		expect(radios().map((r) => r.closest(".form-check").textContent).sort()).toEqual(esperadas);
 		expect(screen.getByText(nombreDe("CPU-R5-7600"), { selector: "strong" })).toBeInTheDocument();
+		// El CPU de otro socket no deja pasar sus placas.
 		expect(screen.queryByRole("radio", { name: nombreDe("MB-B760-PLUS") })).not.toBeInTheDocument();
 	});
 
@@ -149,9 +151,9 @@ describe("Armado", () => {
 			await clic("Armar por modulos");
 
 			expect(screen.queryByRole("button", { name: "Finalizar aqui" })).not.toBeInTheDocument();
-			await clic("Omitir esta categoria");
-			await clic("Omitir esta categoria");
-			await clic("Omitir esta categoria");
+			await clic("Omitir esta categoria"); // CPU
+			await clic("Omitir esta categoria"); // placa
+			await clic("Omitir esta categoria"); // RAM
 			expect(screen.getByRole("heading", { name: /^Paso 4 de/ })).toBeInTheDocument();
 			const ssd = await elegir("SSD-NVME-1TB");
 			await clic("Finalizar aqui");
@@ -200,6 +202,7 @@ describe("Armado", () => {
 		await clic("Armar por modulos");
 		await elegir("CPU-R5-7600");
 		await clic("Finalizar aqui");
+		// El stock baja desde el panel mientras el cliente decide.
 		window.sessionStorage.setItem("productos", JSON.stringify([{ ...producto("CPU-R5-7600"), stock: 0 }]));
 
 		await clic("Agregar el armado al carrito");

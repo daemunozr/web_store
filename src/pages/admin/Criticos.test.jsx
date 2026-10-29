@@ -33,11 +33,11 @@ describe("admin / Criticos", () => {
 
 	it("ordena primero los agotados, luego el mayor faltante y, a igualdad, por codigo (RF-26 CA1)", () => {
 		sembrar({
-			"CPU-R5-7600": { stock: 1, stockCritico: 5 },
-			"CPU-R7-7800X3D": { stock: 3, stockCritico: 5 },
-			"GPU-RTX4060": { stock: 0, stockCritico: 2 },
-			"MB-B650-PG": { stock: 0, stockCritico: 6 },
-			"PER-MOUSE-RGB": { stock: 3, stockCritico: 5 },
+			"CPU-R5-7600": { stock: 1, stockCritico: 5 }, // falta 4
+			"CPU-R7-7800X3D": { stock: 3, stockCritico: 5 }, // falta 2
+			"GPU-RTX4060": { stock: 0, stockCritico: 2 }, // agotado, falta 2
+			"MB-B650-PG": { stock: 0, stockCritico: 6 }, // agotado, falta 6
+			"PER-MOUSE-RGB": { stock: 3, stockCritico: 5 }, // falta 2, SKU posterior
 		});
 		montar();
 
