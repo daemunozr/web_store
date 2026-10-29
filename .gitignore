@@ -1,10 +1,7 @@
 # Archivos de informacion
 *.pdf
 *.xlsx
-*.docx
-anexo_word/*
 *.txt
-anexos/
 
 # Swap files
 *.sw[a-p]
