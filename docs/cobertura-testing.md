@@ -14,12 +14,12 @@ según lo indicado para la evaluación. Todas las cifras salen de ejecutar
 
 | Métrica | Antes (solo `App.test.jsx`) | Ahora |
 |---|---:|---:|
-| Archivos de prueba | 1 | **85** |
-| Pruebas | 2 | **760** (todas pasan) |
-| Sentencias | 17,14 % | **99,32 %** |
-| Ramas | 4,94 % | **94,58 %** |
+| Archivos de prueba | 1 | **86** |
+| Pruebas | 2 | **766** (todas pasan) |
+| Sentencias | 17,14 % | **99,46 %** |
+| Ramas | 4,94 % | **94,77 %** |
 | Funciones | 13,35 % | **99,80 %** |
-| Líneas | 19,42 % | **99,51 %** |
+| Líneas | 19,42 % | **99,67 %** |
 
 Toda vista, componente, regla de negocio y hook tiene al menos un archivo de
 prueba. Lo que queda sin cubrir son ramas de error difíciles de provocar y una
@@ -40,6 +40,11 @@ Configuración en `vite.config.js` (entorno `jsdom`, `globals: true`, setup en
 `src/setupTests.js`). Se excluyen de la cobertura los archivos de arranque y
 apoyo (`main.jsx`, `setupTests.js`, `testUtils.jsx`), los datos de ejemplo
 (`semillas.js`, `creditos.js`) y las propias pruebas.
+
+`coverage.thresholds` exige un mínimo global: 99 % en sentencias, funciones y
+líneas, y 94 % en ramas. Si `npm run coverage` queda por debajo de alguno, el
+comando termina con error (`Coverage for branches (…) does not meet global
+threshold (…)`), de modo que una regresión de cobertura no pasa inadvertida.
 
 ```
 npm run test:run   # una pasada de todas las pruebas
@@ -85,6 +90,7 @@ organizan de lo más puro a lo más integrado:
 | Técnica | Dónde y para qué |
 |---|---|
 | `vi.fn()` | Funciones de devolución de llamada (`onCambio`, `onConfirmar`, `onCancelar`, `aplicar`, `alEnviar`, `onCerrar`) para comprobar que se llaman y con qué argumentos; también `eliminar` en `useEliminacion` con `mockReturnValue` para simular éxito y rechazo |
+| `vi.mock(modulo, importOriginal)` | Único mock de módulo, en `Checkout.mocks.test.jsx`: reemplaza `autorizarPago` (`logic/pago.js`) y `crearOrden` (`data/datos.js`) por `vi.fn()` que conservan la implementación real por defecto. Permite aprobar o rechazar el pago sin depender de tarjetas especiales, comprobar con qué monto y tarjeta se cobra, que se cobra antes de crear la orden, y forzar el fallo de `crearOrden` |
 | `vi.spyOn(window, "print")` | Comprueba que «Imprimir boleta» abre el diálogo de impresión sin abrirlo de verdad |
 | `vi.spyOn(console, "error")` | Silencia y verifica el registro de errores cuando el almacenamiento está corrupto (`coleccion`, `sesion`, `carrito`) |
 | `vi.spyOn(Storage.prototype, "setItem" / "getItem" / "removeItem")` | Simula `sessionStorage` o `localStorage` bloqueado o sin cuota, para cubrir las ramas de error de los contextos y de `crearColeccion` |
@@ -92,13 +98,13 @@ organizan de lo más puro a lo más integrado:
 | Datos sembrados en `sessionStorage` | Para casos límite sin tocar el código: un producto sin stock, una categoría vacía, el stock que baja mientras el cliente decide un armado, un carrito o una lista de órdenes vacíos |
 | `vi.useFakeTimers()` + `vi.advanceTimersByTime(3000)` | Adelanta el reloj para comprobar que el aviso de confirmación del carrito se cierra solo a los 3 s, sin esperar de verdad (`CarritoProvider.test.jsx`) |
 | Componente de prueba dentro del proveedor | `CarritoProvider` y `DatosProvider` se prueban con un componente mínimo que llama a sus operaciones desde botones, como lo haría una vista; el resultado se entrega a un `vi.fn()` (`DatosProvider.test.jsx`) |
-| Dependencias inyectadas | `buscar`, `productosDe`, `admisibles`, `nombreDeCategoria` y `ahora` se pasan por parámetro con valores de prueba, sin mockear módulos |
+| Dependencias inyectadas | `buscar`, `productosDe`, `admisibles`, `nombreDeCategoria` y `ahora` se pasan por parámetro con valores de prueba, sin mockear módulos (el mock de módulo se reserva para las dos dependencias de `Checkout`) |
 | Almacenamiento real de jsdom | Los proveedores corren de verdad sobre `sessionStorage` / `localStorage`, que se limpian en `beforeEach` con `limpiarAlmacenamiento()` |
 | Eventos falsos | `useFormulario.enviar` recibe un evento con `preventDefault: vi.fn()` y un formulario falso que registra el enfoque del primer campo inválido |
 
 ## 5. Inventario de pruebas
 
-**Total: 760 pruebas en 85 archivos.**
+**Total: 766 pruebas en 86 archivos.**
 
 ### 5.1 Lógica y utilidades (`logic/`, `utils/`) — 223 pruebas
 
@@ -178,6 +184,7 @@ organizan de lo más puro a lo más integrado:
 | `pages/Armado.test.jsx` | 15 | Modos, un paso a la vez, filtro por compatibilidad, volver, omitir, finalizar, sin stock, recorrido completo al carrito, falta de stock al agregar |
 | `pages/Carrito.test.jsx` | 9 | Carrito vacío, cantidad, tope de stock, eliminar, armados |
 | `pages/Checkout.test.jsx` | 15 | Datos de la cuenta, envío, pago aprobado, tarjeta rechazada, sin fondos, stock cambiado, pedido sin costo |
+| `pages/Checkout.mocks.test.jsx` | 6 | Con la pasarela y `crearOrden` mockeadas (`vi.mock`): monto y tarjeta cobrados, aprobación y rechazo simulados, cobro antes de crear la orden, fallo de `crearOrden`, pedido sin costo sin llamar a la pasarela |
 | `pages/PagoCorrecto.test.jsx` | 7 | Confirmación con boleta, dueño, personal, invitado y «Orden no encontrada» |
 | `pages/PagoError.test.jsx` | 8 | Motivo, carrito intacto, envío según la entrega, reintentar, carrito vacío |
 | `pages/Login.test.jsx` | 11 | Errores, credenciales inválidas, redirección por rol y a la vista pedida, destino hostil ignorado |
@@ -203,11 +210,11 @@ organizan de lo más puro a lo más integrado:
 
 ## 6. Resultados de cobertura
 
-Resultado de `npm run coverage`, con 85 archivos de prueba y 760 pruebas en verde:
+Resultado de `npm run coverage`, con 86 archivos de prueba y 766 pruebas en verde:
 
 | Carpeta | Sentencias | Ramas | Funciones | Líneas |
 |---|---:|---:|---:|---:|
-| **Todo `src/`** | **99,32 %** | **94,58 %** | **99,80 %** | **99,51 %** |
+| **Todo `src/`** | **99,46 %** | **94,77 %** | **99,80 %** | **99,67 %** |
 | `logic/` | 99,66 % | 97,55 % | 100 % | 100 % |
 | `utils/` | 100 % | 91,78 % | 100 % | 100 % |
 | `data/` | 99,41 % | 97,01 % | 98,27 % | 99,18 % |
@@ -215,7 +222,7 @@ Resultado de `npm run coverage`, con 85 archivos de prueba y 760 pruebas en verd
 | `context/` | 97,63 % | 97,43 % | 100 % | 97,97 % |
 | `components/` | 100 % | 96,63 % | 100 % | 100 % |
 | `components/layout/` | 100 % | 96,96 % | 100 % | 100 % |
-| `pages/` | 98,55 % | 91,15 % | 100 % | 99,05 % |
+| `pages/` | 99,13 % | 92,03 % | 100 % | 99,68 % |
 | `pages/admin/` | 100 % | 94,85 % | 100 % | 100 % |
 
 La tabla de consola solo lista los archivos con alguna línea o rama sin cubrir;
@@ -239,7 +246,6 @@ Ninguna vista ni componente queda en 0 %. Lo que falta es poco y de bajo riesgo:
 |---|---|---|
 | `context/SesionProvider.jsx` (líneas 43 y 59) | 2 líneas | Mensajes de error al fallar el almacenamiento al cerrar o al actualizar la sesión. Riesgo bajo |
 | `data/datos.js` (línea 27) | 1 función | Función auxiliar que calcula la clave de un ítem de orden; la ejercen las órdenes pero no una prueba directa. Riesgo bajo |
-| `pages/Checkout.jsx` (líneas 145-146) | 2 líneas | Rechazo de `crearOrden` por la capa de datos después de que la vista ya validó el stock; la regla sí está probada en `datos.test.js`. Riesgo bajo |
 | `pages/Armado.jsx` (línea 279) | 1 línea | Mensaje de un recorrido completo sin ningún componente elegido, un estado que la interfaz no deja alcanzar. Riesgo bajo |
 | `pages/Perfil.jsx` (ramas) | 82,6 % de ramas | Valores opcionales que la semilla siempre trae (fecha de nacimiento, comuna) y el rechazo del cambio de contraseña por la capa de datos. Riesgo bajo |
 | Ramas de `hooks/` y `utils/` | 86–92 % | `useFormulario` con campos sin definición y reglas con entradas no numéricas |

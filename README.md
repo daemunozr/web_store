@@ -704,8 +704,9 @@ Las pruebas viven junto al archivo que prueban (`logic/carrito.js` →
 | `components/`           | Props, renderizado condicional, estado y eventos                                      |
 | `pages/`                | Todas las vistas de la tienda y del panel: flujos de compra y cuenta, armado, mantenedores y reportes |
 
-Resultado del 28-10-2026: 85 archivos y 760 pruebas, todas en verde; cobertura de 99,32 %
-en sentencias, 94,58 % en ramas, 99,80 % en funciones y 99,51 % en líneas. El detalle, la
+Resultado del 28-10-2026: 86 archivos y 766 pruebas, todas en verde; cobertura de 99,46 %
+en sentencias, 94,77 % en ramas, 99,80 % en funciones y 99,67 % en líneas (con umbrales mínimos
+en `vite.config.js`). El detalle, la
 estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).
 El diseño responsivo se revisó a 375, 768 y 1280 px: ver [`docs/responsividad.md`](docs/responsividad.md).
 Las pruebas del backend (JUnit 5 y Mockito) son aparte: `cd backend && mvn test` (sección 11).
