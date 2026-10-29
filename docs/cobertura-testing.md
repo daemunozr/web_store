@@ -3,7 +3,7 @@
 **Proyecto:** Ensambla.me — Tienda online de componentes de PC
 **Asignatura:** DSY1104 Desarrollo Fullstack II · Evaluación Parcial N° 2
 **Autor:** Daniel Muñoz
-**Fecha de medición:** 26-10-2026 (Vitest 5.0.5, cobertura v8)
+**Fecha de medición:** 28-10-2026 (Vitest 5.0.5, cobertura v8)
 
 Este documento valida el alcance de los elementos cubiertos por las pruebas
 unitarias del frontend (React + Vite), reemplazando Jasmine y Karma por Vitest
@@ -14,16 +14,16 @@ según lo indicado para la evaluación. Todas las cifras salen de ejecutar
 
 | Métrica | Antes (solo `App.test.jsx`) | Ahora |
 |---|---:|---:|
-| Archivos de prueba | 1 | **81** |
-| Pruebas | 2 | **739** (todas pasan) |
-| Sentencias | 17,14 % | **98,92 %** |
-| Ramas | 4,94 % | **94,49 %** |
-| Funciones | 13,35 % | **98,62 %** |
+| Archivos de prueba | 1 | **85** |
+| Pruebas | 2 | **760** (todas pasan) |
+| Sentencias | 17,14 % | **99,32 %** |
+| Ramas | 4,94 % | **94,58 %** |
+| Funciones | 13,35 % | **99,80 %** |
 | Líneas | 19,42 % | **99,51 %** |
 
 Toda vista, componente, regla de negocio y hook tiene al menos un archivo de
-prueba. Lo que queda sin cubrir son ramas de error difíciles de provocar y dos
-funciones de los proveedores (sección 7).
+prueba. Lo que queda sin cubrir son ramas de error difíciles de provocar y una
+función auxiliar de `data/datos.js` (sección 7).
 
 ## 2. Herramientas y cómo ejecutar
 
@@ -90,13 +90,15 @@ organizan de lo más puro a lo más integrado:
 | `vi.spyOn(Storage.prototype, "setItem" / "getItem" / "removeItem")` | Simula `sessionStorage` o `localStorage` bloqueado o sin cuota, para cubrir las ramas de error de los contextos y de `crearColeccion` |
 | `vi.useFakeTimers()` + `vi.setSystemTime()` | Fija la fecha en `crearOrden` para comprobar la fecha y el número correlativo `ORD-2026-NNNN`, y en `Footer` para comprobar el año en curso |
 | Datos sembrados en `sessionStorage` | Para casos límite sin tocar el código: un producto sin stock, una categoría vacía, el stock que baja mientras el cliente decide un armado, un carrito o una lista de órdenes vacíos |
+| `vi.useFakeTimers()` + `vi.advanceTimersByTime(3000)` | Adelanta el reloj para comprobar que el aviso de confirmación del carrito se cierra solo a los 3 s, sin esperar de verdad (`CarritoProvider.test.jsx`) |
+| Componente de prueba dentro del proveedor | `CarritoProvider` y `DatosProvider` se prueban con un componente mínimo que llama a sus operaciones desde botones, como lo haría una vista; el resultado se entrega a un `vi.fn()` (`DatosProvider.test.jsx`) |
 | Dependencias inyectadas | `buscar`, `productosDe`, `admisibles`, `nombreDeCategoria` y `ahora` se pasan por parámetro con valores de prueba, sin mockear módulos |
 | Almacenamiento real de jsdom | Los proveedores corren de verdad sobre `sessionStorage` / `localStorage`, que se limpian en `beforeEach` con `limpiarAlmacenamiento()` |
 | Eventos falsos | `useFormulario.enviar` recibe un evento con `preventDefault: vi.fn()` y un formulario falso que registra el enfoque del primer campo inválido |
 
 ## 5. Inventario de pruebas
 
-**Total: 739 pruebas en 81 archivos.**
+**Total: 760 pruebas en 85 archivos.**
 
 ### 5.1 Lógica y utilidades (`logic/`, `utils/`) — 223 pruebas
 
@@ -116,7 +118,7 @@ organizan de lo más puro a lo más integrado:
 | `utils/formato.test.js` | 12 | Pesos chilenos, "Gratis", fechas, mes legible, singular y plural |
 | `utils/recursos.test.js` | 12 | Rutas externas, absolutas y relativas a `public/`; ruta vacía |
 
-### 5.2 Datos, contextos y hooks — 99 pruebas
+### 5.2 Datos, contextos y hooks — 115 pruebas
 
 | Archivo | Pruebas | Qué verifica |
 |---|---:|---|
@@ -124,12 +126,15 @@ organizan de lo más puro a lo más integrado:
 | `data/datos.test.js` | 41 | CRUD de productos, usuarios y categorías con sus reglas de integridad; `crearOrden` (stock, número, envío, rechazos sin efectos secundarios) |
 | `context/sesion.test.js` | 7 | Lectura de sesión (válida, incompleta, corrupta), inicio por rol, destino seguro contra redirecciones a otros sitios |
 | `context/carrito.test.js` | 8 | Lectura y escritura en `localStorage`, contenido corrupto, almacenamiento bloqueado, uso fuera del proveedor |
+| `context/CarritoProvider.test.jsx` | 11 | Agregar, sumar en la misma línea, cambiar cantidad, eliminar, armado (con reloj simulado), vaciar, rechazo por stock, aviso que se cierra solo a los 3 s o con el botón |
+| `context/DatosProvider.test.jsx` | 3 | Lista de productos, crear con éxito actualiza la lista sin recargar, SKU repetido no la cambia |
 | `context/SesionProvider.test.jsx` | 12 | Iniciar (mensaje genérico, sin guardar la contraseña), cerrar sin tocar el carrito, actualizar sin cambiar RUN ni rol |
 | `hooks/useFormulario.test.js` | 11 | Valores, validación al escribir y al salir del campo, envío con errores y válido, reinicio |
 | `hooks/useEliminacion.test.js` | 5 | Pedir, cancelar y confirmar con aviso de éxito o rechazo |
 | `hooks/useCriterios.test.jsx` | 3 | Criterios leídos de la URL y reemplazo con `aplicar` |
+| `hooks/useTitulo.test.js` | 2 | Título de la pestaña al montarse y al cambiar |
 
-### 5.3 Componentes — 142 pruebas
+### 5.3 Componentes — 147 pruebas
 
 | Archivo | Pruebas | Tipo principal |
 |---|---:|---|
@@ -158,6 +163,7 @@ organizan de lo más puro a lo más integrado:
 | `layout/AsideAdmin.test.jsx` | 8 | Menú por rol (sin las demás opciones en el DOM), opción activa |
 | `layout/Footer.test.jsx` | 4 | Contacto, enlaces, año con reloj simulado |
 | `layout/Layouts.test.jsx` | 3 | Diseño de tienda con y sin barra lateral, diseño del panel |
+| `responsivo.test.jsx` | 5 | Clases responsivas de Bootstrap: menú que se pliega (`navbar-expand-xl`) y su botón, rejilla `row-cols-*`, tablas en `table-responsive` (ver `responsividad.md`) |
 
 ### 5.4 Páginas y flujos — 275 pruebas
 
@@ -197,20 +203,20 @@ organizan de lo más puro a lo más integrado:
 
 ## 6. Resultados de cobertura
 
-Resultado de `npm run coverage`, con 81 archivos de prueba y 739 pruebas en verde:
+Resultado de `npm run coverage`, con 85 archivos de prueba y 760 pruebas en verde:
 
 | Carpeta | Sentencias | Ramas | Funciones | Líneas |
 |---|---:|---:|---:|---:|
-| **Todo `src/`** | **98,92 %** | **94,49 %** | **98,62 %** | **99,51 %** |
-| `logic/` | 99,66 % | 97,14 % | 100 % | 100 % |
+| **Todo `src/`** | **99,32 %** | **94,58 %** | **99,80 %** | **99,51 %** |
+| `logic/` | 99,66 % | 97,55 % | 100 % | 100 % |
 | `utils/` | 100 % | 91,78 % | 100 % | 100 % |
-| `data/` | 99,42 % | 97,01 % | 98,28 % | 99,19 % |
+| `data/` | 99,41 % | 97,01 % | 98,27 % | 99,18 % |
 | `hooks/` | 100 % | 86,36 % | 100 % | 100 % |
-| `context/` | 92,91 % | 97,44 % | 86,67 % | 97,98 % |
-| `components/` | 100 % | 96,64 % | 100 % | 100 % |
-| `components/layout/` | 100 % | 96,97 % | 100 % | 100 % |
-| `pages/` | 98,56 % | 91,15 % | 100 % | 99,05 % |
-| `pages/admin/` | 100 % | 94,86 % | 100 % | 100 % |
+| `context/` | 97,63 % | 97,43 % | 100 % | 97,97 % |
+| `components/` | 100 % | 96,63 % | 100 % | 100 % |
+| `components/layout/` | 100 % | 96,96 % | 100 % | 100 % |
+| `pages/` | 98,55 % | 91,15 % | 100 % | 99,05 % |
+| `pages/admin/` | 100 % | 94,85 % | 100 % | 100 % |
 
 La tabla de consola solo lista los archivos con alguna línea o rama sin cubrir;
 el detalle por línea está en `coverage/index.html`.
@@ -231,7 +237,8 @@ Ninguna vista ni componente queda en 0 %. Lo que falta es poco y de bajo riesgo:
 
 | Área | Estado | Motivo y riesgo |
 |---|---|---|
-| `context/CarritoProvider.jsx` (funciones) y `SesionProvider.jsx` (líneas 43 y 59) | 77 % de funciones en el carrito | Operaciones secundarias de los proveedores que ninguna vista ejerce en las pruebas; el resto de cada proveedor corre de verdad en todas las pruebas de vistas. Riesgo bajo |
+| `context/SesionProvider.jsx` (líneas 43 y 59) | 2 líneas | Mensajes de error al fallar el almacenamiento al cerrar o al actualizar la sesión. Riesgo bajo |
+| `data/datos.js` (línea 27) | 1 función | Función auxiliar que calcula la clave de un ítem de orden; la ejercen las órdenes pero no una prueba directa. Riesgo bajo |
 | `pages/Checkout.jsx` (líneas 145-146) | 2 líneas | Rechazo de `crearOrden` por la capa de datos después de que la vista ya validó el stock; la regla sí está probada en `datos.test.js`. Riesgo bajo |
 | `pages/Armado.jsx` (línea 279) | 1 línea | Mensaje de un recorrido completo sin ningún componente elegido, un estado que la interfaz no deja alcanzar. Riesgo bajo |
 | `pages/Perfil.jsx` (ramas) | 82,6 % de ramas | Valores opcionales que la semilla siempre trae (fecha de nacimiento, comuna) y el rechazo del cambio de contraseña por la capa de datos. Riesgo bajo |
@@ -240,9 +247,11 @@ Ninguna vista ni componente queda en 0 %. Lo que falta es poco y de bajo riesgo:
 | Pruebas de extremo a extremo en un navegador real | No hay | Fuera del alcance de la pauta (pruebas unitarias); las vistas se prueban en jsdom |
 
 **Lo que las pruebas no demuestran:** aspecto visual, impresión real de la boleta,
-reproducción del video, comportamiento responsivo ni accesibilidad más allá de
-los roles y nombres que consultan las propias pruebas. Esos puntos se revisan a
-mano con `npm run dev`.
+reproducción del video ni accesibilidad más allá de los roles y nombres que
+consultan las propias pruebas. El comportamiento responsivo tiene pruebas del
+marcado (`responsivo.test.jsx`), pero el ancho real se revisó a mano con
+`npm run dev`: está en [`responsividad.md`](responsividad.md). Lo demás se
+revisa a mano.
 
 ## 8. Trazabilidad con los requisitos
 
@@ -276,3 +285,4 @@ Los requisitos se citan como en los comentarios del código y en el ERS.
 | RF-27 Reportes | `admin/Reportes.test.jsx`, `TablaBarras.test.jsx`, `reportes.test.js` |
 | RNF-02 Validación y control de acceso | `validaciones.test.js`, `useFormulario.test.js`, `RutaProtegida.test.jsx`, `AsideAdmin.test.jsx`, `Perfil.test.jsx` (campos de contraseña) |
 | RNF-03 Tolerancia a datos corruptos | `coleccion.test.js`, `carrito.test.js`, `sesion.test.js` |
+| RNF-06 Diseño adaptable (viewport) | `responsivo.test.jsx` (clases de Bootstrap) y la revisión a 375, 768 y 1280 px de `responsividad.md` |

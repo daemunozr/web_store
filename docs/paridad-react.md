@@ -72,9 +72,10 @@ Diferencias intencionales (Entrega II):
   globales, que reemplazan los contextos y hooks de React. No hay pérdida de función.
 - **Riesgo restante:** ninguno de cobertura. Después de la auditoría se agregaron pruebas a
   todas las vistas que no las tenían (Armado, Perfil, MisCompras, MiCompra, PagoCorrecto,
-  PagoError, todo `pages/admin/`, las tablas, la boleta y el menú): 739 pruebas, 98,92 % de
-  sentencias (ver [`cobertura-testing.md`](cobertura-testing.md)). Sigue siendo manual la
-  revisión del aspecto visual, la impresión y el diseño responsivo.
+  PagoError, todo `pages/admin/`, las tablas, la boleta y el menú): 760 pruebas, 99,32 % de
+  sentencias (ver [`cobertura-testing.md`](cobertura-testing.md)). El diseño responsivo se
+  revisó a 375, 768 y 1280 px ([`responsividad.md`](responsividad.md)); siguen siendo
+  manuales el aspecto visual y la impresión.
 
 ## Qué sigue en HTML/JS puro
 

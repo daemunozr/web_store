@@ -694,10 +694,11 @@ Las pruebas viven junto al archivo que prueban (`logic/carrito.js` →
 |-------------------------|---------------------------------------------------------------------------------------|
 | `logic/`, `utils/`      | Reglas puras con un catálogo de prueba inyectado                                      |
 | `data/`                 | CRUD, reglas de integridad y `crearOrden` con el reloj simulado                       |
-| `context/`, `hooks/`    | Proveedores y hooks con `renderHook`; almacenamiento corrupto o bloqueado             |
+| `context/`, `hooks/`    | Proveedores (con un componente de prueba y temporizadores simulados) y hooks con `renderHook`; almacenamiento corrupto o bloqueado |
 | `components/`           | Props, renderizado condicional, estado y eventos                                      |
 | `pages/`                | Todas las vistas de la tienda y del panel: flujos de compra y cuenta, armado, mantenedores y reportes |
 
-Resultado del 26-10-2026: 81 archivos y 739 pruebas, todas en verde; cobertura de 98,92 %
-en sentencias, 94,49 % en ramas, 98,62 % en funciones y 99,51 % en líneas. El detalle, la
+Resultado del 28-10-2026: 85 archivos y 760 pruebas, todas en verde; cobertura de 99,32 %
+en sentencias, 94,58 % en ramas, 99,80 % en funciones y 99,51 % en líneas. El detalle, la
 estrategia y lo no cubierto están en [`docs/cobertura-testing.md`](docs/cobertura-testing.md).
+El diseño responsivo se revisó a 375, 768 y 1280 px: ver [`docs/responsividad.md`](docs/responsividad.md).
