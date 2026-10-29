@@ -1,7 +1,3 @@
-/**
- * Caja de busqueda de un listado: etiqueta, campo de texto y el conteo de
- * resultados en una zona aria-live para los lectores de pantalla.
- */
 export default function CajaBusqueda({ id, etiqueta = "Buscar", placeholder, valor, onCambio, mostrados, total }) {
 	return (
 		<div className="mb-3">

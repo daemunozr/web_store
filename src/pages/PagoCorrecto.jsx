@@ -7,7 +7,6 @@ import { itemsDeOrden, orden as buscarOrden } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { puedeVerOrden } from "../logic/ordenes.js";
 
-/** Confirmacion de una compra pagada, con la boleta como resumen del pedido. */
 export default function PagoCorrecto() {
 	const { numero = "" } = useParams();
 	const { sesion } = useSesion();
@@ -15,7 +14,6 @@ export default function PagoCorrecto() {
 	const visible = puedeVerOrden(orden, sesion);
 	useTitulo(visible ? "Pago correcto — Ensambla.me" : "Orden no encontrada — Ensambla.me");
 
-	// Una orden que no existe, o que es de otra cuenta, se trata igual: no se revela cual.
 	if (!visible) {
 		return (
 			<main>

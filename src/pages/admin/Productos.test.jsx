@@ -23,7 +23,6 @@ describe("admin / Productos", () => {
 		montar();
 
 		expect(screen.getByRole("heading", { level: 1, name: "Productos" })).toBeInTheDocument();
-		// Una fila de encabezado mas una por producto.
 		expect(screen.getAllByRole("row")).toHaveLength(productos().length + 1);
 		expect(screen.getByText(`${productos().length} productos en el catalogo.`)).toBeInTheDocument();
 	});

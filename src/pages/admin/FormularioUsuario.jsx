@@ -23,7 +23,6 @@ const VACIO = {
 	direccion: "",
 };
 
-// Mismas reglas que el registro publico (RF-01) mas el tipo de usuario (RF-11 CA2).
 const DEFINICION = {
 	run: [reglas.requerido(), reglas.run()],
 	nombre: [reglas.requerido(), reglas.maximo(50)],
@@ -36,7 +35,6 @@ const DEFINICION = {
 	direccion: [reglas.requerido(), reglas.maximo(300)],
 };
 
-/** Valores del formulario a partir de un usuario existente; la region sale de su comuna. */
 const valoresDe = (existente) => ({
 	...VACIO,
 	...existente,
@@ -68,7 +66,6 @@ function Formulario({ run }) {
 			tipoUsuario: datos.tipoUsuario,
 		};
 
-		// La capa de datos rechaza un RUN repetido y un correo usado por otro usuario.
 		const resultado = existente ? actualizarUsuario(existente.run, registro) : crearUsuario(registro);
 		if (!resultado.ok) {
 			setAviso({ tipo: "danger", contenido: resultado.mensaje });
@@ -143,7 +140,6 @@ function Formulario({ run }) {
 							sugerencia="Entre 4 y 10 caracteres."
 							{...props("contrasena")}
 						/>
-						{/* Exactamente los tres roles; este campo no existe en el registro publico (RF-11 CA3). */}
 						<Campo
 							como="select"
 							className="col-12 col-md-4"
@@ -197,7 +193,6 @@ function Formulario({ run }) {
 	);
 }
 
-/** Creacion (/admin/usuarios/nuevo) y edicion (/admin/usuarios/:run/editar) de usuarios (RF-11). */
 export default function FormularioUsuario() {
 	const { run = "" } = useParams();
 	return <Formulario key={run} run={run} />;

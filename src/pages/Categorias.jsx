@@ -3,10 +3,8 @@ import RejillaProductos from "../components/RejillaProductos.jsx";
 import { useDatos } from "../context/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 
-// Productos que se adelantan de cada categoria; el resto esta en "Ver todos".
 const POR_CATEGORIA = 3;
 
-/** Los productos separados por categoria, con acceso al listado completo de cada una. */
 export default function Categorias() {
 	useTitulo("Categorias — Ensambla.me");
 	const { productos, categorias } = useDatos();

@@ -1,10 +1,6 @@
 import Campo from "./Campo.jsx";
 import { sugerenciasDeCorreo } from "../utils/validaciones.js";
 
-/**
- * Campo de correo que ofrece los dominios permitidos como sugerencia
- * seleccionable, completando lo que ya se escribio (RF-01 CA8).
- */
 export default function CampoCorreo({ id, value, ...props }) {
 	const lista = `dominios-${id}`;
 	return (

@@ -24,10 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-/**
- * Prueba el controlador junto con ResponseEntityHandler, sin base de datos: el servicio es un
- * mock y MockMvc simula las peticiones HTTP.
- */
 @ExtendWith(MockitoExtension.class)
 class ProductoControllerTest {
 

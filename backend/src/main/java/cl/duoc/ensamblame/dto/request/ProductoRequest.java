@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-/** Datos para crear o editar un producto. "categoria" es el codigo de una categoria existente. */
 public record ProductoRequest(
 
         @NotBlank(message = "El codigo (SKU) es obligatorio.")

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ORDENES, aParametros } from "../logic/catalogo.js";
 import Campo from "./Campo.jsx";
 
-/** Valores del formulario (texto) a partir de los criterios leidos de la URL. */
 const desdeCriterios = (criterios) => ({
 	q: criterios.q,
 	categoria: criterios.categoria,
@@ -13,12 +12,6 @@ const desdeCriterios = (criterios) => ({
 	orden: criterios.orden,
 });
 
-/**
- * Busqueda y filtros del catalogo. El texto y los precios se aplican al enviar
- * el formulario; la categoria, el orden y las casillas, al cambiarlos. Los
- * criterios viven en la URL (aplicar) y, si esta cambia desde afuera (Atras, la
- * busqueda del menu, Limpiar), el formulario se actualiza con ella.
- */
 export default function FiltrosCatalogo({ criterios, aplicar, categorias, conOferta = true, prefijo = "filtro" }) {
 	const [valores, setValores] = useState(() => desdeCriterios(criterios));
 	const firma = aParametros(criterios).toString();

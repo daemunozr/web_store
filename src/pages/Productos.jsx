@@ -5,13 +5,11 @@ import { useCriterios } from "../hooks/useCriterios.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { filtrar, hayFiltros, ordenar } from "../logic/catalogo.js";
 
-/** Catalogo completo, con busqueda y filtros (?q=, ?categoria=, ?min=, ?max=, ?oferta=, ?stock=, ?orden=) (RF-03). */
 export default function Productos() {
 	useTitulo("Productos — Ensambla.me");
 	const { productos, categorias } = useDatos();
 	const { criterios: pedidos, aplicar } = useCriterios();
 
-	// Una categoria que no existe se ignora y se muestra todo el catalogo.
 	const categoria = pedidos.categoria ? categorias.find((c) => c.codigo === pedidos.categoria) : null;
 	const criterios = categoria ? pedidos : { ...pedidos, categoria: "" };
 	const lista = ordenar(filtrar(productos, criterios), criterios.orden);

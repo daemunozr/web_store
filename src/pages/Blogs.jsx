@@ -5,7 +5,6 @@ import { useTitulo } from "../hooks/useTitulo.js";
 import { fecha } from "../utils/formato.js";
 import { recurso } from "../utils/recursos.js";
 
-/** Tarjeta de un articulo en el listado: imagen, titulo y descripcion corta (RF-09 CA1). */
 function TarjetaBlog({ articulo }) {
 	const enlace = `/blogs/${encodeURIComponent(articulo.slug)}`;
 	return (
@@ -33,7 +32,6 @@ function TarjetaBlog({ articulo }) {
 	);
 }
 
-/** Listado de articulos del blog (RF-09). */
 export default function Blogs() {
 	useTitulo("Blogs — Ensambla.me");
 

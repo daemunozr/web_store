@@ -1,7 +1,3 @@
-/*
- * Autoria y licencia de cada imagen de producto (fotos de Wikimedia Commons).
- * exacto indica si la foto muestra el modelo exacto o uno representativo.
- */
 export const creditos = [
 	{ sku: "CPU-R5-7600", exacto: true, muestra: "AMD Ryzen 5 7600", autor: "Smial (talk)", licencia: "FAL", urlLicencia: "http://artlibre.org/licence/lal/en", original: "https://commons.wikimedia.org/wiki/File:AMD_Ryzen_5_7600_top_IMGP6773_smial_wp.jpg" },
 	{ sku: "CPU-R7-7800X3D", exacto: true, muestra: "AMD Ryzen 7 7800X3D (el archivo de Commons se titula «Ryzen 5 7600», pero el chip fotografiado es un 7800X3D)", autor: "FritzchensFritz", licencia: "CC0", urlLicencia: "http://creativecommons.org/publicdomain/zero/1.0/deed.en", original: "https://commons.wikimedia.org/wiki/File:AMD@5nmCCD%286nmIOD%29@Zen4@Raphael@Ryzen_5_7600@100-000001015_BQ_2246SUY_9LS4795W20142_DSC01886-DSC02002.jpg" },

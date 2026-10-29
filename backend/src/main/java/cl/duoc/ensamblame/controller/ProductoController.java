@@ -27,7 +27,6 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    // GET /api/productos?categoria=cpu   o   GET /api/productos?q=ryzen
     @GetMapping
     public ResponseEntity<List<ProductoResponse>> listar(
             @RequestParam(required = false) String categoria,

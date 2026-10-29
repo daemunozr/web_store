@@ -11,7 +11,6 @@ import { useEliminacion } from "../../hooks/useEliminacion.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { coincide } from "../../logic/busqueda.js";
 
-/** Listado de usuarios con acceso a crear, editar y eliminar (RF-11). */
 export default function Usuarios() {
 	useTitulo("Usuarios — Panel Ensambla.me");
 	const { sesion } = useSesion();
@@ -23,7 +22,6 @@ export default function Usuarios() {
 		coincide(busqueda, u.run, u.nombre, u.apellidos, u.correo, nombreRol(u.tipoUsuario), nombreComuna(u.comuna)),
 	);
 
-	// La capa de datos rechaza la propia cuenta y a los usuarios con ordenes.
 	const eliminacion = useEliminacion(
 		useCallback((usuario) => eliminarUsuario(usuario.run, sesion?.run), [eliminarUsuario, sesion]),
 	);

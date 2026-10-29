@@ -8,12 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
-/** Usuario del sistema. La contrasena se guarda cifrada con BCrypt. */
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
-    // RUN sin puntos ni guion, con el digito verificador al final.
     @Id
     @Column(length = 9)
     private String run;
@@ -27,7 +25,6 @@ public class Usuario {
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-    // Hash BCrypt (60 caracteres), nunca el texto original.
     @Column(nullable = false, length = 60)
     private String contrasena;
 

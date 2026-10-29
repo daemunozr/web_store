@@ -45,7 +45,6 @@ const ACCESOS = [
 	},
 ];
 
-/** Home del panel: estado de los datos y accesos a los mantenedores (RNF-08 CA5). */
 export default function Resumen() {
 	useTitulo("Panel — Ensambla.me");
 	const { productos, usuarios, categorias, ordenes } = useDatos();

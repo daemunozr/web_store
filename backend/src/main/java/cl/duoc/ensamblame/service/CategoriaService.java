@@ -37,7 +37,6 @@ public class CategoriaService {
         return aResponse(categoriaRepository.save(categoria));
     }
 
-    /** El codigo identifica a la categoria y no cambia: se ignora el del cuerpo. */
     public CategoriaResponse actualizar(String codigo, CategoriaRequest request) {
         Categoria categoria = buscar(codigo);
         categoria.setNombre(request.nombre());

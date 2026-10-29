@@ -34,7 +34,6 @@ const DEFINICION = {
 	categoria: [reglas.seleccion("Selecciona la categoria del producto.")],
 };
 
-/** Valores del formulario a partir de un producto existente (los numeros como texto). */
 const valoresDe = (existente) =>
 	Object.fromEntries(Object.keys(VACIO).map((campo) => [campo, String(existente[campo] ?? "")]));
 
@@ -63,7 +62,6 @@ function Formulario({ sku }) {
 			video: datos.video,
 		};
 
-		// La capa de datos rechaza un SKU repetido al crear.
 		const resultado = existente ? actualizarProducto(existente.sku, registro) : crearProducto(registro);
 		if (!resultado.ok) {
 			setAviso({ tipo: "danger", contenido: resultado.mensaje });
@@ -226,9 +224,7 @@ function Formulario({ sku }) {
 	);
 }
 
-/** Creacion (/admin/productos/nuevo) y edicion (/admin/productos/:sku/editar) de productos (RF-10). */
 export default function FormularioProducto() {
 	const { sku = "" } = useParams();
-	// key: al pasar de un producto a otro el formulario parte de cero.
 	return <Formulario key={sku} sku={sku} />;
 }

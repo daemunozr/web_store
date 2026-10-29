@@ -24,7 +24,6 @@ describe("Boleta", () => {
 		montar("ORD-2026-0001");
 
 		const filas = within(screen.getByRole("table")).getAllByRole("row");
-		// Encabezado + 3 productos + 3 filas del pie (subtotal, envio, total).
 		expect(filas).toHaveLength(1 + 3 + 3);
 		const ram = screen.getByText("RAM-DDR5-16-5600").closest("tr");
 		expect(within(ram).getByText("2")).toBeInTheDocument();

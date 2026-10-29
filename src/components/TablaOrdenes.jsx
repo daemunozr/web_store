@@ -5,11 +5,6 @@ import { masRecientesPrimero } from "../logic/ordenes.js";
 import { fecha, precio } from "../utils/formato.js";
 import EstadoVacio from "./EstadoVacio.jsx";
 
-/**
- * Tabla de ordenes, de la mas reciente a la mas antigua: numero, fecha, cliente
- * (si conCliente), productos, total y el enlace a su boleta. rutaDetalle recibe
- * el numero de la orden y devuelve la ruta de su boleta.
- */
 export default function TablaOrdenes({
 	ordenes,
 	rutaDetalle,

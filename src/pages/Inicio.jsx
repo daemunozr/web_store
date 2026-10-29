@@ -22,13 +22,11 @@ const PASOS = [
 	},
 ];
 
-/** Inicio: componente principal, productos destacados y video del asistente (RNF-08 CA2). */
 export default function Inicio() {
 	useTitulo("Ensambla.me — Arma tu PC gamer pieza por pieza");
 
 	const { productos } = useDatos();
 	const destacados = DESTACADOS.map((sku) => productos.find((p) => p.sku === sku)).filter(Boolean);
-	// Si los SKU destacados ya no existen, se muestran los primeros del catalogo.
 	const lista = destacados.length ? destacados : productos.slice(0, 6);
 	const video = recurso("resources/video/ensamblame.mp4");
 

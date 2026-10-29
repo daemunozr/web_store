@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 
-/** Pie de pagina informativo: nombre, navegacion, contacto y ano (RNF-08 CA4). */
 export default function Footer() {
 	return (
 		<footer className="pie-sitio py-4">

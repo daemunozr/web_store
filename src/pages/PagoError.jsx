@@ -7,10 +7,6 @@ import { producto as buscarProducto } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { consolidar, costoEnvio } from "../logic/checkout.js";
 
-/**
- * Pago rechazado: el motivo, el resumen del pedido (el carrito sigue intacto,
- * sin cobro ni cambio de stock) y el regreso al Checkout con los datos de envio.
- */
 export default function PagoError() {
 	useTitulo("Pago con error — Ensambla.me");
 	const { state } = useLocation();

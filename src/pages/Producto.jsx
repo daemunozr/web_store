@@ -7,13 +7,11 @@ import { nombreCategoria, producto as buscarProducto } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 import { recurso } from "../utils/recursos.js";
 
-/** Detalle de un producto con su video opcional y el boton de anadir (RF-04). */
 export default function Producto() {
 	const { sku = "" } = useParams();
 	const producto = sku ? buscarProducto(sku) : null;
 	useTitulo(producto ? `${producto.nombre} — Ensambla.me` : "Producto no encontrado — Ensambla.me");
 
-	// Un codigo que no existe avisa, en vez de dejar la vista vacia (RF-04 CA3).
 	if (!producto) {
 		return (
 			<main className="col-12 col-lg-9">
@@ -82,7 +80,6 @@ export default function Producto() {
 				</div>
 			</div>
 
-			{/* El video solo se incluye si el producto lo define, sin contenedores vacios (RF-04 CA4). */}
 			{producto.video && (
 				<section className="mt-4">
 					<h2 className="h5">Video del producto</h2>

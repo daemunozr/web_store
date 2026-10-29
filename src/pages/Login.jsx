@@ -15,7 +15,6 @@ const DEFINICION = {
 	contrasena: [reglas.requerido(), reglas.contrasena()],
 };
 
-/** Inicio de sesion con redireccion segun el rol (RF-02). */
 export default function Login() {
 	useTitulo("Iniciar sesion — Ensambla.me");
 	const { iniciar } = useSesion();
@@ -30,7 +29,6 @@ export default function Login() {
 			setAviso({ tipo: "danger", contenido: resultado.mensaje });
 			return;
 		}
-		// Vuelve a la vista protegida que se pidio, o al inicio del rol (RF-02 CA1).
 		navegar(destinoSeguro(parametros.get("destino")) ?? inicioDeRol(resultado.sesion.rol));
 	};
 

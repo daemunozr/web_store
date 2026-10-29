@@ -1,11 +1,6 @@
 import { producto as buscarProducto } from "../data/datos.js";
 import { precio } from "../utils/formato.js";
 
-/**
- * Resumen de una compra: productos con su cantidad, subtotal, envio y total.
- * items es [{ producto (SKU), cantidad, precioUnitario }]. Con envio en null
- * todavia no se eligio la entrega y se avisa que se calcula despues.
- */
 export default function ResumenPedido({ items, subtotal, envio = null, total }) {
 	return (
 		<section className="resumen-total p-3" aria-labelledby="resumen-pedido-titulo">

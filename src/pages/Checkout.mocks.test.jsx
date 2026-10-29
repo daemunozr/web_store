@@ -1,8 +1,3 @@
-/*
- * Checkout con la pasarela de pago reemplazada por un mock de modulo (vi.mock):
- * aisla la pagina de la pasarela para comprobar con que tarjeta y monto la
- * llama y como reacciona a su respuesta.
- */
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Route, Routes, useLocation } from "react-router";
@@ -11,7 +6,6 @@ import { autorizarPago } from "../logic/pago.js";
 import { limpiarAlmacenamiento, renderConProviders } from "../testUtils.jsx";
 import Checkout from "./Checkout.jsx";
 
-// El mock conserva la implementacion real por defecto y se pisa por prueba.
 vi.mock("../logic/pago.js", async (importOriginal) => {
 	const original = await importOriginal();
 	return { ...original, autorizarPago: vi.fn(original.autorizarPago) };

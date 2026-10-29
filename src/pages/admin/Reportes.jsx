@@ -21,7 +21,6 @@ import { mesLegible, precio } from "../../utils/formato.js";
 
 const plural = (n, singular, varios) => `${n} ${n === 1 ? singular : varios}`;
 
-/** Reportes de ventas e inventario, con filtro por rango de fechas. */
 export default function Reportes() {
 	useTitulo("Reportes — Panel Ensambla.me");
 	const { ordenes, itemsOrden, productos } = useDatos();

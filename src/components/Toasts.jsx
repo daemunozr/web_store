@@ -1,4 +1,3 @@
-/** Confirmaciones visuales del carrito, abajo a la derecha (RF-05 CA3). */
 export default function Toasts({ avisos, onCerrar }) {
 	if (!avisos.length) return null;
 

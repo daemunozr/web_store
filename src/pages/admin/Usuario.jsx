@@ -6,7 +6,6 @@ import { nombreComuna, nombreRegionDeComuna, nombreRol, totalOrden } from "../..
 import { useTitulo } from "../../hooks/useTitulo.js";
 import { fecha, precio } from "../../utils/formato.js";
 
-/** Ficha de un usuario (sin su contrasena) y su historial de compras. */
 export default function Usuario() {
 	const { run = "" } = useParams();
 	const { usuarios, ordenes } = useDatos();

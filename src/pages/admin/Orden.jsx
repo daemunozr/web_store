@@ -4,7 +4,6 @@ import EstadoVacio from "../../components/EstadoVacio.jsx";
 import { itemsDeOrden, orden as buscarOrden } from "../../data/datos.js";
 import { useTitulo } from "../../hooks/useTitulo.js";
 
-/** Detalle de una orden en solo lectura: su boleta (RF-12 CA2). */
 export default function Orden() {
 	const { numero = "" } = useParams();
 	const orden = buscarOrden(numero);

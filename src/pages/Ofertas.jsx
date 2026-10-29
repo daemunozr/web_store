@@ -8,7 +8,6 @@ import { useTitulo } from "../hooks/useTitulo.js";
 import { filtrar, hayFiltros, ordenar } from "../logic/catalogo.js";
 import { enOferta } from "../logic/precios.js";
 
-/** Productos con descuento, de mayor a menor, con los mismos filtros del catalogo. */
 export default function Ofertas() {
 	useTitulo("Ofertas — Ensambla.me");
 	const { productos, categorias } = useDatos();

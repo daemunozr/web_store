@@ -15,7 +15,6 @@ describe("Inicio", () => {
 		expect(portada).toHaveTextContent("Arma tu PC gamer pieza por pieza");
 		expect(screen.getByRole("img", { name: /Ilustracion de un PC gamer/ })).toBeInTheDocument();
 		const destacados = screen.getByRole("heading", { name: "Productos destacados" });
-		// Orden del documento: portada, luego el listado.
 		expect(portada.compareDocumentPosition(destacados) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 		expect(container.querySelectorAll("h1")).toHaveLength(1);
 	});

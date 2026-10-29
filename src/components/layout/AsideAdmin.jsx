@@ -3,11 +3,6 @@ import { useSesion } from "../../context/sesion.js";
 
 const ADMIN_Y_LOGISTICA = ["ADMIN", "LOGISTICA"];
 
-/*
- * Opciones del panel por rol. "exacta" marca solo la ruta exacta (el resto de
- * las rutas del panel cuelgan de /admin) y "excluir" evita que una opcion se
- * marque en una subruta que tiene su propia opcion.
- */
 const OPCIONES_PANEL = [
 	{ texto: "Resumen", ruta: "/admin", roles: ["ADMIN"], exacta: true },
 	{ texto: "Productos", ruta: "/admin/productos", roles: ADMIN_Y_LOGISTICA, excluir: "/admin/productos/criticos" },
@@ -21,10 +16,6 @@ const OPCIONES_PANEL = [
 
 const dentroDe = (pathname, ruta) => pathname === ruta || pathname.startsWith(`${ruta}/`);
 
-/**
- * Menu vertical del panel. Solo se renderizan las opciones del rol: las demas
- * no existen en el DOM, no basta con ocultarlas (RNF-02 CA2).
- */
 export default function AsideAdmin() {
 	const { sesion } = useSesion();
 	const { pathname } = useLocation();

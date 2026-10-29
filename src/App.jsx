@@ -42,7 +42,6 @@ const SOLO_ADMIN = ["ADMIN"];
 const ADMIN_Y_LOGISTICA = ["ADMIN", "LOGISTICA"];
 const CON_SESION = ["ADMIN", "LOGISTICA", "CLIENTE"];
 
-/** Envuelve una vista del panel con su control de acceso por rol (RNF-02). */
 const protegida = (roles, vista) => <RutaProtegida roles={roles}>{vista}</RutaProtegida>;
 
 export default function App() {
@@ -51,7 +50,6 @@ export default function App() {
 			<SesionProvider>
 				<CarritoProvider>
 					<Routes>
-						{/* Vistas de tienda con la barra lateral de categorias (RNF-08 CA3). */}
 						<Route element={<LayoutTienda conAside />}>
 							<Route index element={<Inicio />} />
 							<Route path="productos" element={<Productos />} />

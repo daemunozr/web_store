@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-/** Categoria del catalogo (procesadores, placas madre, etc.). */
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -17,7 +16,6 @@ public class Categoria {
     @Column(nullable = false, length = 50)
     private String nombre;
 
-    // Posicion en el asistente de armado; null si la categoria no participa.
     private Integer orden;
 
     public Categoria() {

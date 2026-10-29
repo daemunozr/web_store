@@ -50,11 +50,9 @@ public class UsuarioService {
         return aResponse(usuarioRepository.save(usuario));
     }
 
-    /** El RUN identifica al usuario y no cambia: se ignora el del cuerpo. */
     public UsuarioResponse actualizar(String run, UsuarioRequest request) {
         Usuario usuario = buscar(run);
 
-        // El correo puede repetirse solo si es el del propio usuario.
         usuarioRepository.findByCorreo(request.correo()).ifPresent(otro -> {
             if (!otro.getRun().equals(usuario.getRun())) {
                 throw new ReglaNegocioException("Ya existe un usuario con el correo " + request.correo() + ".");
@@ -74,7 +72,6 @@ public class UsuarioService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario " + run + "."));
     }
 
-    // Pasa los datos del request a la entidad (todo menos el RUN). La contrasena se cifra.
     private void copiarDatos(Usuario usuario, UsuarioRequest request) {
         usuario.setNombre(request.nombre());
         usuario.setApellidos(request.apellidos());
@@ -87,7 +84,6 @@ public class UsuarioService {
         usuario.setTipoUsuario(request.tipoUsuario());
     }
 
-    // La contrasena no se incluye en la respuesta.
     private UsuarioResponse aResponse(Usuario u) {
         return new UsuarioResponse(u.getRun(), u.getNombre(), u.getApellidos(), u.getCorreo(),
                 u.getFechaNacimiento(), u.getRegion(), u.getComuna(), u.getDireccion(), u.getTipoUsuario());

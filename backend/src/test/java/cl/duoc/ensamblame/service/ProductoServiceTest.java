@@ -51,7 +51,6 @@ class ProductoServiceTest {
     void crearGuardaElProductoYDevuelveSuResponse() {
         when(productoRepository.existsById("CPU-R5-7600")).thenReturn(false);
         when(categoriaRepository.findById("cpu")).thenReturn(Optional.of(cpu));
-        // save devuelve el mismo objeto que recibe.
         when(productoRepository.save(any(Producto.class))).thenAnswer(llamada -> llamada.getArgument(0));
 
         ProductoResponse respuesta = servicio.crear(request("CPU-R5-7600"));
@@ -90,7 +89,6 @@ class ProductoServiceTest {
         when(categoriaRepository.findById("cpu")).thenReturn(Optional.of(cpu));
         when(productoRepository.save(any(Producto.class))).thenAnswer(llamada -> llamada.getArgument(0));
 
-        // El SKU del cuerpo es otro: se ignora.
         ProductoResponse respuesta = servicio.actualizar("CPU-R5-7600", request("OTRO-SKU"));
 
         assertEquals("CPU-R5-7600", respuesta.sku());

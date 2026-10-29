@@ -70,7 +70,6 @@ class UsuarioServiceTest {
         UsuarioResponse respuesta = servicio.crear(request("123456785", "camila@gmail.com"));
 
         assertEquals("123456785", respuesta.run());
-        // El record de respuesta no tiene un campo para la contrasena.
         boolean tieneContrasena = Arrays.stream(UsuarioResponse.class.getRecordComponents())
                 .anyMatch(campo -> campo.getName().equals("contrasena"));
         assertFalse(tieneContrasena);

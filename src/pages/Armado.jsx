@@ -16,7 +16,6 @@ import {
 import { precioVigente } from "../logic/precios.js";
 import { precio } from "../utils/formato.js";
 
-/* ---------------------------------------------------------- Selector de modo */
 function SelectorModo({ estado, despachar, total }) {
 	if (estado.modo) {
 		return (
@@ -82,7 +81,6 @@ function SelectorModo({ estado, despachar, total }) {
 	);
 }
 
-/* ------------------------------------------------------------ Lista de pasos */
 function ListaPasos({ estado, categorias }) {
 	if (!estado.modo) return null;
 
@@ -104,8 +102,6 @@ function ListaPasos({ estado, categorias }) {
 	);
 }
 
-/* ------------------------------------------------------------- Paso actual */
-/** Opcion de un componente. Un componente sin stock se muestra pero no se puede escoger (RF-07 CA7). */
 function OpcionComponente({ producto, marcado, onElegir }) {
 	const sinStock = Number(producto.stock) <= 0;
 	const id = `opcion-${producto.sku}`;
@@ -125,7 +121,6 @@ function OpcionComponente({ producto, marcado, onElegir }) {
 							disabled={sinStock}
 							onChange={() => onElegir(producto.sku)}
 						/>
-						{/* stretched-link extiende la etiqueta a toda la tarjeta: un clic en cualquier parte marca la opcion. */}
 						<label className="form-check-label fw-semibold stretched-link" htmlFor={id}>
 							{producto.nombre}
 							{sinStock ? " (sin stock)" : ""}
@@ -236,7 +231,6 @@ function PasoActual({ estado, despachar, categorias }) {
 	);
 }
 
-/* ---------------------------------------------------------------- Resumen */
 function ResumenArmado({ estado, despachar }) {
 	const { agregarArmado } = useCarrito();
 	const seleccion = elegidos(estado);
@@ -246,7 +240,6 @@ function ResumenArmado({ estado, despachar }) {
 
 	const total = seleccion.reduce((suma, eleccion) => suma + precioVigente(buscarProducto(eleccion.sku)), 0);
 
-	// Si falta stock de algun componente, el carrito avisa y el armado sigue en pantalla (RF-07 CA7).
 	const agregar = () => {
 		if (agregarArmado(seleccion.map((eleccion) => eleccion.sku))) despachar({ tipo: "agregado" });
 	};
@@ -319,7 +312,6 @@ function ResumenArmado({ estado, despachar }) {
 	);
 }
 
-/** Asistente de armado de PC gamer por componentes (RF-07). */
 export default function Armado() {
 	useTitulo("Armar mi PC — Ensambla.me");
 	const categorias = categoriasDeArmado();
@@ -337,7 +329,6 @@ export default function Armado() {
 
 			<SelectorModo estado={estado} despachar={despachar} total={categorias.length} />
 			<ListaPasos estado={estado} categorias={categorias} />
-			{/* key: cada paso parte con su propia seleccion y sin error. */}
 			{mostrarPaso && (
 				<PasoActual
 					key={`${estado.modo}-${estado.indice}`}

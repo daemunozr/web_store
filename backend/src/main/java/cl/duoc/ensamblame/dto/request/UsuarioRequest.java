@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
-/** Datos para crear o editar un usuario. */
 public record UsuarioRequest(
 
         @NotBlank(message = "El RUN es obligatorio.")

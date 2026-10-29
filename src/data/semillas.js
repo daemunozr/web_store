@@ -1,14 +1,3 @@
-/*
- * Datos de prueba del sistema (fuente de datos simulada).
- *
- * Replican el modelo logico del README (seccion 4): Categoria, Producto,
- * Compatibilidad, Region, Comuna, Rol, Usuario, Orden, Item de orden y Blog.
- * Productos y usuarios son solo la semilla: la copia de trabajo vive en
- * sessionStorage (ver data/datos.js).
- */
-
-/* ------------------------------------------------------------------ Categoria
-   "orden" es la posicion en el recorrido del asistente de armado (RF-07). */
 export const categorias = [
 	{ codigo: "cpu", nombre: "Procesadores (CPU)", orden: 1 },
 	{ codigo: "placa", nombre: "Placas madre", orden: 2 },
@@ -21,12 +10,7 @@ export const categorias = [
 	{ codigo: "perifericos", nombre: "Perifericos", orden: 9 },
 ];
 
-/* ------------------------------------------------------------------- Producto
-   Las reglas de cada campo estan en RF-10. La imagen y el video se guardan
-   como ruta relativa a public/ (o URL completa) y se resuelven con recurso().
-   "descuento" es opcional: porcentaje entero de 0 a 90 (ver logic/precios.js). */
 export const productos = [
-	// --- Procesadores ---
 	{
 		sku: "CPU-R5-7600",
 		nombre: "AMD Ryzen 5 7600",
@@ -50,7 +34,6 @@ export const productos = [
 		categoria: "cpu", imagen: "resources/img/productos/CPU-I5-14600K.webp", video: "",
 	},
 
-	// --- Placas madre ---
 	{
 		sku: "MB-B650-PG",
 		nombre: "ASRock B650 PG Lightning",
@@ -80,7 +63,6 @@ export const productos = [
 		categoria: "placa", imagen: "resources/img/productos/MB-B760M-DDR4.webp", video: "",
 	},
 
-	// --- Memoria RAM ---
 	{
 		sku: "RAM-DDR5-32-6000",
 		nombre: "Corsair Vengeance DDR5 32 GB (2x16) 6000 MT/s",
@@ -110,7 +92,6 @@ export const productos = [
 		categoria: "ram", imagen: "resources/img/productos/RAM-DDR4-32-3600.webp", video: "",
 	},
 
-	// --- Almacenamiento ---
 	{
 		sku: "SSD-NVME-1TB",
 		nombre: "Samsung 980 PRO 1 TB NVMe PCIe 4.0",
@@ -133,7 +114,6 @@ export const productos = [
 		categoria: "almacenamiento", imagen: "resources/img/productos/HDD-2TB.webp", video: "",
 	},
 
-	// --- Fuentes de poder ---
 	{
 		sku: "PSU-650-BRONZE",
 		nombre: "Corsair CV650 650 W 80 Plus Bronze",
@@ -156,7 +136,6 @@ export const productos = [
 		categoria: "fuente", imagen: "resources/img/productos/PSU-1000-GOLD.webp", video: "",
 	},
 
-	// --- Gabinetes ---
 	{
 		sku: "CASE-ATX-MESH",
 		nombre: "NZXT H5 Flow ATX",
@@ -179,7 +158,6 @@ export const productos = [
 		categoria: "gabinete", imagen: "resources/img/productos/CASE-MATX-COMPACT.webp", video: "",
 	},
 
-	// --- Refrigeracion ---
 	{
 		sku: "COOL-AIR-TOWER",
 		nombre: "DeepCool AK400 (aire)",
@@ -202,7 +180,6 @@ export const productos = [
 		categoria: "refrigeracion", imagen: "resources/img/productos/COOL-AIO-360.webp", video: "",
 	},
 
-	// --- Tarjetas graficas ---
 	{
 		sku: "GPU-RTX4060",
 		nombre: "NVIDIA GeForce RTX 4060 8 GB",
@@ -233,7 +210,6 @@ export const productos = [
 		categoria: "gpu", imagen: "resources/img/productos/GPU-RTX4090.webp", video: "",
 	},
 
-	// --- Perifericos ---
 	{
 		sku: "PER-KB-MECH",
 		nombre: "Teclado mecanico Redragon Kumara K552",
@@ -271,63 +247,49 @@ export const productos = [
 	},
 ];
 
-/* -------------------------------------------------------------- Compatibilidad
-   Tabla estatica que asocia cada componente con los admisibles de la categoria
-   siguiente (RF-07). No hay ningun calculo tecnico real: si el par esta en la
-   tabla, la combinacion se acepta (ver 1.2 y 2.6 del ERS). */
 const skusDe = (categoria) => productos.filter((p) => p.categoria === categoria).map((p) => p.sku);
 
 const paresDeCompatibilidad = {
-	// CPU -> placa madre: el socket manda.
 	"CPU-R5-7600": ["MB-B650-PG", "MB-X670-ELITE"],
 	"CPU-R7-7800X3D": ["MB-B650-PG", "MB-X670-ELITE"],
 	"CPU-I5-14600K": ["MB-B760-PLUS", "MB-B760M-DDR4"],
 
-	// Placa madre -> RAM: el tipo de memoria que admite el socket.
 	"MB-B650-PG": ["RAM-DDR5-32-6000", "RAM-DDR5-16-5600"],
 	"MB-X670-ELITE": ["RAM-DDR5-32-6000", "RAM-DDR5-16-5600"],
 	"MB-B760-PLUS": ["RAM-DDR5-32-6000", "RAM-DDR5-16-5600"],
 	"MB-B760M-DDR4": ["RAM-DDR4-16-3200", "RAM-DDR4-32-3600"],
 
-	// RAM -> almacenamiento: cualquier unidad sirve.
 	"RAM-DDR5-32-6000": skusDe("almacenamiento"),
 	"RAM-DDR5-16-5600": skusDe("almacenamiento"),
 	"RAM-DDR4-16-3200": skusDe("almacenamiento"),
 	"RAM-DDR4-32-3600": skusDe("almacenamiento"),
 
-	// Almacenamiento -> fuente: cualquier fuente sirve.
 	"SSD-NVME-1TB": skusDe("fuente"),
 	"SSD-NVME-2TB": skusDe("fuente"),
 	"HDD-2TB": skusDe("fuente"),
 
-	// Fuente -> gabinete: la de 1.000 W no entra en el gabinete compacto.
 	"PSU-650-BRONZE": skusDe("gabinete"),
 	"PSU-750-GOLD": skusDe("gabinete"),
 	"PSU-1000-GOLD": ["CASE-ATX-MESH", "CASE-ATX-RGB"],
 
-	// Gabinete -> refrigeracion: el compacto no admite radiador de 360 mm.
 	"CASE-ATX-MESH": skusDe("refrigeracion"),
 	"CASE-ATX-RGB": skusDe("refrigeracion"),
 	"CASE-MATX-COMPACT": ["COOL-AIR-TOWER", "COOL-AIO-240"],
 
-	// Refrigeracion -> tarjeta grafica: cualquiera sirve.
 	"COOL-AIR-TOWER": skusDe("gpu"),
 	"COOL-AIO-240": skusDe("gpu"),
 	"COOL-AIO-360": skusDe("gpu"),
 
-	// Tarjeta grafica -> perifericos: cualquiera sirve.
 	"GPU-RTX4060": skusDe("perifericos"),
 	"GPU-RTX4070S": skusDe("perifericos"),
 	"GPU-RX7700XT": skusDe("perifericos"),
 	"GPU-RTX4090": skusDe("perifericos"),
 };
 
-// La relacion Compatibilidad del modelo logico: pares (producto, admisible).
 export const compatibilidad = Object.entries(paresDeCompatibilidad).flatMap(([producto, admisibles]) =>
 	admisibles.map((admisible) => ({ producto, admisible })),
 );
 
-/* --------------------------------------------------------- Region y Comuna */
 export const regiones = [
 	{ codigo: "AP", nombre: "Arica y Parinacota" },
 	{ codigo: "TA", nombre: "Tarapaca" },
@@ -347,7 +309,6 @@ export const regiones = [
 	{ codigo: "MA", nombre: "Magallanes" },
 ];
 
-// La comuna determina su region (3NF): la region vive aqui y no en Usuario.
 export const comunas = [
 	["AP", ["Arica", "Camarones", "Putre", "General Lagos"]],
 	["TA", ["Iquique", "Alto Hospicio", "Pozo Almonte", "Pica"]],
@@ -373,16 +334,12 @@ export const comunas = [
 	})),
 );
 
-/* ------------------------------------------------------------------- Rol
-   La relacion contiene exactamente tres filas (ver modelo logico, 3.2). */
 export const roles = [
 	{ codigo: "ADMIN", nombre: "Administrador" },
 	{ codigo: "CLIENTE", nombre: "Cliente" },
 	{ codigo: "LOGISTICA", nombre: "Administrador logistico" },
 ];
 
-/* --------------------------------------------------------------- Usuario
-   RUN sin puntos ni guion y con digito verificador valido (RF-01). */
 export const usuarios = [
 	{
 		run: "190110222", nombre: "Daniel", apellidos: "Munoz Rojas",
@@ -416,12 +373,6 @@ export const usuarios = [
 	},
 ];
 
-/* ------------------------------------------------- Orden e Item de orden
-   Historial de compras de ejemplo; las compras nuevas las crea crearOrden. El
-   precio unitario se guarda en la linea porque el precio del producto puede
-   cambiar despues. La orden guarda una copia de los datos de envio y "cliente"
-   es "" cuando compro un invitado. "entrega" es DOMICILIO o RETIRO y el envio
-   es gratis desde $200.000 (ver logic/checkout.js). */
 export const ordenes = [
 	{
 		numero: "ORD-2026-0001", cliente: "123456785", fecha: "2026-09-12",
@@ -485,7 +436,6 @@ export const itemsOrden = [
 	{ orden: "ORD-2026-0005", producto: "RAM-DDR4-16-3200", cantidad: 1, precioUnitario: 44990 },
 	{ orden: "ORD-2026-0005", producto: "PER-MOUSE-RGB", cantidad: 1, precioUnitario: 24990 },
 
-	// Precios con la oferta vigente al comprar (SSD -25 %, teclado -20 %).
 	{ orden: "ORD-2026-0006", producto: "SSD-NVME-1TB", cantidad: 1, precioUnitario: 67493 },
 	{ orden: "ORD-2026-0006", producto: "PER-KB-MECH", cantidad: 1, precioUnitario: 27992 },
 
@@ -493,7 +443,6 @@ export const itemsOrden = [
 	{ orden: "ORD-2026-0007", producto: "COOL-AIR-TOWER", cantidad: 1, precioUnitario: 34990 },
 ];
 
-/* ----------------------------------------------------------------- Blogs */
 export const blogs = [
 	{
 		slug: "orden-de-armado",

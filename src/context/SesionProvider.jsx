@@ -1,7 +1,3 @@
-/*
- * Proveedor de la sesion del usuario (RF-02, RF-13). Las funciones de apoyo y
- * el hook useSesion viven en context/sesion.js.
- */
 import { useCallback, useMemo, useState } from "react";
 import { usuarios } from "../data/datos.js";
 import { CLAVE_SESION, SesionContext, leerSesion } from "./sesion.js";
@@ -9,11 +5,6 @@ import { CLAVE_SESION, SesionContext, leerSesion } from "./sesion.js";
 export default function SesionProvider({ children }) {
 	const [sesion, setSesion] = useState(leerSesion);
 
-	/**
-	 * Busca las credenciales entre los usuarios vigentes. Devuelve
-	 * { ok: true, sesion } o { ok: false, mensaje } con un mensaje generico que
-	 * no revela si fallo el correo o la contrasena (RF-02 CA3).
-	 */
 	const iniciar = useCallback((correo, contrasena) => {
 		const usuario = usuarios().find(
 			(u) => u.correo.toLowerCase() === String(correo).trim().toLowerCase() && u.contrasena === contrasena,
@@ -45,10 +36,6 @@ export default function SesionProvider({ children }) {
 		setSesion(null);
 	}, []);
 
-	/**
-	 * Refleja en la sesion los datos que el usuario cambio en su perfil (nombre,
-	 * apellidos y correo). Nunca toca el RUN ni el rol.
-	 */
 	const actualizar = useCallback(
 		({ nombre, apellidos, correo }) => {
 			if (!sesion) return;

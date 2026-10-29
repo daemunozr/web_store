@@ -6,7 +6,6 @@ import { ordenes, producto } from "../data/datos.js";
 import { SESION_CLIENTE, limpiarAlmacenamiento, renderConProviders } from "../testUtils.jsx";
 import Checkout from "./Checkout.jsx";
 
-// Camila existe en los datos de prueba, asi que sus datos de envio se completan solos.
 const CAMILA = { run: "123456785", nombre: "Camila", apellidos: "Soto Vera", correo: "camila@gmail.com", rol: "CLIENTE" };
 
 function Destino() {
@@ -172,7 +171,6 @@ describe("Checkout", () => {
 
 		it("si el stock cambio antes de pagar avisa y no cobra", async () => {
 			montar(CAMILA);
-			// Alguien compro todo el stock desde otra pestana despues de cargar el checkout.
 			const existente = producto("PER-MOUSE-RGB");
 			window.sessionStorage.setItem(
 				"productos",

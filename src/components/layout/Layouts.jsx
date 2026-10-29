@@ -5,7 +5,6 @@ import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
 import Nav from "./Nav.jsx";
 
-/** Vistas publicas: encabezado, menu, contenido (con o sin categorias) y pie. */
 export function LayoutTienda({ conAside = false }) {
 	return (
 		<>
@@ -26,7 +25,6 @@ export function LayoutTienda({ conAside = false }) {
 	);
 }
 
-/** Panel de administracion: encabezado, menu vertical por rol, contenido y pie. */
 export function LayoutAdmin() {
 	return (
 		<>

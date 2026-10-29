@@ -24,7 +24,6 @@ function montar(ruta = "/admin/productos/nuevo") {
 	);
 }
 
-// "Precio" y "Stock" no deben confundirse con "Precio final" ni con "Stock critico".
 const campo = (etiqueta) => screen.getByLabelText(new RegExp(`^${etiqueta}(?! final| critico)`));
 const guardar = () => userEvent.click(screen.getByRole("button", { name: "Guardar producto" }));
 const escribir = async (etiqueta, valor) => {

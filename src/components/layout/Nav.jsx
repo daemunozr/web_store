@@ -14,14 +14,12 @@ const ENLACES = [
 	{ ruta: "/contacto", texto: "Contacto" },
 ];
 
-/** Menu principal: logo, vistas publicas, busqueda y acceso al carrito con su contador (RF-14). */
 export default function Nav() {
 	const { cantidad } = useCarrito();
 	const navegar = useNavigate();
 	const [abierto, setAbierto] = useState(false);
 	const cerrar = () => setAbierto(false);
 
-	/** La busqueda del menu lleva al catalogo con el texto como filtro (?q=). */
 	const buscar = (evento) => {
 		evento.preventDefault();
 		const texto = String(new FormData(evento.currentTarget).get("q") ?? "").trim();

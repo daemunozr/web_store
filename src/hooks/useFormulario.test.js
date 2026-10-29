@@ -8,10 +8,8 @@ const DEFINICION = {
 	correo: [reglas.requerido(), reglas.correo()],
 };
 
-// Evento de cambio como lo emite un control: solo importa target.value.
 const cambio = (valor) => ({ target: { value: valor } });
 
-// Evento de envio con un formulario falso que sabe enfocar sus campos.
 function envio() {
 	const enfoques = {};
 	const campo = (nombre) => ({ focus: () => (enfoques[nombre] = true) });

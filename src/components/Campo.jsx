@@ -1,10 +1,3 @@
-/*
- * Campo de formulario: etiqueta asociada por for/id, control, mensaje de error
- * y sugerencia del formato esperado (RNF-02 CA5, RNF-05 CA5).
- *
- * "como" elige el control: "input" (por defecto), "select" o "textarea". Las
- * demas props (type, maxLength, autoComplete, ...) pasan al control.
- */
 export default function Campo({
 	id,
 	etiqueta,

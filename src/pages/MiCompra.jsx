@@ -5,7 +5,6 @@ import { useSesion } from "../context/sesion.js";
 import { itemsDeOrden, orden as buscarOrden } from "../data/datos.js";
 import { useTitulo } from "../hooks/useTitulo.js";
 
-/** Boleta de una compra propia. Una orden de otra cuenta, o de un invitado, no se muestra. */
 export default function MiCompra() {
 	const { numero = "" } = useParams();
 	const { sesion } = useSesion();

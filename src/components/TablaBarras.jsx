@@ -1,10 +1,5 @@
 import EstadoVacio from "./EstadoVacio.jsx";
 
-/**
- * Tabla de un reporte con una barra por fila. filas es
- * [{ clave, etiqueta, detalle, valor, valorTexto }]: la barra es proporcional
- * al mayor valor y el valor siempre se escribe tambien como texto.
- */
 export default function TablaBarras({ titulo, columna, filas, mensajeVacio = "No hay datos para mostrar." }) {
 	if (!filas.length) {
 		return (

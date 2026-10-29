@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import CajaBusqueda from "./CajaBusqueda.jsx";
 
-// Caja con su estado, como la usan los listados del panel.
 function ConEstado() {
 	const [valor, setValor] = useState("");
 	return <CajaBusqueda id="buscar" valor={valor} onCambio={setValor} mostrados={2} total={10} />;

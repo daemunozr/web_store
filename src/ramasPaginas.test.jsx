@@ -1,8 +1,3 @@
-/*
- * Ramas de las vistas que dependen de datos poco comunes: rutas sin parametro,
- * registros incompletos, listas de un solo elemento y compras que el servidor
- * rechaza.
- */
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Route, Routes } from "react-router";

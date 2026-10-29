@@ -1,4 +1,3 @@
-/** Indicador de un resumen: titulo, cifra y nota. */
 export default function Indicador({ titulo, valor, nota }) {
 	return (
 		<div className="col">

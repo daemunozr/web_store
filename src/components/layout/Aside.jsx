@@ -1,7 +1,6 @@
 import { Link, useSearchParams } from "react-router";
 import { useDatos } from "../../context/datos.js";
 
-/** Barra lateral de las vistas de tienda: categorias del catalogo (RF-14 CA3, RNF-08 CA3). */
 export default function Aside() {
 	const { categorias } = useDatos();
 	const [parametros] = useSearchParams();

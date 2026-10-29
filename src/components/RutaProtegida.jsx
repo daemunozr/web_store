@@ -3,11 +3,6 @@ import Alerta from "./Alerta.jsx";
 import { inicioDeRol, useSesion } from "../context/sesion.js";
 import { nombreRol } from "../data/datos.js";
 
-/**
- * Exige sesion y rol para ver una vista (RNF-02 CA1 y CA6).
- * Sin sesion redirige al inicio de sesion recordando el destino; con un rol
- * que no corresponde muestra un aviso y no renderiza la vista.
- */
 export default function RutaProtegida({ roles, children }) {
 	const { sesion } = useSesion();
 	const ubicacion = useLocation();
